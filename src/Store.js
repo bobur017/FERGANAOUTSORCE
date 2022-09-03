@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import qr from "./Reducer";
+import login from "./pages/login/ReducerLogin";
 import Api from "./Api"
 
 export default configureStore({
     reducer: {
-        qr,
+        login,
     },
     middleware: [Api],
 });

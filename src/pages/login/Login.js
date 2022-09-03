@@ -1,15 +1,36 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
-import './loginPage.css'
-import logo from './image/img.png'
-import logo1 from './image/img_1.png'
-import logo2 from './image/img_2.png'
+import './loginPage.css';
+import logo from './image/img.png';
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "./ReducerLogin";
+// import qs from 'qs'
+
 
 function Login() {
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.login.token)
+    const firstUpdate = useRef(false);
 
+    useEffect(()=>{
+        if(!firstUpdate.current){
+            firstUpdate.current = true;
+        }
+    },[]);
+
+    useEffect(()=>{
+        if(!firstUpdate.current){
+
+        }else {
+            console.log(token,'token')
+        }
+    },[token]);
 
     const loginSubmit = (e) => {
       e.preventDefault();
+      const qs = require('qs');
+      const data = {username:e.target.username.value,password:e.target.password.value};
+      dispatch(login(qs.stringify(data)));
     }
     return (<div>
         <Container fluid={true}>
@@ -22,9 +43,9 @@ function Login() {
                             <Row className={'justify-content-center'}>
                                 <Col xs={10} sm={8} md={8} lg={6} xl={6}>
                                     <Form id={'login'} onSubmit={loginSubmit}>
-                                        <Form.Control name={'userName'} type={'text'} minlength="5" size={'sm'}
+                                        <Form.Control name={'username'} type={'text'} minLength="1" size={'sm'}
                                                       className={'mt-3'} placeholder={'Loginni kiriting'}/>
-                                        <Form.Control type={'password'} name={'password'} minlength="8" size={'sm'} className={'mt-3'}
+                                        <Form.Control type={'password'} name={'password'} minLength="1" size={'sm'} className={'mt-3'}
                                                       placeholder={'Parolni kiriting'}/>
                                     </Form>
                                     <br/>

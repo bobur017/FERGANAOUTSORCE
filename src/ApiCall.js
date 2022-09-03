@@ -1,2 +1,2 @@
 import { createAction } from "@reduxjs/toolkit";
-export const setApi = createAction("api/call");
+export const apiCall = createAction("api/call");

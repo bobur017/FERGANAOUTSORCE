@@ -31,17 +31,17 @@ const slice = createSlice({
         }
     }
 })
-
-function getToken() {
-    return localStorage.getItem("Authorization");
-}
-function getRole() {
-    return localStorage.getItem("role");
-}
-
-function getId() {
-    return localStorage.getItem("id");
-}
+//
+// function getToken() {
+//     return localStorage.getItem("Authorization");
+// }
+// function getRole() {
+//     return localStorage.getItem("role");
+// }
+//
+// function getId() {
+//     return localStorage.getItem("id");
+// }
 
 
 

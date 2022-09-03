@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ef0e2316-c189-4aed-b67c-3c4057c63f71" name="Changes" comment="" />
+    <list default="true" id="ef0e2316-c189-4aed-b67c-3c4057c63f71" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pages/login/ReducerLogin.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/sidebar/Sidebar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ApiCall.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ApiCall.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Reducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/image/img.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/image/img.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/image/img_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/image/img_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/image/img_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/image/img_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/loginPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/loginPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,8 +26,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -32,7 +48,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Projects/Front/new KindersOutsorse/my-app&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/Front/FERGANa&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
@@ -41,6 +57,11 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Projects\Front\FERGANa\src\pages\login" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -52,6 +73,10 @@
       <workItem from="1662005499730" duration="8162000" />
       <workItem from="1662039135398" duration="3125000" />
       <workItem from="1662092635912" duration="13139000" />
+      <workItem from="1662119235682" duration="7595000" />
+      <workItem from="1662180117968" duration="1662000" />
+      <workItem from="1662183223873" duration="3678000" />
+      <workItem from="1662186970646" duration="1307000" />
     </task>
     <servers />
   </component>

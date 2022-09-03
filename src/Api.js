@@ -10,8 +10,9 @@ const api = ({ dispatch }) => (next) => (action) => {
         axios({
             // baseURL: "https://jsonplaceholder.typicode.com",
             // baseURL: "https://futboluz.uz",
-            // baseURL: "http://localhost:8899",
-            baseURL: "https://obhavouz.uz",
+            // baseURL: "http://192.168.82.204:7788/api",
+            baseURL: "http://192.168.43.241:7788/api",
+            // baseURL: "https://obhavouz.uz",
             url,
             method,
             data,
