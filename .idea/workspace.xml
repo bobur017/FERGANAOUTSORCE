@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ef0e2316-c189-4aed-b67c-3c4057c63f71" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pages/login/ReducerLogin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/sidebar/Sidebar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ApiCall.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ApiCall.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Reducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/image/img.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/image/img.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/image/img_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/image/img_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/image/img_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/image/img_2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/loginPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/loginPage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,20 +30,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Projects/Front/FERGANa&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
-  }
-}</component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../project_fergana" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+  </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Projects\Front\FERGANa\src\pages\login" />
@@ -77,6 +59,10 @@
       <workItem from="1662180117968" duration="1662000" />
       <workItem from="1662183223873" duration="3678000" />
       <workItem from="1662186970646" duration="1307000" />
+      <workItem from="1662189544473" duration="196000" />
+      <workItem from="1662189756079" duration="59000" />
+      <workItem from="1662189914772" duration="270000" />
+      <workItem from="1662190219078" duration="2323000" />
     </task>
     <servers />
   </component>
