@@ -11,7 +11,7 @@ const api = ({ dispatch }) => (next) => (action) => {
             // baseURL: "https://jsonplaceholder.typicode.com",
             // baseURL: "https://futboluz.uz",
             // baseURL: "http://192.168.82.204:7788/api",
-            baseURL: "http://192.168.43.241:7788/api",
+            baseURL: "http://185.217.131.74:8888/api",
             // baseURL: "https://obhavouz.uz",
             url,
             method,
