@@ -13,7 +13,7 @@ main{
 .sidebar{
     color: #000;
     background: #fff;
-    height: 92vh;
+    height: 88vh;
     width: 200px;
     transition: all 0.5s;
     border-right-style: solid;
@@ -51,4 +51,7 @@ main{
 }
 .icon, .link_text{
     font-size: 20px;
+}
+.rightLeft:hover{
+    cursor: pointer;
 }

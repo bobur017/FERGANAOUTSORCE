@@ -3,14 +3,18 @@ import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import './loginPage.css';
 import logo from './image/img.png';
 import {useDispatch, useSelector} from "react-redux";
-import {login} from "./ReducerLogin";
-// import qs from 'qs'
+import {login, tokenNull} from "./ReducerLogin";
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
 
 function Login() {
     const dispatch = useDispatch();
     const token = useSelector(state => state.login.token)
+    const error = useSelector(state => state.login.error)
+    const result = useSelector(state => state.login.result)
     const firstUpdate = useRef(false);
+    const history = useNavigate();
 
     useEffect(()=>{
         if(!firstUpdate.current){
@@ -19,12 +23,27 @@ function Login() {
     },[]);
 
     useEffect(()=>{
-        if(!firstUpdate.current){
+        if (token?.user_role !== undefined){
+            localStorage.setItem("role",token?.user_role);
+            localStorage.setItem("token",token?.success_token);
+            if (token?.user_role === "ROLE_ADMIN"){
+                history("/sidebar/admin");
 
-        }else {
-            console.log(token,'token')
+            }else if (token?.user_role === "ROLE_SUPER_ADMIN"){
+                history("/sidebar/admin");
+            }
+            dispatch(tokenNull())
         }
     },[token]);
+
+    useEffect(() => {
+        if (!firstUpdate.current){
+
+        }else{
+            toast.error(error?.code)
+            console.log(error?.code)
+        }
+    }, [error]);
 
     const loginSubmit = (e) => {
       e.preventDefault();
@@ -32,6 +51,7 @@ function Login() {
       const data = {username:e.target.username.value,password:e.target.password.value};
       dispatch(login(qs.stringify(data)));
     }
+
     return (<div>
         <Container fluid={true}>
             <Row>

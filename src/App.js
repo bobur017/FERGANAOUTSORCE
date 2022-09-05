@@ -1,4 +1,3 @@
-
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,14 +6,13 @@ import Sidebars from "./pages/sidebar/Sidebars";
 
 function App() {
   return (
-    <div >
+    <div>
       <Routes>
-        <Route path="/" element={<Login/>} />
+        <Route path="/" element={<Login />} />
         <Route path="/sidebar/*" element={<Sidebars/>} />
       </Routes>
-      <ToastContainer />
+      <ToastContainer position={'top-center'} autoClose={10000}/>
     </div>
   );
 }
-
 export default App;

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { setApi } from "./ApiCall";
-import {apiCall} from "../ApiCall";
+import {apiCall} from "../../ApiCall";
 const slice = createSlice({
     name: "reducer",
     initialState: {

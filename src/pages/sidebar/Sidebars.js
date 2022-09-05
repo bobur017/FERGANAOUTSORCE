@@ -7,11 +7,14 @@ import Comment from "./Comment";
 import Analytics from "./Analytics";
 import Product from "./Product";
 import ProductList from "./ProductList";
-import {Container, Nav, Navbar, Row} from "react-bootstrap";
+import {Container, Nav, Navbar} from "react-bootstrap";
 import logo from "../login/image/img.png"
+import Admin from "./Admin";
+import RegionDepartment from "./RegionDepartment";
 
 function Sidebars() {
-    return (<div>
+    return (
+        <div>
             <Navbar bg="light">
                 <Container fluid={true}>
                     <Navbar.Brand>
@@ -35,9 +38,12 @@ function Sidebars() {
                     <Route path="/analytics" element={<Analytics/>}/>
                     <Route path="/product" element={<Product/>}/>
                     <Route path="/productList" element={<ProductList/>}/>
+                    <Route path="/admin" element={<Admin/>}/>
+                    <Route path="/region-department" element={<RegionDepartment/>}/>
                 </Routes>
             </Sidebar>
-        </div>);
+        </div>
+    );
 }
 
 export default Sidebars;

@@ -29,9 +29,15 @@ export const login = (data) => apiCall({
         'Content-type': 'application/x-www-form-urlencoded'
     },
     data,
-    success: slice.actions.resultReducer.type,
+    success: slice.actions.tokenReducer.type,
     error: slice.actions.errorReducer.type
 })
+export const tokenNull = ()=>{
+    return {
+        type:slice.actions.tokenReducer.type,
+        payload:null
+    }
+}
 
 
 export default slice.reducer;
