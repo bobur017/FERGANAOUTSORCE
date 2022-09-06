@@ -32,10 +32,10 @@ export const login = (data) => apiCall({
     success: slice.actions.tokenReducer.type,
     error: slice.actions.errorReducer.type
 })
-export const tokenNull = ()=>{
+export const tokenNull = () => {
     return {
-        type:slice.actions.tokenReducer.type,
-        payload:null
+        type: slice.actions.tokenReducer.type,
+        payload: null
     }
 }
 

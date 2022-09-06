@@ -6,12 +6,14 @@ const api = ({ dispatch }) => (next) => (action) => {
         return;
     } else {
         const { url, method, data, headers, params, success, error } = action.payload;
-        console.log(data, url, "data");
+        console.log(data, url, headers, "data");
         axios({
             // baseURL: "https://jsonplaceholder.typicode.com",
             // baseURL: "https://futboluz.uz",
-            // baseURL: "http://192.168.82.204:7788/api",
-            baseURL: "http://185.217.131.74:8888/out/api",
+            baseURL: "http://192.168.43.241:8888/out/api",
+            // baseURL: "http://192.168.91.204:8888/out/api",
+            // baseURL: "http://192.168.91.204:7788",
+            // baseURL: "http://185.217.131.74:8888/out/api",
             url,
             method,
             data,

@@ -1,0 +1,12 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.my-shadow-style {
+  border-radius: 25px;
+  border: solid 0.5px black;
+}
+.my-hover :hover {
+  cursor: pointer;
+}

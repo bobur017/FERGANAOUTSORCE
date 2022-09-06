@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { setApi } from "./ApiCall";
 import { apiCall } from "../../ApiCall";
+
 const slice = createSlice({
     name: "address",
     initialState: {
@@ -20,21 +20,26 @@ const slice = createSlice({
 function getToken() {
     return localStorage.getItem("Authorization");
 }
-function getRole() {
-    return localStorage.getItem("role");
-}
+
+// export const getAddress = () => apiCall({
+//     url: "/region",
+//     method: "get",
+//     headers: {
+//         "Authorization": "Bearer " + getToken(),
+//     },
+//     success: slice.actions.resultReducer.type,
+//     error: slice.actions.errorReducer.type
+// })
 
 export const getAddress = () => apiCall({
     url: "/region",
     method: "GET",
     headers: {
-        Authorization: getToken(),
-        role: getRole(),
+        "Authorization": getToken()
     },
     success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
 })
-
 
 
 

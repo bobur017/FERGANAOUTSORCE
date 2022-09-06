@@ -1,11 +1,11 @@
-import React, {useEffect, useRef} from 'react';
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import React, { useEffect, useRef } from 'react';
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import './loginPage.css';
 import logo from './image/img.png';
-import {useDispatch, useSelector} from "react-redux";
-import {login, tokenNull} from "./ReducerLogin";
-import {useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { login, tokenNull } from "./ReducerLogin";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 function Login() {
@@ -16,40 +16,41 @@ function Login() {
     const firstUpdate = useRef(false);
     const history = useNavigate();
 
-    useEffect(()=>{
-        if(!firstUpdate.current){
+    useEffect(() => {
+        if (!firstUpdate.current) {
             firstUpdate.current = true;
         }
-    },[]);
+    }, []);
 
-    useEffect(()=>{
-        if (token?.user_role !== undefined){
-            localStorage.setItem("role",token?.user_role);
-            localStorage.setItem("token",token?.success_token);
-            if (token?.user_role === "ROLE_ADMIN"){
+    useEffect(() => {
+        if (token?.user_role !== undefined) {
+            localStorage.setItem("role", token?.user_role);
+            localStorage.setItem("Authorization", "Bearer " + token?.access_token);
+            console.log("Authorization", token?.access_token);
+            if (token?.user_role === "ROLE_ADMIN") {
                 history("/sidebar/admin");
 
-            }else if (token?.user_role === "ROLE_SUPER_ADMIN"){
+            } else if (token?.user_role === "ROLE_SUPER_ADMIN") {
                 history("/sidebar/admin");
             }
             dispatch(tokenNull())
         }
-    },[token]);
+    }, [token]);
 
     useEffect(() => {
-        if (!firstUpdate.current){
+        if (!firstUpdate.current) {
 
-        }else{
+        } else {
             toast.error(error?.code)
             console.log(error?.code)
         }
     }, [error]);
 
     const loginSubmit = (e) => {
-      e.preventDefault();
-      const qs = require('qs');
-      const data = {username:e.target.username.value,password:e.target.password.value};
-      dispatch(login(qs.stringify(data)));
+        e.preventDefault();
+        const qs = require('qs');
+        const data = { username: e.target.username.value, password: e.target.password.value };
+        dispatch(login(qs.stringify(data)));
     }
 
     return (<div>
@@ -58,18 +59,18 @@ function Login() {
                 <Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
                     <Row className={'loginPage justify-content-center'}>
                         <Col xs={12} sm={12} lg={12} xxl={12} className={'inner text-center'}>
-                            <img src={logo} alt="" height={300} width={300}/>
+                            <img src={logo} alt="" height={300} width={300} />
                             <div className={'logoButtomText'}>Tizimga kirish</div>
                             <Row className={'justify-content-center'}>
                                 <Col xs={10} sm={8} md={8} lg={6} xl={6}>
                                     <Form id={'login'} onSubmit={loginSubmit}>
                                         <Form.Control name={'username'} type={'text'} minLength="1" size={'sm'}
-                                                      className={'mt-3'} placeholder={'Loginni kiriting'}/>
+                                            className={'mt-3'} placeholder={'Loginni kiriting'} />
                                         <Form.Control type={'password'} name={'password'} minLength="1" size={'sm'} className={'mt-3'}
-                                                      placeholder={'Parolni kiriting'}/>
+                                            placeholder={'Parolni kiriting'} />
                                     </Form>
-                                    <br/>
-                                    <Button variant={'primary'} size={'sm'} type={'submit'} form={'login'} style={{width:'50%',backgroundColor:'#52AAFB'}}>
+                                    <br />
+                                    <Button variant={'primary'} size={'sm'} type={'submit'} form={'login'} style={{ width: '50%', backgroundColor: '#52AAFB' }}>
                                         <span >
                                             KIRISH
                                         </span>
@@ -87,14 +88,14 @@ function Login() {
                         <div className={'p-5'}>
 
                             <span className={'textLogin1'}>
-                            Farg`ona viloyati
-                            Maktabgacha ta`lim
-                            boshqarmasi
+                                Farg`ona viloyati
+                                Maktabgacha ta`lim
+                                boshqarmasi
                             </span>
-                            <br/>
+                            <br />
                             <span className={'textLogin2'}>
-                        ovqatlantirishni nazorat qilish tizimi
-                        </span>
+                                ovqatlantirishni nazorat qilish tizimi
+                            </span>
                         </div>
                     </div>
                 </Col>
