@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-toastify';
 import { getAddress } from './AddressReducer';
 
-function Address({ district }) {
+function Address({ district, region, view, getOrNo }) {
     const [addressState, setAddressState] = useState([]);
     const [regionState, setRegionState] = useState([]);
     const address = useSelector(state => state.address.address)
@@ -14,28 +14,16 @@ function Address({ district }) {
 
 
     useEffect(() => {
-        if (!firstUpdate.current) {
-
-        } else {
-            // toast.error(error?.code);
-        }
-    }, [error]);
-
-
-    const message = () => {
-        toast.error(error?.code);
-    }
-
-    useEffect(() => {
         setAddressState(address);
-        console.log('sssss', address);
     }, [address]);
 
 
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
-            dispatch(getAddress());
+            if (address.length === 0) {
+                dispatch(getAddress());
+            }
         }
     }, []);
 
@@ -44,6 +32,7 @@ function Address({ district }) {
         var list = addressState.filter(item => item.id === parseInt(e.target.value));
         if (list[0] !== undefined) {
             setRegionState(list[0].districtList);
+            region(list[0])
         }
     }
     const getDistrict = (e) => {
@@ -64,14 +53,14 @@ function Address({ district }) {
                 }
             </Form.Select>
             <br />
-            <Form.Select required name='district' onChange={getDistrict}>
+            {view ? <Form.Select required name='district' onChange={getDistrict}>
                 <option value="">Tumanni tanlang</option>
                 {
                     regionState?.map((item, index) => (
                         <option key={index} value={item.id}>{item.name}</option>
                     ))
                 }
-            </Form.Select>
+            </Form.Select> : null}
         </>
     );
 }

@@ -31,7 +31,7 @@ function Login() {
                 history("/sidebar/admin");
 
             } else if (token?.user_role === "ROLE_SUPER_ADMIN") {
-                history("/sidebar/admin");
+                history("/sidebar/super-admin");
             }
             dispatch(tokenNull())
         }

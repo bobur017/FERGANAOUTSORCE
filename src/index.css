@@ -4,9 +4,26 @@
   box-sizing: border-box;
 }
 .my-shadow-style {
+  height: 8vh;
+  text-align: center;
+  vertical-align: middle;
+}
+.my-border {
   border-radius: 25px;
   border: solid 0.5px black;
 }
 .my-hover :hover {
   cursor: pointer;
+}
+.my-icons {
+  color: aliceblue !important;
+}
+.iconTextPosition {
+  color: white !important;
+  border-radius: 45px !important;
+}
+.bottom-line{
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  border-bottom: solid 1px black;
 }

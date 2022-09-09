@@ -1,57 +1,66 @@
-*{
-    margin:0;
-    padding:0;
-    text-decoration: none;
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
 }
-.container{
-    display:flex;
+.container {
+  display: flex;
 }
-main{
-    width: 100%;
-    padding: 20px;
+main {
+  width: 100%;
+  padding: 20px;
 }
-.sidebar{
-    color: #000;
-    background: #fff;
-    height: 88vh;
-    width: 200px;
-    transition: all 0.5s;
-    border-right-style: solid;
-    border-width: 0.5px;
+.sidebar {
+  color: #000;
+  background: #fff;
+  height: 88vh;
+  width: 200px;
+  transition: all 0.5s;
+  border-right-style: solid;
+  border-width: 0.5px;
+  position: relative;
 }
-.top_section{
-    display: flex;
-    align-items:center;
-    padding:20px 15px;
+#link2{
+  position: absolute;
+  bottom: 0;
 }
-.logo{
-    font-size: 30px;
+.top_section {
+  display: flex;
+  align-items: center;
+  padding: 20px 15px;
 }
-.bars{
-    display: flex;
-    font-size: 25px;
-    margin-left: 50px;
+.logo {
+  font-size: 30px;
 }
-.link{
-    display: flex;
-    color: #000000;
-    padding: 10px 15px;
-    gap: 15px;
-    transition: all 0.5s;
-    text-decoration: none;
+.bars {
+  display: flex;
+  font-size: 25px;
+  margin-left: 50px;
 }
-.link:hover{
-    background:lightskyblue;
-    color: #000;
-    transition: all 0.5s;
+.link {
+  display: flex;
+  color: #000000;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+  text-decoration: none;
 }
-.active{
-    background: lightskyblue;
-    color: #000;
+.link:hover {
+  background: lightskyblue;
+  color: #000;
+  transition: all 0.5s;
 }
-.icon, .link_text{
-    font-size: 20px;
+.active {
+  background: lightskyblue;
+  color: #000;
 }
-.rightLeft:hover{
-    cursor: pointer;
+
+.link_text {
+  font-size: 15px;
+}
+.rightLeft:hover {
+  cursor: pointer;
+}
+.icon{
+  font-size: 20px;
 }
