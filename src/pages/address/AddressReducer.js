@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCall } from "../../ApiCall";
+import {getToken} from "../more/Functions";
 
 const slice = createSlice({
     name: "address",
@@ -17,9 +18,6 @@ const slice = createSlice({
     }
 })
 
-function getToken() {
-    return localStorage.getItem("Authorization");
-}
 
 // export const getAddress = () => apiCall({
 //     url: "/region",

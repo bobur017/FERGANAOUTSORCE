@@ -1,78 +1,92 @@
-import React from 'react';
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addAge, deleteAge, editAge, getAge } from "./AgeReducer";
-import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
-import { GrAdd } from "react-icons/gr";
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { Button, Col, Container, Form, Modal, Row, Table } from 'react-bootstrap';
+import { GrAdd, GrNewWindow } from 'react-icons/gr'
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import Address from '../address/Address';
+import {
+    addDepartment,
+    addRegionDepartment, deleteDepartment,
+    deleteRegionDepartment, editDepartment,
+    editRegionDepartment, getDepartment,
+    getRegionDepartment
+} from './RegionDepartmentReducer';
 
 
-function Age() {
-    const [show, setShow] = useState(false);
-    const [ageState, setAgeState] = useState({ id: '', name: '' });
-    const [ages, setAges] = useState([]);
-    const handleClose = () => {
-        setShow(false);
-        setAgeState({ id: '', name: '' });
-    };
-    const handleShow = () => {
-        setShow(true)
-    };
-
-
+function RegionDepartment() {
+    const [department, setDepartment] = useState({ id: '', name: '', regionId: '' });
     const dispatch = useDispatch();
-    const firstUpdate = useRef(false);
-    const age = useSelector(state => state.age)
+    const [departments, setDepartments] = useState([]);
+    const departmentReducer = useSelector(state => state.department);
+    const firstUpdate = useRef(true);
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setDepartment({ id: '', name: '', regionId: '' });
+        setShow(false)
+    };
+    const handleShow = () => setShow(true);
+
 
     useEffect(() => {
-        if (!firstUpdate) {
-            firstUpdate.current = true;
-            dispatch(getAge());
-        }
-    }, [])
-
-    useEffect(() => {
-        if (firstUpdate) {
-            dispatch(getAge());
+        if (!firstUpdate.current) {
+            dispatch(getDepartment());
             handleClose();
         }
-    }, [age.result])
+
+    }, [departmentReducer.result]);
+
 
     useEffect(() => {
-        setAges(age.ages);
-    }, [age.ages]);
-
-    const submitAge = (e) => {
-        e.preventDefault();
-        if (ageState.id !== '') {
-            dispatch(editAge(ageState));
+        if (firstUpdate.current) {
+            firstUpdate.current = false;
+            dispatch(getDepartment());
+            console.log("useEffect1", firstUpdate.current);
         } else {
-            dispatch(addAge(ageState))
+            console.log("useEffect2", firstUpdate.current);
         }
-    }
-    const onClickDepartment = (data, number) => {
-        if (number === 1) {
-            setAgeState(data);
-            handleShow();
-        } else if (number === 2) {
-            dispatch(deleteAge(data));
-        }
+    }, []);
+
+    useEffect(() => {
+        setDepartments(departmentReducer.departments);
+    }, [departmentReducer.departments])
+
+    const getDistrict = (data) => {
+        setDepartment({ ...department, "districtId": data.id })
     }
 
+    const submitdepartment = (e) => {
+        e.preventDefault();
+        if (department.id !== '') {
+            dispatch(editDepartment(department));
+        } else {
+            dispatch(addDepartment(department))
+        }
+    }
 
     const onChanges = (param) => (e) => {
-        setAgeState({ ...ageState, [param]: e.target.value });
+        setDepartment({ ...department, [param]: e.target.value });
+    }
+
+    const onClickDepartment = (data, number) => {
+        if (number === 1) {
+            setDepartment(data);
+            handleShow();
+        } else if (number === 2) {
+            dispatch(deleteDepartment(data));
+        }
     }
 
     return (
         <div>
+
             <Row className='bottom-line justify-content-end text-center'>
                 <Col xs={12} sm={12} md={7} lg={9} xl={9} style={{ fontSize: 25 }}>
-                    Yosh toifalalari bo'limi
+                    Bo'linmalar
                 </Col>
                 <Col md={3} lg={2} xl={2} className='d-flex justify-content-center' onClick={handleShow}>
                     <Button variant='info' size={'sm'} className='iconTextPosition d-flex'>
                         <div className={'my-icons'}><GrAdd size={23} color={'#ffffff'} /></div>
-                        <span style={{ marginLeft: 5, width: '8rem' }}>Yosh toifasi qo'shish</span>
+                        <span style={{ marginLeft: 5 }}>Bo'lim'_qo'shish</span>
                     </Button>
                 </Col>
             </Row>
@@ -82,17 +96,18 @@ function Age() {
                     <tr>
                         <th>#</th>
                         <th>Nomi</th>
+                        <th>Manzili</th>
                         <th>O'zgartirish</th>
                         <th>O'chirish</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        ages?.map((item, index) =>
+                        departments?.map((item, index) =>
                             <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{item.name}</td>
-
+                                <td>{item.regionName}</td>
                                 <td>
                                     <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 1)}>
                                         O'zgartirish
@@ -109,14 +124,15 @@ function Age() {
                 </tbody>
             </Table>
             <Modal show={show} onHide={handleClose}>
-                <Form onSubmit={submitAge}>
+                <Form onSubmit={submitdepartment}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{ageState.name}</Modal.Title>
+                        <Modal.Title>{department.name}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form.Control name='name' required value={ageState.name} onChange={onChanges("name")}
+                        <Form.Control name='name' required value={department.name} onChange={onChanges("name")}
                             placeholder="Nomi " />
                         <br />
+                        <Address view={true} district={getDistrict} />
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" onClick={handleClose}>
@@ -132,4 +148,4 @@ function Age() {
     );
 }
 
-export default Age;
+export default RegionDepartment;

@@ -9,8 +9,8 @@ import {
     FaUserAlt
 } from "react-icons/fa";
 import React from "react";
-import {GiGreenhouse, GiMeal, GiShoppingCart} from "react-icons/gi";
-import {TbNumbers} from "react-icons/tb";
+import { GiGreenhouse, GiMeal, GiShoppingCart } from "react-icons/gi";
+import { TbNumbers } from "react-icons/tb";
 
 export const rolesList = (role) => {
 
@@ -42,9 +42,9 @@ export const rolesList = (role) => {
                 icon: <GiMeal />
             },
             {
-                path: "/sidebar/meal",
-                name: "Taomlar",
-                icon: <GiMeal />
+                path: "/sidebar/department",
+                name: "Bo'linmalar",
+                icon: <FaNetworkWired />
             },
 
         ];

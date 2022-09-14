@@ -4,15 +4,15 @@ import {apiCall} from "../../ApiCall";
 import {getToken, toastError} from "../more/Functions";
 
 const slice = createSlice({
-    name: "age",
+    name: "sanpinCategory",
     initialState: {
         result: {},
         error: {},
-        ages: [],
+        sanpinCategory: [],
     },
     reducers: {
-        ages: (state, action) => {
-            state.ages = action.payload;
+        sanpinCategoryReducer: (state, action) => {
+            state.sanpinCategory = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -20,23 +20,24 @@ const slice = createSlice({
         },
         errorReducer: (state, action) => {
             state.error = action.payload;
-            toastError(action.payload)
+            toastError(action.payload);
+            console.log(action.payload?.message,"reducerError")
         },
     }
 })
 
-export const getAge = () => apiCall({
-    url: "/ageGroup",
+export const getSanpinCategory = () => apiCall({
+    url: "/sanpinCategory",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
-    success: slice.actions.ages.type,
+    success: slice.actions.sanpinCategoryReducer.type,
     error: slice.actions.errorReducer.type
 })
 
-export const deleteAge = (data) => apiCall({
-    url: "/ageGroup/" + data.id,
+export const deleteSanpinCategory = (data) => apiCall({
+    url: "/sanpinCategory/" + data.id,
     method: "DELETE",
     headers: {
         Authorization: getToken(),
@@ -46,8 +47,8 @@ export const deleteAge = (data) => apiCall({
 })
 
 
-export const addAge = (data) => apiCall({
-    url: "/ageGroup",
+export const addSanpinCategory = (data) => apiCall({
+    url: "/sanpinCategory",
     method: "POST",
     headers: {
         Authorization: getToken(),
@@ -57,8 +58,8 @@ export const addAge = (data) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const editAge = (data) => apiCall({
-    url: "/ageGroup/" + data.id,
+export const editSanpinCategory = (data) => apiCall({
+    url: "/sanpinCategory/" + data.id,
     method: "PUT",
     headers: {
         Authorization: getToken(),

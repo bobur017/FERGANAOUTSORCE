@@ -8,7 +8,7 @@ function Default(props) {
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     useEffect(()=>{
-        if (!firstUpdate){
+        if (!firstUpdate.current){
             firstUpdate.current = true;
         }
     },[])

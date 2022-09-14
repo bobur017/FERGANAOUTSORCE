@@ -2,12 +2,14 @@ import React from 'react';
 import Sidebar from "../components/Sidebar";
 import { Route, Routes } from "react-router-dom";
 import About from "./About";
-import Product from "./Product";
+import Product from "../product/Product";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import logo from "../login/image/img.png"
 import Admin from "./Admin";
-import RegionDepartment from "./RegionDepartment";
+import RegionDepartment from "../departments/RegionDepartment";
 import Age from "../age/Age";
+import Department from "../departments/Department";
+import Mtt from "../mtt/Mtt";
 
 function Sidebars() {
     return (
@@ -29,11 +31,13 @@ function Sidebars() {
             <Sidebar>
                 <Routes>
                     <Route path="/about" element={<About />} />
+                    <Route path="/mtt" element={<Mtt />} />
                     <Route path="/product" element={<Product />} />
                     <Route path="/age" element={<Age />} />
                     <Route path="/admin" element={<About />} />
                     <Route path="/super-admin" element={<About />} />
                     <Route path="/region-department" element={<RegionDepartment />} />
+                    <Route path="/department" element={<Department />} />
                 </Routes>
             </Sidebar>
         </div>

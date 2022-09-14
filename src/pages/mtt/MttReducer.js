@@ -4,15 +4,15 @@ import {apiCall} from "../../ApiCall";
 import {getToken, toastError} from "../more/Functions";
 
 const slice = createSlice({
-    name: "age",
+    name: "mtt",
     initialState: {
         result: {},
         error: {},
-        ages: [],
+        mtts: [],
     },
     reducers: {
-        ages: (state, action) => {
-            state.ages = action.payload;
+        setMtt: (state, action) => {
+            state.mtts = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -20,23 +20,33 @@ const slice = createSlice({
         },
         errorReducer: (state, action) => {
             state.error = action.payload;
-            toastError(action.payload)
+            toastError(action.payload);
         },
     }
 })
 
-export const getAge = () => apiCall({
-    url: "/ageGroup",
+export const getMtt = () => apiCall({
+    url: "/kindergarten",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
-    success: slice.actions.ages.type,
+    success: slice.actions.setMtt.type,
     error: slice.actions.errorReducer.type
 })
 
-export const deleteAge = (data) => apiCall({
-    url: "/ageGroup/" + data.id,
+export const getByDepartmentMtt = (id) => apiCall({
+    url: "/kindergarten/getByDepartmentId/"+id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.setMtt.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const deleteMtt = (data) => apiCall({
+    url: "/kindergarten/" + data.id,
     method: "DELETE",
     headers: {
         Authorization: getToken(),
@@ -46,8 +56,8 @@ export const deleteAge = (data) => apiCall({
 })
 
 
-export const addAge = (data) => apiCall({
-    url: "/ageGroup",
+export const addMtt = (data) => apiCall({
+    url: "/kindergarten",
     method: "POST",
     headers: {
         Authorization: getToken(),
@@ -57,8 +67,8 @@ export const addAge = (data) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const editAge = (data) => apiCall({
-    url: "/ageGroup/" + data.id,
+export const editMtt = (data) => apiCall({
+    url: "/kindergarten/" + data.id,
     method: "PUT",
     headers: {
         Authorization: getToken(),

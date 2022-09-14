@@ -46,8 +46,8 @@ function RegionDepartment() {
     }, []);
 
     useEffect(()=>{
-        setDepartments(departmentReducer.departments);
-    },[departmentReducer.departments])
+        setDepartments(departmentReducer.regionDepartments);
+    },[departmentReducer.regionDepartments])
 
     const getRegion = (data) => {
         setDepartment({...department, "regionId": data.id})

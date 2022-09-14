@@ -9,8 +9,8 @@ const api = ({ dispatch }) => (next) => (action) => {
         console.log(data, url, "data");
         axios({
             // baseURL: "http://192.168.43.134:8888/out/api",
-            baseURL: "http://192.168.21.204:8888/out/api",
-            // baseURL: "http://185.217.131.74:8888/out/api",
+            // baseURL: "http://192.168.21.204:8888/out/api",
+            baseURL: "http://185.217.131.74:8888/out/api",
             url,
             method,
             data,

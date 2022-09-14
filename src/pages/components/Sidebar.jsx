@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { ImExit } from 'react-icons/im';
 import { rolesList } from "./RoleRoutes";
 import logo from '../login/image/img.png'
-
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const Sidebar = ({ children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -33,24 +33,15 @@ const Sidebar = ({ children }) => {
                     </div>
                     <br />
                 </div>
-                {
-                    menuItem.map(() => {
-
-                    })
-                }
-                {
-                    menuItem.map((item, index) => {
-
+                { menuItem.map((item, index) => {
                         return (
                             <NavLink to={item.path} key={index} className="link">
-                                <div className="icon">{item.icon}</div>
-                                <div style={{ display: isOpen ? "block" : "none" }} className="link_text">{item.name}</div>
+                                    <div className="icon">{item.icon}</div>
+                                    <div  style={{ display: isOpen ? "block" : "none" }} className="link_text">{item.name}</div>
                             </NavLink>
-                        )
-                    }
-                    )
+                        );
+                    })
                 }
-                {/* style={{ marginTop: '28rem' }} */}
                 <NavLink to={"/"} className="link" id={"link2"}>
                     <div className="icon"><ImExit /></div>
                     <div style={{ display: isOpen ? "block" : "none" }} className="link_text">Chiqish</div>

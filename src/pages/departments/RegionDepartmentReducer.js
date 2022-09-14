@@ -1,16 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { apiCall } from "../../ApiCall";
+import {getToken, toastError} from "../more/Functions";
 const slice = createSlice({
     name: "department",
     initialState: {
         result: {},
         error: {},
+        regionDepartments: [],
         departments: [],
     },
     reducers: {
         departments: (state, action) => {
             state.departments = action.payload;
+        },
+        regionDepartments: (state, action) => {
+            state.regionDepartments = action.payload;
         },
         resultReducer: (state, action) => {
             getRegionDepartment();
@@ -19,14 +24,10 @@ const slice = createSlice({
         },
         errorReducer: (state, action) => {
             state.error = action.payload;
-            toast.error(action.payload?.response?.data?.text);
+            toastError(action.payload);
         },
     }
 })
-
-function getToken() {
-    return localStorage.getItem("Authorization");
-}
 
 
 export const addRegionDepartment = (data) => apiCall({
@@ -68,7 +69,52 @@ export const getRegionDepartment = () => apiCall({
     headers: {
         Authorization: getToken(),
     },
+    success: slice.actions.regionDepartments.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getDepartment = () => apiCall({
+    url: "/department",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
     success: slice.actions.departments.type,
+    error: slice.actions.errorReducer.type
+})
+
+
+export const addDepartment = (data) => apiCall({
+    url: "/department",
+    method: "POST",
+    headers: {
+        Authorization: getToken(),
+    },
+    data,
+    success: slice.actions.resultReducer.type,
+    error: slice.actions.errorReducer.type
+})
+
+
+export const editDepartment = (data) => apiCall({
+    url: "/department/" + data.id,
+    method: "PUT",
+    headers: {
+        Authorization: getToken(),
+    },
+    data,
+    success: slice.actions.resultReducer.type,
+    error: slice.actions.errorReducer.type
+})
+
+
+export const deleteDepartment = (data) => apiCall({
+    url: "/department/" + data.id,
+    method: "DELETE",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
 })
 
