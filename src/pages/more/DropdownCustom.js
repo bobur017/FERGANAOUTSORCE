@@ -51,6 +51,7 @@ const CustomMenu = React.forwardRef(
 );
 
 function More({list, name,setData}) {
+
     const getItem = (data) => {
       setData(data);
     }

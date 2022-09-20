@@ -27,3 +27,13 @@
   padding-bottom: 1vh;
   border-bottom: solid 1px black;
 }
+.form-label{
+  color: #00b2ff;
+}
+.my-Hover:hover{
+  cursor: pointer;
+}
+.my-table-first{
+  font-size: 10px;
+  position: center;
+}

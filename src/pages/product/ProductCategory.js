@@ -13,7 +13,10 @@ function ProductCategory() {
         setShow(false);
         setProductCategoryState({ id: '', name: '' });
     };
-    const handleShow = () => {
+    const handleShow = (num) => {
+        if(num===1){
+            setProductCategoryState({ id: '', name: '' });
+        }
         setShow(true)
     };
 
@@ -70,7 +73,7 @@ function ProductCategory() {
 
     return (
         <div>
-           <NavbarHeader name={"Mahsulot turlari bo'limi"} handleShow={handleShow} buttonName={"Mahsulot_turini qo'shish"}/>
+           <NavbarHeader name={"Mahsulot turlari bo'limi"} handleShow={()=>handleShow(1)} buttonName={"Mahsulot_turini qo'shish"}/>
             <Table bordered size='sm' className='text-center'>
                 <thead>
                 <tr>

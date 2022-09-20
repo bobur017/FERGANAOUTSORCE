@@ -1,18 +1,20 @@
 import React from 'react';
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addAge, deleteAge, editAge, getAge } from "./AgeReducer";
-import { Button, Form, Modal, Row, Table } from "react-bootstrap";
+import { addMealCategory, deleteMealCategory, editMealCategory, getMealCategory } from "./MealCategoryReducer";
+import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
+import { GrAdd } from "react-icons/gr";
+import mealCategory from "./MealCategory";
 import NavbarHeader from "../more/NavbarHeader";
 
 
-function Age() {
+function MealCategory() {
     const [show, setShow] = useState(false);
-    const [ageState, setAgeState] = useState({ id: '', name: '' });
-    const [ages, setAges] = useState([]);
+    const [mealCategoryState, setMealCategoryState] = useState({ id: '', name: '' });
+    const [mealCategories, setMealCategories] = useState([]);
     const handleClose = () => {
         setShow(false);
-        setAgeState({ id: '', name: '' });
+        setMealCategoryState({ id: '', name: '' });
     };
     const handleShow = () => {
         setShow(true)
@@ -21,52 +23,53 @@ function Age() {
 
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
-    const age = useSelector(state => state.age)
+    const mealCategory = useSelector(state => state.mealCategory)
 
 
     useEffect(() => {
         if (firstUpdate.current) {
-            dispatch(getAge());
+            dispatch(getMealCategory());
             handleClose();
         }
-    }, [age.result])
+    }, [mealCategory.result])
 
-    useEffect(() => {
-        setAges(age.ages);
-    }, [age.ages]);
 
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
-            dispatch(getAge());
+            dispatch(getMealCategory());
         }
     }, [])
 
-    const submitAge = (e) => {
+    useEffect(() => {
+        setMealCategories(mealCategory.mealCategories);
+    }, [mealCategory.mealCategories]);
+
+    const submitMealCategory = (e) => {
         e.preventDefault();
-        if (ageState.id !== '') {
-            dispatch(editAge(ageState));
+        if (mealCategoryState.id !== '') {
+            dispatch(editMealCategory(mealCategoryState));
         } else {
-            dispatch(addAge(ageState))
+            dispatch(addMealCategory(mealCategoryState))
         }
     }
     const onClickDepartment = (data, number) => {
         if (number === 1) {
-            setAgeState(data);
+            setMealCategoryState(data);
             handleShow();
         } else if (number === 2) {
-            dispatch(deleteAge(data));
+            dispatch(deleteMealCategory(data));
         }
     }
 
 
     const onChanges = (param) => (e) => {
-        setAgeState({ ...ageState, [param]: e.target.value });
+        setMealCategoryState({ ...mealCategoryState, [param]: e.target.value });
     }
 
     return (
         <div>
-            <NavbarHeader name={"Yosh toifalari bo'limi"} handleShow={handleShow} buttonName={"Yosh toifasini_qo'shish"}/>
+            <NavbarHeader name={"Taomlar turi bo'limi"} handleShow={handleShow} buttonName={"Taom_turini_qo'shish"}/>
             <br />
             <Table bordered size='sm' className='text-center'>
                 <thead>
@@ -79,7 +82,7 @@ function Age() {
                 </thead>
                 <tbody>
                     {
-                        ages?.map((item, index) =>
+                        mealCategories?.map((item, index) =>
                             <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{item.name}</td>
@@ -100,12 +103,12 @@ function Age() {
                 </tbody>
             </Table>
             <Modal show={show} onHide={handleClose}>
-                <Form onSubmit={submitAge}>
+                <Form onSubmit={submitMealCategory}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{ageState.name}</Modal.Title>
+                        <Modal.Title>{mealCategoryState.name}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form.Control name='name' required value={ageState.name} onChange={onChanges("name")}
+                        <Form.Control name='name' required value={mealCategoryState.name} onChange={onChanges("name")}
                             placeholder="Nomi " />
                         <br />
                     </Modal.Body>
@@ -123,4 +126,4 @@ function Age() {
     );
 }
 
-export default Age;
+export default MealCategory;

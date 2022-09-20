@@ -11,6 +11,7 @@ import {
 import React from "react";
 import { GiGreenhouse, GiMeal, GiShoppingCart } from "react-icons/gi";
 import { TbNumbers } from "react-icons/tb";
+import {CgMenuHotdog} from "react-icons/cg";
 
 export const rolesList = (role) => {
 
@@ -38,13 +39,18 @@ export const rolesList = (role) => {
             },
             {
                 path: "/sidebar/meal",
-                name: "Taomlar",
+                name: "Taom",
                 icon: <GiMeal />
             },
             {
                 path: "/sidebar/department",
                 name: "Bo'linmalar",
                 icon: <FaNetworkWired />
+            },
+            {
+                path: "/sidebar/multiMenu",
+                name: "Taomnomalar",
+                icon: <CgMenuHotdog />
             },
 
         ];

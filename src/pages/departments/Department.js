@@ -107,7 +107,7 @@ function RegionDepartment() {
                             <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{item.name}</td>
-                                <td>{item.regionName}</td>
+                                <td>{item.districtName}</td>
                                 <td>
                                     <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 1)}>
                                         O'zgartirish

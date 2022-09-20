@@ -1,18 +1,21 @@
 import React from 'react';
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addAge, deleteAge, editAge, getAge } from "./AgeReducer";
-import { Button, Form, Modal, Row, Table } from "react-bootstrap";
+import { addMealTime, deleteMealTime, editMealTime, getMealTime } from "./MealTimeReducer";
+import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
+import CheckBoxCustom from "../more/CheckBoxCustom";
+import {getAge} from "../age/AgeReducer";
 
 
-function Age() {
+function MealTime() {
     const [show, setShow] = useState(false);
-    const [ageState, setAgeState] = useState({ id: '', name: '' });
-    const [ages, setAges] = useState([]);
+    const [edited, setEdited] = useState(false);
+    const [mealTimeState, setMealTimeState] = useState({ id: '', name: '' });
+    const [mealTimes, setMealTimes] = useState([]);
     const handleClose = () => {
         setShow(false);
-        setAgeState({ id: '', name: '' });
+        setMealTimeState({ id: '', name: '' ,ageGroupIdList:[]});
     };
     const handleShow = () => {
         setShow(true)
@@ -21,52 +24,59 @@ function Age() {
 
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
-    const age = useSelector(state => state.age)
-
+    const mealTime = useSelector(state => state.mealTime)
+    const ages = useSelector(state => state.age.ages)
 
     useEffect(() => {
         if (firstUpdate.current) {
-            dispatch(getAge());
+            dispatch(getMealTime());
             handleClose();
         }
-    }, [age.result])
+    }, [mealTime.result])
 
     useEffect(() => {
-        setAges(age.ages);
-    }, [age.ages]);
+        setMealTimes(mealTime.mealTimes);
+    }, [mealTime.mealTimes]);
+
 
     useEffect(() => {
-        if (!firstUpdate.current) {
+        if (firstUpdate.current !== true) {
             firstUpdate.current = true;
+            dispatch(getMealTime());
             dispatch(getAge());
         }
     }, [])
 
-    const submitAge = (e) => {
+    const submitMealTime = (e) => {
         e.preventDefault();
-        if (ageState.id !== '') {
-            dispatch(editAge(ageState));
+        if (mealTimeState.id !== '') {
+            dispatch(editMealTime({...mealTimeState,ageGroupIdList:mealTimeState.ageGroupIdList.map(item => item.id)}));
         } else {
-            dispatch(addAge(ageState))
+            dispatch(addMealTime({...mealTimeState,ageGroupIdList:mealTimeState.ageGroupIdList.map(item => item.id)}));
         }
     }
     const onClickDepartment = (data, number) => {
         if (number === 1) {
-            setAgeState(data);
+            setMealTimeState(data);
+            setEdited(true);
             handleShow();
         } else if (number === 2) {
-            dispatch(deleteAge(data));
+            dispatch(deleteMealTime(data));
         }
     }
 
 
     const onChanges = (param) => (e) => {
-        setAgeState({ ...ageState, [param]: e.target.value });
+        setMealTimeState({ ...mealTimeState, [param]: e.target.value });
+    }
+
+    const getChecked = (list) => {
+        setMealTimeState({...mealTimeState,ageGroupIdList:list});
     }
 
     return (
         <div>
-            <NavbarHeader name={"Yosh toifalari bo'limi"} handleShow={handleShow} buttonName={"Yosh toifasini_qo'shish"}/>
+            <NavbarHeader name={"Taom vaqtlari bo'limi"} handleShow={handleShow} buttonName={"Taom_vaqtini_qo'shish"}/>
             <br />
             <Table bordered size='sm' className='text-center'>
                 <thead>
@@ -79,11 +89,10 @@ function Age() {
                 </thead>
                 <tbody>
                     {
-                        ages?.map((item, index) =>
+                        mealTimes?.map((item, index) =>
                             <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{item.name}</td>
-
                                 <td>
                                     <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 1)}>
                                         O'zgartirish
@@ -100,14 +109,16 @@ function Age() {
                 </tbody>
             </Table>
             <Modal show={show} onHide={handleClose}>
-                <Form onSubmit={submitAge}>
+                <Form onSubmit={submitMealTime}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{ageState.name}</Modal.Title>
+                        <Modal.Title>{mealTimeState.name}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form.Control name='name' required value={ageState.name} onChange={onChanges("name")}
-                            placeholder="Nomi " />
+                        <Form.Label style={{color:"#00b2ff"}}>Nomi</Form.Label>
+                        <Form.Control name='name' required value={mealTimeState.name} onChange={onChanges("name")}
+                            placeholder="Nomi "  />
                         <br />
+                        <CheckBoxCustom edited={edited} editList={mealTimeState?.ageGroupList} list={ages} getChecked={getChecked}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" onClick={handleClose}>
@@ -123,4 +134,4 @@ function Age() {
     );
 }
 
-export default Age;
+export default MealTime;

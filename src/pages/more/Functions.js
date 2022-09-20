@@ -1,4 +1,5 @@
 import {toast} from "react-toastify";
+import React from "react";
 
 export const getToken = () => {
     return localStorage.getItem("Authorization");
@@ -20,7 +21,23 @@ export const checkSame = (array, data, paramA, paramB) => {
     return has;
 }
 export const deleteSame = (array, data, paramA, paramB) => {
-   return array.filter(item =>
-         item[paramA] !== data[paramB]
+    return array.filter(item =>
+        item[paramA] !== data[paramB]
     )
+}
+
+export const tableRowCustomTd3 = (maiList) => {
+
+    return (
+        maiList?.map((item, index) => {
+            if (index !== 0){
+                return (
+                    <tr key={("a" + index) + 1}>
+                        <td>{item.ageGroupName}</td>
+                        <td>{item.weight}</td>
+                    </tr>
+                );
+            }
+            }
+        ));
 }
