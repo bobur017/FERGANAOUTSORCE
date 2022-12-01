@@ -10,10 +10,14 @@ const slice = createSlice({
         error: {},
         multiMenuList: [],
         multiMenu: {},
+        checkCalendar: {},
     },
     reducers: {
         multiMenuList: (state, action) => {
             state.multiMenuList = action.payload;
+        },
+        checkCalendar: (state, action) => {
+            state.checkCalendar = action.payload;
         },
         multiMenu: (state, action) => {
             state.multiMenu = action.payload;
@@ -101,6 +105,21 @@ export const editMultiMenu = (params,data) => apiCall({
     success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
 })
+
+
+export const checkCalendar = (params) => apiCall({
+    url: "/byCalendar",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.checkCalendar.type,
+    error: slice.actions.errorReducer.type
+})
+
+
+
 
 
 export default slice.reducer;

@@ -2,17 +2,20 @@ import React, {useMemo} from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Col, Form, Modal, Row, Table} from "react-bootstrap";
-import {GrAdd} from "react-icons/gr";
 import {addMtt, deleteMtt, editMtt, getMtt} from "./MttReducer";
-import DropdownCustom from "../more/DropdownCustom";
 import {getDepartment} from "../departments/RegionDepartmentReducer";
 import NavbarHeader from "../more/NavbarHeader";
+import FromPageSizeBottom from "../fromPage/FromPageSizeBottom";
 
 
 function Mtt() {
     const [show, setShow] = useState(false);
     const [mttState, setMttState] = useState({id: '', name: '', departmentId: '', number: '', street: ''});
     const [mtts, setMtts] = useState([]);
+    const [mttNumber, setMttNumber] = useState(null);
+    const [pageSize, setPageSize] = useState(20);
+    const [mttPage, setMttPage] = useState(0);
+    const [regionId, setRegionId] = useState(null);
     const handleClose = () => {
         setShow(false)
     };
@@ -54,6 +57,7 @@ function Mtt() {
             dispatch(addMtt(mttState))
         }
     }
+
     const setNullDataToState = () => {
         setMttState({id: '', name: '', departmentId: '', number: '', street: ''})
         handleShow();
@@ -66,11 +70,37 @@ function Mtt() {
             dispatch(deleteMtt(data));
         }
     }
+    const submitSearch = (e) => {
+        e.preventDefault();
+        dispatch(getMtt({
+            departmentId: regionId,
+            number: mttNumber,
+            pageNumber: mttPage,
+            pageSize: pageSize
+        }));
+    }
 
-
+    const onChangesDepartments = (e) => {
+        setRegionId(e.target.value);
+    }
     const onChanges = (e) => {
-        console.log(e.target.name, e.target.value)
         setMttState({...mttState, [e.target.name]: e.target.value});
+    }
+
+    const numchange = (e) => {
+        if (e.target.value) {
+            setMttNumber(parseInt(e.target.value));
+        } else {
+            setMttNumber( null);
+        }
+    }
+    const pageChanges = (number) => {
+        dispatch(getMtt({
+            departmentId: regionId,
+            number: mttNumber,
+            pageNumber: number,
+            pageSize: pageSize
+        }));
     }
 
     return (
@@ -78,6 +108,44 @@ function Mtt() {
             <NavbarHeader name={"Magtabgacha ta'lim muassasalar bo'limi"} buttonName={"MTT qo'shish"}
                           handleShow={setNullDataToState}/>
             <br/>
+            <Form onSubmit={submitSearch}>
+                <Row className="mb-3 d-flex justify-content-center">
+                    <Form.Group as={Col} controlId="formGridState">
+                        <Form.Label>Tumanlar</Form.Label>
+                        <Form.Select name={"regionId"} onChange={onChangesDepartments}>
+                            <option value={''}>Barcha bo'limlar</option>
+                            {
+                                departments?.map((item, index) =>
+                                    <option key={index} selected={regionId === item.id}
+                                            value={item.id}>{item.name}</option>
+                                )
+                            }
+                        </Form.Select>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridZip">
+                        <Form.Label>Bog'cha raqami</Form.Label>
+                        <Form.Control name={"kinderGartenNumber"} value={mttNumber} type={'number'}
+                                      onWheel={e => e.target.blur()}
+                                      onChange={numchange}/>
+                    </Form.Group>
+                    <Col className={'d-flex justify-content-center align-items-end'}>
+                        <Button variant="success" type="submit">
+                            Qidirish
+                        </Button>
+                        <Form.Group controlId="formGridState" className={'mx-4'}>
+                            <Form.Label>Ma'lumotlar sizg'imi</Form.Label>
+                            <Form.Select name={"pageSize"} onChange={(e) => setPageSize(e.target.value)} defaultValue={null}>
+                                <option value={20}>20 qator</option>
+                                <option value={30}>30 qator</option>
+                                <option value={40}>40 qator</option>
+                                <option value={50}>50 qator</option>
+                            </Form.Select>
+                        </Form.Group>
+
+                    </Col>
+                </Row>
+            </Form>
             <Table bordered size='sm' className='text-center'>
                 <thead>
                 <tr>
@@ -92,10 +160,10 @@ function Mtt() {
                 </thead>
                 <tbody>
                 {
-                    mtts?.map((item, index) =>
+                    mtts?.list?.map((item, index) =>
                         <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>{item.number + " - " + item.name}</td>
+                            <td>{item.number + "  " + item.name}</td>
                             <td>{item.departmentName}</td>
                             <td>{item.street}</td>
                             <td>{item.status}</td>
@@ -114,6 +182,7 @@ function Mtt() {
                 }
                 </tbody>
             </Table>
+            <FromPageSizeBottom currentPage={mtts.getPageNumber} pageSize={mtts.getPageSize} allPageSize={mtts.allPageSize} changesPage={pageChanges}/>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitMtt}>
                     <Modal.Header closeButton>

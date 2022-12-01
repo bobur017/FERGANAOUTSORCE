@@ -4,6 +4,9 @@ import React from "react";
 export const getToken = () => {
     return localStorage.getItem("Authorization");
 }
+export const getRefreshToken = () => {
+    return localStorage.getItem("Refresh");
+}
 export const toastError = (error) => {
     toast.error(error?.response?.data?.text);
     toast.error(error?.response);

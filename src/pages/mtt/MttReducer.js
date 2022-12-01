@@ -25,12 +25,13 @@ const slice = createSlice({
     }
 })
 
-export const getMtt = () => apiCall({
+export const getMtt = (params) => apiCall({
     url: "/kindergarten",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
+    params,
     success: slice.actions.setMtt.type,
     error: slice.actions.errorReducer.type
 })

@@ -26,6 +26,7 @@ function Login() {
         if (token?.user_role !== undefined) {
             localStorage.setItem("role", token?.user_role);
             localStorage.setItem("Authorization", "Bearer " + token?.access_token);
+            localStorage.setItem("Refresh", "Bearer " + token?.refresh_token);
             console.log("Authorization", token?.access_token);
             if (token?.user_role === "ROLE_ADMIN") {
                 history("/sidebar/admin");
