@@ -41,7 +41,11 @@ const Sidebar = ({children}) => {
                     </NavLink>
                 </div>
             </div>
-            <div className={"main"}>{children}</div>
+            <div className={"main"}>
+               <div>
+                {children}
+               </div>
+            </div>
         </div>
     );
 };

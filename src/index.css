@@ -22,6 +22,15 @@
   color: white !important;
   border-radius: 45px !important;
 }
+.createButtons{
+  display: flex;
+  border: none;
+  padding: 4px 10px;
+  background-color: #48B1AB;
+  color: white;
+  border-radius: 20px;
+
+}
 .bottom-line{
   padding-top: 1vh;
   padding-bottom: 1vh;

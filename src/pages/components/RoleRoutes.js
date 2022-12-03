@@ -13,15 +13,22 @@ import { GiGreenhouse, GiMeal, GiShoppingCart } from "react-icons/gi";
 import { TbNumbers } from "react-icons/tb";
 import {CgMenuHotdog} from "react-icons/cg";
 import {BsFillMenuButtonFill, BsFillMenuButtonWideFill} from "react-icons/bs";
+import {TiInfoLargeOutline} from "react-icons/ti";
+import {FaUserCog} from "react-icons/fa";
 
 export const rolesList = (role) => {
 
     if (role === "ROLE_ADMIN") {
         return [
             {
-                path: "/sidebar/about",
-                name: "About",
-                icon: <FaUserAlt size={25}/>
+                path: "/sidebar/info",
+                name: "Ma'lumotlar",
+                icon: <TiInfoLargeOutline size={25}/>
+            },
+            {
+                path: "/sidebar/user",
+                name: "Xodimlar",
+                icon: <FaUserCog size={25}/>
             },
             {
                 path: "/sidebar/product",

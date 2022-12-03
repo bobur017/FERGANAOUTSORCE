@@ -16,6 +16,8 @@ import MultiMenuOne from "../multimenu/MultiMenuOne";
 import {TbBell} from "react-icons/tb";
 import {BiMessageDetail} from "react-icons/bi";
 import RelationMenu from "../relationMultiMenu/RelationMenu";
+import Users from "../users/Users";
+import MenuView from "../relationMultiMenu/MenuView";
 
 function Sidebars() {
     return (
@@ -59,7 +61,8 @@ function Sidebars() {
             </Navbar>
             <Sidebar>
                 <Routes>
-                    <Route path="/about" element={<About/>}/>
+                    <Route path="/user" element={<Users/>}/>
+                    <Route path="/info" element={<About/>}/>
                     <Route path="/mtt" element={<Mtt/>}/>
                     <Route path="/meal" element={<Meal/>}/>
                     <Route path="/product" element={<Product/>}/>
@@ -70,7 +73,7 @@ function Sidebars() {
                     <Route path="/department" element={<Department/>}/>
                     <Route path="/multiMenu" element={<MultiMenu/>}/>
                     <Route path="/multi-menu-one/:id" element={<MultiMenuOne/>}/>
-                    <Route path="/relation-menu" element={<RelationMenu/>}/>
+                    <Route path="/relation-menu" element={<MenuView/>}/>
                 </Routes>
             </Sidebar>
         </div>

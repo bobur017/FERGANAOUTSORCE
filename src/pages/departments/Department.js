@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { Button, Col, Container, Form, Modal, Row, Table } from 'react-bootstrap';
-import { GrAdd, GrNewWindow } from 'react-icons/gr'
-import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import React, {useEffect, useRef, useState, useMemo} from 'react';
+import {Button, Col, Container, Form, Modal, Row, Table} from 'react-bootstrap';
+import {GrAdd, GrNewWindow} from 'react-icons/gr'
+import {useDispatch, useSelector} from 'react-redux';
+import {toast} from 'react-toastify';
 import Address from '../address/Address';
 import {
     addDepartment,
@@ -11,17 +11,18 @@ import {
     editRegionDepartment, getDepartment,
     getRegionDepartment
 } from './RegionDepartmentReducer';
+import NavbarHeader from "../more/NavbarHeader";
 
 
 function RegionDepartment() {
-    const [department, setDepartment] = useState({ id: '', name: '', regionId: '' });
+    const [department, setDepartment] = useState({id: '', name: '', regionId: ''});
     const dispatch = useDispatch();
     const [departments, setDepartments] = useState([]);
     const departmentReducer = useSelector(state => state.department);
     const firstUpdate = useRef(true);
     const [show, setShow] = useState(false);
     const handleClose = () => {
-        setDepartment({ id: '', name: '', regionId: '' });
+        setDepartment({id: '', name: '', regionId: ''});
         setShow(false)
     };
     const handleShow = () => setShow(true);
@@ -51,7 +52,7 @@ function RegionDepartment() {
     }, [departmentReducer.departments])
 
     const getDistrict = (data) => {
-        setDepartment({ ...department, "districtId": data.id })
+        setDepartment({...department, "districtId": data.id})
     }
 
     const submitdepartment = (e) => {
@@ -64,7 +65,7 @@ function RegionDepartment() {
     }
 
     const onChanges = (param) => (e) => {
-        setDepartment({ ...department, [param]: e.target.value });
+        setDepartment({...department, [param]: e.target.value});
     }
 
     const onClickDepartment = (data, number) => {
@@ -79,48 +80,38 @@ function RegionDepartment() {
     return (
         <div>
 
-            <Row className='bottom-line justify-content-end text-center'>
-                <Col xs={12} sm={12} md={7} lg={9} xl={9} style={{ fontSize: 25 }}>
-                    Bo'linmalar
-                </Col>
-                <Col md={3} lg={2} xl={2} className='d-flex justify-content-center' onClick={handleShow}>
-                    <Button variant='info' size={'sm'} className='iconTextPosition d-flex'>
-                        <div className={'my-icons'}><GrAdd size={23} color={'#ffffff'} /></div>
-                        <span style={{ marginLeft: 5 }}>Bo'lim'_qo'shish</span>
-                    </Button>
-                </Col>
-            </Row>
-            <br />
+            <NavbarHeader buttonName={"Bo'lim qo'shish"} name={"Bo'linmalar"} handleShow={handleShow}/>
+            
             <Table bordered size='sm' className='text-center'>
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nomi</th>
-                        <th>Manzili</th>
-                        <th>O'zgartirish</th>
-                        <th>O'chirish</th>
-                    </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Nomi</th>
+                    <th>Manzili</th>
+                    <th>O'zgartirish</th>
+                    <th>O'chirish</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {
-                        departments?.map((item, index) =>
-                            <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{item.name}</td>
-                                <td>{item.districtName}</td>
-                                <td>
-                                    <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 1)}>
-                                        O'zgartirish
-                                    </Button>
-                                </td>
-                                <td>
-                                    <Button variant='outline-danger' size='sm' onClick={() => onClickDepartment(item, 2)}>
-                                        O'chirish
-                                    </Button>
-                                </td>
-                            </tr>
-                        )
-                    }
+                {
+                    departments?.map((item, index) =>
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{item.name}</td>
+                            <td>{item.districtName}</td>
+                            <td>
+                                <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 1)}>
+                                    O'zgartirish
+                                </Button>
+                            </td>
+                            <td>
+                                <Button variant='outline-danger' size='sm' onClick={() => onClickDepartment(item, 2)}>
+                                    O'chirish
+                                </Button>
+                            </td>
+                        </tr>
+                    )
+                }
                 </tbody>
             </Table>
             <Modal show={show} onHide={handleClose}>
@@ -130,9 +121,9 @@ function RegionDepartment() {
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Control name='name' required value={department.name} onChange={onChanges("name")}
-                            placeholder="Nomi " />
-                        <br />
-                        <Address view={true} district={getDistrict} />
+                                      placeholder="Nomi "/>
+                        <br/>
+                        <Address view={true} district={getDistrict}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" onClick={handleClose}>
