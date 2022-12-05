@@ -91,7 +91,7 @@ function Mtt() {
         if (e.target.value) {
             setMttNumber(parseInt(e.target.value));
         } else {
-            setMttNumber( null);
+            setMttNumber(null);
         }
     }
     const pageChanges = (number) => {
@@ -104,7 +104,7 @@ function Mtt() {
     }
 
     return (
-        <div>
+        <div className={'allMain'}>
             <NavbarHeader name={"Magtabgacha ta'lim muassasalar bo'limi"} buttonName={"MTT qo'shish"}
                           handleShow={setNullDataToState}/>
             <br/>
@@ -135,7 +135,8 @@ function Mtt() {
                         </Button>
                         <Form.Group controlId="formGridState" className={'mx-4'}>
                             <Form.Label>Ma'lumotlar sizg'imi</Form.Label>
-                            <Form.Select name={"pageSize"} onChange={(e) => setPageSize(e.target.value)} defaultValue={null}>
+                            <Form.Select name={"pageSize"} onChange={(e) => setPageSize(e.target.value)}
+                                         defaultValue={null}>
                                 <option value={20}>20 qator</option>
                                 <option value={30}>30 qator</option>
                                 <option value={40}>40 qator</option>
@@ -146,43 +147,51 @@ function Mtt() {
                     </Col>
                 </Row>
             </Form>
-            <Table bordered size='sm' className='text-center'>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nomi</th>
-                    <th>Tumani</th>
-                    <th>Manzili</th>
-                    <th>Holati</th>
-                    <th>O'zgartirish</th>
-                    <th>O'chirish</th>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    mtts?.list?.map((item, index) =>
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{item.number + "  " + item.name}</td>
-                            <td>{item.departmentName}</td>
-                            <td>{item.street}</td>
-                            <td>{item.status}</td>
-                            <td>
-                                <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 1)}>
-                                    O'zgartirish
-                                </Button>
-                            </td>
-                            <td>
-                                <Button variant='outline-danger' size='sm' onClick={() => onClickDepartment(item, 2)}>
-                                    O'chirish
-                                </Button>
-                            </td>
+            <div className={'figma-card'}>
+                <div className={'tableCalendar'}>
+                    <table className='text-center'>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nomi</th>
+                            <th>Tumani</th>
+                            <th>Manzili</th>
+                            <th>Holati</th>
+                            <th>O'zgartirish</th>
+                            <th>O'chirish</th>
                         </tr>
-                    )
-                }
-                </tbody>
-            </Table>
-            <FromPageSizeBottom currentPage={mtts.getPageNumber} pageSize={mtts.getPageSize} allPageSize={mtts.allPageSize} changesPage={pageChanges}/>
+                        </thead>
+                        <tbody>
+                        {
+                            mtts?.list?.map((item, index) =>
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.number + "  " + item.name}</td>
+                                    <td>{item.departmentName}</td>
+                                    <td>{item.street}</td>
+                                    <td>{item.status}</td>
+                                    <td>
+                                        <Button variant='outline-info' size='sm'
+                                                onClick={() => onClickDepartment(item, 1)}>
+                                            O'zgartirish
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant='outline-danger' size='sm'
+                                                onClick={() => onClickDepartment(item, 2)}>
+                                            O'chirish
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+                <FromPageSizeBottom currentPage={mtts.getPageNumber} pageSize={mtts.getPageSize}
+                                    allPageSize={mtts.allPageSize} changesPage={pageChanges}/>
+            </div>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitMtt}>
                     <Modal.Header closeButton>

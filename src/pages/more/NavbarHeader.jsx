@@ -1,23 +1,23 @@
 import React from 'react';
 import {Button, Col, Row} from "react-bootstrap";
 import {GrAdd} from "react-icons/gr";
+import {FiPlusCircle} from "react-icons/fi";
 
-function NavbarHeader({name,handleShow,buttonName}) {
+function NavbarHeader({name, handleShow, buttonName}) {
     return (
         <>
-            <Row className='justify-content-end text-center  p-3'>
-                <Col xs={12} sm={12} md={7} lg={9} xl={9} style={{fontSize: 25}}>
+            <div className='d-flex justify-content-between w-100  p-3 bg-white' style={{borderRadius: 10}}>
+                <div style={{fontSize: 25}}>
                     {name}
-                </Col>
-                <Col md={3} lg={2} xl={2} className='d-flex justify-content-center align-items-center' onClick={handleShow}>
-                    <button className='createButtons iconTextPosition d-flex align-items-center px-2' style={{backgroundColor:'#48B1AB'}}>
-                        <div className={'my-icons'}><GrAdd size={23} color={'#ffffff'}/></div>
+                </div>
+                <div className='d-flex justify-content-center align-items-center' onClick={() => handleShow(null)}>
+                    <button className='createButtons iconTextPosition justify-content-between d-flex align-items-center px-2'
+                            style={{backgroundColor: '#48B1AB'}}>
+                       <FiPlusCircle size={23} color={'#ffffff'}/>
                         <span style={{marginLeft: 5}} className={'d-flex'}>{buttonName}</span>
                     </button>
-                </Col>
-                <div className={'bottom-line  w-100'}></div>
-            </Row>
-            <br/>
+                </div>
+            </div>
         </>
     );
 }

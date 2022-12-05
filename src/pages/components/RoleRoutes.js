@@ -61,7 +61,7 @@ export const rolesList = (role) => {
                 icon: <CgMenuHotdog size={25}/>
             },
             {
-                path: "/sidebar/relation-menu",
+                path: "/sidebar/relation-view",
                 name: "Menyularni biriktirish",
                 icon: <BsFillMenuButtonFill size={25}/>
             },
@@ -78,6 +78,21 @@ export const rolesList = (role) => {
                 path: "/sidebar/region-department",
                 name: "Boshqarmalar",
                 icon: <FaNetworkWired size={25}/>
+            },
+        ];
+    } else  if(role === "ROLE_BO`LIM_BUXGALTER"){
+
+    }else  if(role === "ROLE_XODIMLAR_BO`LIMI"){
+        return [
+            {
+                path: "/sidebar/info",
+                name: "Ma'lumotlar",
+                icon: <TiInfoLargeOutline size={25}/>
+            },
+            {
+                path: "/sidebar/users-department",
+                name: "Xodimlar",
+                icon: <FaUserCog size={25}/>
             },
         ];
     }

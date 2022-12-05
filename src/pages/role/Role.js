@@ -5,7 +5,7 @@ import { Button, Form, Modal, Row, Table } from "react-bootstrap";
 import {getRoles} from "../users/UserReducer";
 
 
-function Role({getRoleId}) {
+function Role({getRoleId,type}) {
     const [show, setShow] = useState(false);
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
@@ -15,22 +15,18 @@ function Role({getRoleId}) {
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
-            dispatch(getRoles())
+            dispatch(getRoles({type:type.type}))
         }else {
-            console.log(roles);
+
         }
     }, [roles]);
 
-    const onChangeRole = (data, number) => {
-
-    }
-
     return (
-        <Form.Select onChange={e=>getRoleId(e.target.value)} defaultValue={""} type={'text'} name={"roleId"} >
+        <Form.Select className={'mb-2'} onChange={e=>getRoleId(e.target.value)} defaultValue={""} type={'text'} name={"roleId"} required>
             <option value="">Lavozimni tanlang</option>
             {
                 roles.map((role,index)=>
-                    <option value={role.id} key={index}>{role.name}</option>
+                    <option value={role.id} key={index}>{role.positionName}</option>
                 )
             }
         </Form.Select>

@@ -12,68 +12,69 @@ import {AiOutlineEnvironment} from "react-icons/ai";
 import {BsCircle} from "react-icons/bs";
 import {BiCircle} from "react-icons/bi";
 
+
+export const district = [
+    {
+        id: 1,
+        name: 'Fargona tumani'
+    },
+    {
+        id: 3,
+        name: 'Fargona tumani'
+    },
+    {
+        id: 2,
+        name: 'Fargona tumani'
+    },
+    {
+        id: 4,
+        name: 'Fargona tumani'
+    },
+    {
+        id: 5,
+        name: 'Fargona tumani'
+    },
+]
+export const mtt = [
+    {
+        id: 5,
+        name: '24-dmtt',
+        checked: false,
+
+    },
+    {
+        id: 1,
+        name: '24-dmtt',
+        checked: true,
+
+    },
+    {
+        id: 2,
+        name: '24-dmtt',
+        checked: true,
+
+    },
+    {
+        id: 3,
+        name: '24-dmtt',
+        checked: false,
+
+    },
+    {
+        id: 6,
+        name: '24-dmtt',
+        checked: true,
+
+    },
+    {
+        id: 7,
+        name: '24-dmtt',
+        checked: true,
+
+    },
+]
 function RelationMenu(props) {
 
-    const district = [
-        {
-            id: 1,
-            name: 'Fargona tumani'
-        },
-        {
-            id: 3,
-            name: 'Fargona tumani'
-        },
-        {
-            id: 2,
-            name: 'Fargona tumani'
-        },
-        {
-            id: 4,
-            name: 'Fargona tumani'
-        },
-        {
-            id: 5,
-            name: 'Fargona tumani'
-        },
-    ]
-    const mtt = [
-        {
-            id: 5,
-            name: '24-dmtt',
-            checked: false,
-
-        },
-        {
-            id: 1,
-            name: '24-dmtt',
-            checked: true,
-
-        },
-        {
-            id: 2,
-            name: '24-dmtt',
-            checked: true,
-
-        },
-        {
-            id: 3,
-            name: '24-dmtt',
-            checked: false,
-
-        },
-        {
-            id: 6,
-            name: '24-dmtt',
-            checked: true,
-
-        },
-        {
-            id: 7,
-            name: '24-dmtt',
-            checked: true,
-
-        },
-    ]
     const pie = {
         series: [14, 55],
         options: {

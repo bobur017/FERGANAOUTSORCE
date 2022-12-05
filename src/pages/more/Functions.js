@@ -4,6 +4,9 @@ import React from "react";
 export const getToken = () => {
     return localStorage.getItem("Authorization");
 }
+export const getRoleStorage = () => {
+    return localStorage.getItem("role");
+}
 export const getRefreshToken = () => {
     return localStorage.getItem("Refresh");
 }

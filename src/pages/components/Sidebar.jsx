@@ -8,8 +8,8 @@ import logo from '../login/image/img.png'
 
 const Sidebar = ({children}) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [menuItem, setMenuItem] = useState([])
-    const [num, setNum] = useState(0)
+    const [menuItem, setMenuItem] = useState([]);
+    const [num, setNum] = useState(0);
     const toggle = () => setIsOpen(!isOpen);
     useEffect(() => {
         setMenuItem(rolesList(localStorage.getItem("role")));

@@ -33,6 +33,8 @@ function Login() {
 
             } else if (token?.user_role === "ROLE_SUPER_ADMIN") {
                 history("/sidebar/super-admin");
+            }else if (token?.user_role === "ROLE_XODIMLAR_BO`LIMI") {
+                history("/sidebar/info");
             }
             dispatch(tokenNull())
         }
@@ -71,7 +73,7 @@ function Login() {
                                             placeholder={'Parolni kiriting'} />
                                     </Form>
                                     <br />
-                                    <Button variant={'primary'} size={'sm'} type={'submit'} form={'login'} style={{ width: '50%', backgroundColor: '#52AAFB' }}>
+                                    <Button size={'sm'} type={'submit'} form={'login'} style={{ width: '50%', backgroundColor: '#48B1AB' }}>
                                         <span >
                                             KIRISH
                                         </span>

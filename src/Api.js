@@ -1,7 +1,7 @@
 import axios from "axios";
-import {baseUrl} from "./pages/funcs/Funcs";
 import {useNavigate} from "react-router-dom";
 import {getRefreshToken} from "./pages/more/Functions";
+import {baseUrl2} from "./Default";
 
 const api = ({dispatch}) => (next) => (action) => {
     if (action.type !== 'api/call') {
@@ -11,7 +11,7 @@ const api = ({dispatch}) => (next) => (action) => {
         const {url, method, data, headers, params, success, error} = action.payload;
         console.log(data, url, "data");
         axios({
-            baseURL: baseUrl(),
+            baseURL: baseUrl2(),
             url,
             method,
             data,
@@ -38,7 +38,7 @@ const api = ({dispatch}) => (next) => (action) => {
         });
         const renewAccessToken = () => {
             axios({
-                url: baseUrl() + "/token/refresh",
+                url: baseUrl2() + "/token/refresh",
                 method: "GET",
                 headers: {
                     Authorization: getRefreshToken()
@@ -47,7 +47,7 @@ const api = ({dispatch}) => (next) => (action) => {
                 localStorage.setItem("Authorization", "Bearer " + res.data?.access_token);
                 localStorage.setItem("Refresh", "Bearer " + res.data?.refresh_token);
                 axios({
-                    baseURL: baseUrl(),
+                    baseURL: baseUrl2(),
                     url,
                     method,
                     data,

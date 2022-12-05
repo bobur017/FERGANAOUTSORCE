@@ -9,10 +9,14 @@ const slice = createSlice({
         result: {},
         error: {},
         mtts: [],
+        mttsByDepartment: [],
     },
     reducers: {
         setMtt: (state, action) => {
             state.mtts = action.payload;
+        },
+        mttsByDepartment: (state, action) => {
+            state.mttsByDepartment = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -23,7 +27,7 @@ const slice = createSlice({
             toastError(action.payload);
         },
     }
-})
+});
 
 export const getMtt = (params) => apiCall({
     url: "/kindergarten",
@@ -33,6 +37,16 @@ export const getMtt = (params) => apiCall({
     },
     params,
     success: slice.actions.setMtt.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getMttDepartment = () => apiCall({
+    url: "/kindergarten/getByDepartment",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.mttsByDepartment.type,
     error: slice.actions.errorReducer.type
 })
 

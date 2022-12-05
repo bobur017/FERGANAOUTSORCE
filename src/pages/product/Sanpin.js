@@ -75,10 +75,13 @@ function Sanpin() {
         setsanpinCategoryState({...sanpinCategoryState, dailyNormDTOList: list});
     }
 
-    const deleteAgeFromInput = (index,item) => {
-        console.log(index,item,"salom")
+    const deleteAgeFromInput = (index, item) => {
+        console.log(index, item, "salom")
         let list = [...sanpinCategoryState.dailyNormDTOList];
-        setsanpinCategoryState({...sanpinCategoryState, dailyNormDTOList: deleteSame(list,item,"ageGroupId","ageGroupId")});
+        setsanpinCategoryState({
+            ...sanpinCategoryState,
+            dailyNormDTOList: deleteSame(list, item, "ageGroupId", "ageGroupId")
+        });
         // setsanpinCategoryState({...sanpinCategoryState, dailyNormDTOList: list.splice(index, 1)});
     }
 
@@ -92,9 +95,9 @@ function Sanpin() {
     }
 
     const onChanges = (index) => (e) => {
-        if (e.target.name === 'name'){
-            setsanpinCategoryState({...sanpinCategoryState,[e.target.name]:e.target.value})
-        }else {
+        if (e.target.name === 'name') {
+            setsanpinCategoryState({...sanpinCategoryState, [e.target.name]: e.target.value})
+        } else {
             var list = [...sanpinCategoryState.dailyNormDTOList];
             list[index] = {...list[index], weight: e.target.value}
             setsanpinCategoryState({...sanpinCategoryState, dailyNormDTOList: list});
@@ -104,40 +107,46 @@ function Sanpin() {
 
 
     return (
-        <div>
+        <div className={'allMain'}>
             <NavbarHeader name={"Sanpin turlari bo'limi"} handleShow={handleShow}
                           buttonName={"Sanpin_turini qo'shish"}/>
-            <Table bordered size='sm' className='text-center'>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nomi</th>
-                    <th>O'zgartirish</th>
-                    <th>O'chirish</th>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    sanpinCategories?.map((item, index) =>
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{item.name}</td>
-                            <td>
-                                <Button variant='outline-info' size='sm' onClick={() => onClickSanpinCategory(item, 1)}>
-                                    O'zgartirish
-                                </Button>
-                            </td>
-                            <td>
-                                <Button variant='outline-danger' size='sm'
-                                        onClick={() => onClickSanpinCategory(item, 2)}>
-                                    O'chirish
-                                </Button>
-                            </td>
+            <div className={'figma-card'}>
+
+                <div className={'tableCalendar'}>
+                    <table style={{color: 'black'}}>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nomi</th>
+                            <th>O'zgartirish</th>
+                            <th>O'chirish</th>
                         </tr>
-                    )
-                }
-                </tbody>
-            </Table>
+                        </thead>
+                        <tbody>
+                        {
+                            sanpinCategories?.map((item, index) =>
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.name}</td>
+                                    <td>
+                                        <Button variant='outline-info' size='sm'
+                                                onClick={() => onClickSanpinCategory(item, 1)}>
+                                            O'zgartirish
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant='outline-danger' size='sm'
+                                                onClick={() => onClickSanpinCategory(item, 2)}>
+                                            O'chirish
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitSanpinCategory}>
                     <Modal.Header closeButton>
@@ -155,9 +164,9 @@ function Sanpin() {
                                 </InputGroup.Text>
                                 <Form.Control name={'weight'} type={'number'} step={'0.01'}
                                               onWheel={(e) => e.target.blur()} value={item.weight}
-                                              onChange={onChanges(index)} size={'sm'}  required />
+                                              onChange={onChanges(index)} size={'sm'} required/>
                                 <InputGroup.Text>
-                                    <Button variant={'danger'} onClick={() => deleteAgeFromInput(index,item)}>
+                                    <Button variant={'danger'} onClick={() => deleteAgeFromInput(index, item)}>
                                         <FiMinus/>
                                     </Button>
                                 </InputGroup.Text>

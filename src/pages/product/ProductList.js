@@ -81,17 +81,18 @@ function ProductList() {
 
 
     const onChanges = (e) => {
-        console.log(e.target.value,e.target.name)
         setProductState({...productState, [e.target.name]: e.target.value});
-        console.log(productState,"uuuuuu")
     }
 
     return (
-        <div>
+        <div className={'allMain'}>
             <NavbarHeader name={"Mahsulot  bo'limi"} buttonName={"Mahsulot qo'shish"}
                           handleShow={setNullDataToState}/>
             <br/>
-            <Table bordered size='sm' className='text-center'>
+            <div className={'figma-card'}>
+
+            <div className={'tableCalendar'}>
+                <table style={{color:'black'}}>
                 <thead>
                 <tr>
                     <th>#</th>
@@ -134,7 +135,9 @@ function ProductList() {
                     )
                 }
                 </tbody>
-            </Table>
+            </table>
+            </div>
+            </div>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitMtt}>
                     <Modal.Header closeButton>

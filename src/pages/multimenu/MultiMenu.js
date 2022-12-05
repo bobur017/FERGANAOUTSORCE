@@ -83,40 +83,44 @@ function MultiMenu() {
         }
     }
     const pushUrl = (data) => {
-      history("/sidebar/multi-menu-one/"+data.id);
+        history("/sidebar/multi-menu-one/" + data.id);
     }
 
     return (
-        <div>
+        <div className={'allMain'}>
             <NavbarHeader name={"Taomnomalar bo'limi"} buttonName={"Taomnoma qo'shish"}
                           handleShow={() => handleShow(1)}/>
 
-            <Table hover>
-                <thead>
-                <tr>
-                    <th className={'my-Hover'}>#</th>
-                    <th className={'my-Hover'}>Nomi</th>
-                    <th className={'my-Hover'}>Tayyorlanish vazni</th>
-                    <td>O'zgartirish</td>
-                    <td>O'chirish</td>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    multiMenuList?.map((item, index) =>
-                        <tr key={index}>
-                            <td className={'my-Hover'} onClick={() => pushUrl(item)}>{index + 1}</td>
-                            <td className={'my-Hover'} onClick={() => pushUrl(item)}>{item.name}</td>
-                            <td className={'my-Hover'} onClick={() => pushUrl(item)}>{item.daily}</td>
-                            <td><Button variant={"outline-info"} size={"sm"}
-                                        onClick={() => handleShow(2, item)}>O'zgartirish</Button></td>
-                            <td><Button variant={"outline-danger"} size={"sm"}
-                                        onClick={() => handleShow(3, item)}>O'chirish</Button></td>
+            <div className={'figma-card mt-3'}>
+                <div className={'tableCalendar'}>
+                    <table style={{color: 'black'}}>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nomi</th>
+                            <th>Tayyorlanish vazni</th>
+                            <th>O'zgartirish</th>
+                            <th>O'chirish</th>
                         </tr>
-                    )
-                }
-                </tbody>
-            </Table>
+                        </thead>
+                        <tbody>
+                        {
+                            multiMenuList?.map((item, index) =>
+                                <tr key={index}>
+                                    <td className={'my-Hover'} onClick={() => pushUrl(item)}>{index + 1}</td>
+                                    <td className={'my-Hover'} onClick={() => pushUrl(item)}>{item.name}</td>
+                                    <td className={'my-Hover'} onClick={() => pushUrl(item)}>{item.daily}</td>
+                                    <td><Button variant={"outline-info"} size={"sm"}
+                                                onClick={() => handleShow(2, item)}>O'zgartirish</Button></td>
+                                    <td><Button variant={"outline-danger"} size={"sm"}
+                                                onClick={() => handleShow(3, item)}>O'chirish</Button></td>
+                                </tr>
+                            )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitData}>
                     <Modal.Header closeButton>

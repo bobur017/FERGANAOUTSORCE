@@ -11,7 +11,6 @@ const Product = () => {
         <div>
             <Tabs
                 defaultActiveKey="home"
-                id="justify-tab-example"
                 className="mb-3"
                 justify
             >

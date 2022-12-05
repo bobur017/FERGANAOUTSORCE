@@ -39,15 +39,15 @@ function RegionDepartment() {
         if (firstUpdate.current) {
             firstUpdate.current = false;
             dispatch(getRegionDepartment());
-            console.log("useEffect1",firstUpdate.current);
+            console.log("useEffect1", firstUpdate.current);
         } else {
-            console.log("useEffect2",firstUpdate.current);
+            console.log("useEffect2", firstUpdate.current);
         }
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         setDepartments(departmentReducer.regionDepartments);
-    },[departmentReducer.regionDepartments])
+    }, [departmentReducer.regionDepartments])
 
     const getRegion = (data) => {
         setDepartment({...department, "regionId": data.id})
@@ -76,8 +76,7 @@ function RegionDepartment() {
     }
 
     return (
-        <div>
-
+        <div className={'allMain'}>
             <Row className='bottom-line justify-content-end text-center'>
                 <Col xs={12} sm={12} md={7} lg={9} xl={9} style={{fontSize: 25}}>
                     Boshqarmalar Bo'limi
@@ -90,38 +89,44 @@ function RegionDepartment() {
                 </Col>
             </Row>
             <br/>
-            <Table bordered size='sm' className='text-center'>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nomi</th>
-                    <th>Manzili</th>
-                    <th>O'zgartirish</th>
-                    <th>O'chirish</th>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    departments?.map((item, index) =>
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{item.name}</td>
-                            <td>{item.regionName}</td>
-                            <td>
-                                <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 1)}>
-                                    O'zgartirish
-                                </Button>
-                            </td>
-                            <td>
-                                <Button variant='outline-danger' size='sm' onClick={() => onClickDepartment(item, 2)}>
-                                    O'chirish
-                                </Button>
-                            </td>
+            <div className={'figma-card'}>
+                <div className={'tableCalendar'}>
+                    <table style={{color: 'black'}}>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nomi</th>
+                            <th>Manzili</th>
+                            <th>O'zgartirish</th>
+                            <th>O'chirish</th>
                         </tr>
-                    )
-                }
-                </tbody>
-            </Table>
+                        </thead>
+                        <tbody>
+                        {
+                            departments?.map((item, index) =>
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.name}</td>
+                                    <td>{item.regionName}</td>
+                                    <td>
+                                        <Button variant='outline-info' size='sm'
+                                                onClick={() => onClickDepartment(item, 1)}>
+                                            O'zgartirish
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant='outline-danger' size='sm'
+                                                onClick={() => onClickDepartment(item, 2)}>
+                                            O'chirish
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitdepartment}>
                     <Modal.Header closeButton>

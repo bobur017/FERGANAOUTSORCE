@@ -2,16 +2,26 @@ import React from 'react';
 import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addUserDepartment, addUserRegion, deleteUser, editUser, getAllUser, getRoles, statusUser} from "./UserReducer";
+import {
+    addUserDepartment,
+    addUserKindergarten,
+    addUserRegion,
+    deleteUser,
+    editUser,
+    getAllUser,
+    getRoles,
+    statusUser
+} from "./UserReducer";
 import NavbarHeader from "../more/NavbarHeader";
 import Role from "../role/Role";
-import {getDepartment} from "../departments/RegionDepartmentReducer";
 import main from "../relationMultiMenu/relationStyle.module.scss";
 import {AiOutlineEnvironment} from "react-icons/ai";
 import {BiDotsVerticalRounded, BiEdit, BiUserCheck, BiUserX} from "react-icons/bi";
 import {MdDeleteForever} from "react-icons/md";
+import {getMtt, getMttDepartment} from "../mtt/MttReducer";
+import {RiHome5Line} from "react-icons/ri";
 
-function Users() {
+function UsersDepartment() {
     const defaultUser = {
         id: null,
         "fatherName": "",
@@ -21,11 +31,11 @@ function Users() {
         "roleId": '',
         "status": true,
         "surname": "",
-        "userName": ""
+        "username": ""
     };
     const [show, setShow] = useState(false);
     const [more, setMore] = useState(null);
-    const [params, setParams] = useState({type: 'department', id: '', infoText: ''});
+    const [params, setParams] = useState({type: 'kindergarten', id: '', infoText: ''});
     const handleClose = () => setShow(false);
     const handleShow = (user) => {
         if (user !== null) {
@@ -33,12 +43,12 @@ function Users() {
         } else {
             setUserState(defaultUser);
         }
-        setShow(true)
+        setShow(true);
     };
     const [userState, setUserState] = useState(defaultUser);
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
-    const departments = useSelector(state => state.department.departments);
+    const departments = useSelector(state => state.mtt.mttsByDepartment);
     const result = useSelector(state => state.user.result);
     const users = useSelector(state => state.user.users);
 
@@ -46,11 +56,7 @@ function Users() {
         if (!firstUpdate.current) {
 
         } else {
-            if (params.type === 'region') {
-                dispatch(getAllUser(params))
-            } else {
-                dispatch(getAllUser(params));
-            }
+            dispatch(getAllUser(params));
             handleClose();
         }
     }, [result]);
@@ -58,7 +64,7 @@ function Users() {
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
-            dispatch(getDepartment());
+            dispatch(getMttDepartment());
         }
     }, [])
 
@@ -71,18 +77,11 @@ function Users() {
 
     const submit = (e) => {
         e.preventDefault();
-        if (params.type === 'region') {
-            if (userState.id === null) {
-                dispatch(addUserRegion(userState));
-            } else {
-                dispatch(editUser(userState));
-            }
+        if (userState.id === null) {
+            console.log(params.id, "params id");
+            dispatch(addUserKindergarten(userState, {kindergartenId: params.id}));
         } else {
-            if (userState.id === null) {
-                dispatch(addUserDepartment(userState, {departmentId: params.id}));
-            } else {
-                dispatch(editUser(userState));
-            }
+            dispatch(editUser(userState));
         }
     }
     const selectDistrict = (type, id) => {
@@ -90,7 +89,6 @@ function Users() {
         dispatch(getAllUser({type, id}));
     }
     const onBlurs = (ee) => {
-        console.log("blur")
         setMore(ee);
     }
     const onFocuss = (eee) => {
@@ -104,22 +102,7 @@ function Users() {
                     <Col xs={12} sm={12} md={3} lg={3} xl={3}>
                         <div className={'figma-card mt-3'} style={{overflowY: 'auto'}}>
                             <div style={{maxHeight: '70vh'}}>
-                                <div className={`d-flex p-2 mt-1 district`}
-                                     style={null === params.id ? {
-                                         backgroundColor: '#48B1AB',
-                                         color: 'white'
-                                     } : {backgroundColor: 'white'}}
-                                     onClick={() => selectDistrict("region", null)}>
-                                    <div style={{
-                                        color: null === params.id ? 'white' : '#48B1AB',
-                                        borderColor: '#48B1AB'
-                                    }}
-                                         className={main.leftLine}><AiOutlineEnvironment
-                                        size={30}/>
-                                    </div>
-                                    <div className={'mx-1 fs-6 fw-bold'}>Boshqarma xodimlari</div>
-                                </div>
-                                <div className={'w-100 text-center fw-bold fs-5'}>Bo'limlar</div>
+                                <div className={'w-100 text-center fw-bold fs-5'}>Bog'chalar</div>
                                 {
                                     departments.map((item, index) =>
                                         <div key={index} className={`d-flex p-2 mt-1 district`}
@@ -127,15 +110,15 @@ function Users() {
                                                  backgroundColor: '#48B1AB',
                                                  color: 'white'
                                              } : {backgroundColor: 'white'}}
-                                             onClick={() => selectDistrict("department", item.id)}>
+                                             onClick={() => selectDistrict("kindergarten", item.id)}>
                                             <div style={{
                                                 color: params.id === item.id ? 'white' : '#48B1AB',
                                                 borderColor: '#48B1AB'
                                             }}
-                                                 className={main.leftLine}><AiOutlineEnvironment
+                                                 className={main.leftLine}><RiHome5Line
                                                 size={30}/>
                                             </div>
-                                            <div className={'mx-1'}>{item.name}</div>
+                                            <div className={'mx-1'}>{item.number}{item.name}</div>
                                         </div>
                                     )
                                 }
@@ -180,11 +163,13 @@ function Users() {
                                                         <BiDotsVerticalRounded size={25}/>
                                                         {
                                                             more === item.id ? <div className={'more shadow'}>
-                                                                {item.status ? <div className={'sub-more'}  onClick={()=>dispatch(statusUser(item,{status: !item.status}))}>
+                                                                {item.status ? <div className={'sub-more'}
+                                                                                    onClick={() => dispatch(statusUser(item, {status: !item.status}))}>
                                                                     <BiUserX size={20} color={'#E9573F'}/>
                                                                     <span className={'mx-1'}>Xodimni cheklash</span>
-                                                                </div> : <div className={'sub-more'} onClick={()=>dispatch(statusUser(item,{status: !item.status}))}>
-                                                                    <BiUserCheck size={20} color={'#8CC152'} />
+                                                                </div> : <div className={'sub-more'}
+                                                                              onClick={() => dispatch(statusUser(item, {status: !item.status}))}>
+                                                                    <BiUserCheck size={20} color={'#8CC152'}/>
                                                                     <span>Xodimni faolasht..</span>
                                                                 </div>
                                                                 }
@@ -193,7 +178,8 @@ function Users() {
                                                                     <BiEdit size={20}/>
                                                                     <span>O'zgartirish</span>
                                                                 </div>
-                                                                <div className={'sub-more'} onClick={()=>dispatch(deleteUser(item))}>
+                                                                <div className={'sub-more'}
+                                                                     onClick={() => dispatch(deleteUser(item))}>
                                                                     <MdDeleteForever size={20}/>
                                                                     <span>O'chirish</span>
                                                                 </div>
@@ -214,7 +200,7 @@ function Users() {
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submit}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Xodim </Modal.Title>
+                        <Modal.Title>MTT xodimi</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Label>Ismi</Form.Label>
@@ -235,7 +221,8 @@ function Users() {
                                       minLength={13}
                                       onChange={onChangeState} required placeholder={"+998"}/>
                         {userState.id === null ? <> <Form.Label>Parol</Form.Label>
-                            <Form.Control name={'password'} minLength={8} className={'mb-2'} value={userState.password}
+                            <Form.Control name={'password'} className={'mb-2'} value={userState.password}
+                                          minLength={8}
                                           onChange={onChangeState} required/></> : null}
                         <Form.Label>Lavozimni tanlang</Form.Label>
                         <Role getRoleId={getRoleInRole} type={params}/>
@@ -254,4 +241,4 @@ function Users() {
     );
 }
 
-export default Users;
+export default UsersDepartment;

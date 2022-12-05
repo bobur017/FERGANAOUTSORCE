@@ -78,42 +78,46 @@ function RegionDepartment() {
     }
 
     return (
-        <div>
-
+        <div className={'allMain'}>
             <NavbarHeader buttonName={"Bo'lim qo'shish"} name={"Bo'linmalar"} handleShow={handleShow}/>
-            
-            <Table bordered size='sm' className='text-center'>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nomi</th>
-                    <th>Manzili</th>
-                    <th>O'zgartirish</th>
-                    <th>O'chirish</th>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    departments?.map((item, index) =>
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{item.name}</td>
-                            <td>{item.districtName}</td>
-                            <td>
-                                <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 1)}>
-                                    O'zgartirish
-                                </Button>
-                            </td>
-                            <td>
-                                <Button variant='outline-danger' size='sm' onClick={() => onClickDepartment(item, 2)}>
-                                    O'chirish
-                                </Button>
-                            </td>
+            <div className={'figma-card mt-3'}>
+                <div className={'tableCalendar'}>
+                    <table style={{color: 'black'}}>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nomi</th>
+                            <th>Manzili</th>
+                            <th>O'zgartirish</th>
+                            <th>O'chirish</th>
                         </tr>
-                    )
-                }
-                </tbody>
-            </Table>
+                        </thead>
+                        <tbody>
+                        {
+                            departments?.map((item, index) =>
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.name}</td>
+                                    <td>{item.districtName}</td>
+                                    <td>
+                                        <Button variant='outline-info' size='sm'
+                                                onClick={() => onClickDepartment(item, 1)}>
+                                            O'zgartirish
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant='outline-danger' size='sm'
+                                                onClick={() => onClickDepartment(item, 2)}>
+                                            O'chirish
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitdepartment}>
                     <Modal.Header closeButton>

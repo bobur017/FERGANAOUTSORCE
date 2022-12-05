@@ -1,18 +1,18 @@
 import React from 'react';
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addAge, deleteAge, editAge, getAge } from "./AgeReducer";
-import { Button, Form, Modal, Row, Table } from "react-bootstrap";
+import {useEffect, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {addAge, deleteAge, editAge, getAge} from "./AgeReducer";
+import {Button, Form, Modal, Row, Table} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
 
 
 function Age() {
     const [show, setShow] = useState(false);
-    const [ageState, setAgeState] = useState({ id: '', name: '' });
+    const [ageState, setAgeState] = useState({id: '', name: ''});
     const [ages, setAges] = useState([]);
     const handleClose = () => {
         setShow(false);
-        setAgeState({ id: '', name: '' });
+        setAgeState({id: '', name: ''});
     };
     const handleShow = () => {
         setShow(true)
@@ -61,44 +61,51 @@ function Age() {
 
 
     const onChanges = (param) => (e) => {
-        setAgeState({ ...ageState, [param]: e.target.value });
+        setAgeState({...ageState, [param]: e.target.value});
     }
 
     return (
-        <div>
-            <NavbarHeader name={"Yosh toifalari bo'limi"} handleShow={handleShow} buttonName={"Yosh toifasini_qo'shish"}/>
-            <br />
-            <Table bordered size='sm' className='text-center'>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nomi</th>
-                        <th>O'zgartirish</th>
-                        <th>O'chirish</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        ages?.map((item, index) =>
-                            <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{item.name}</td>
+        <div className={'allMain'}>
+            <NavbarHeader name={"Yosh toifalari bo'limi"} handleShow={handleShow}
+                          buttonName={"Yosh toifasini_qo'shish"}/>
+            <br/>
+            <div className={'figma-card'}>
+                <div className={'tableCalendar'}>
+                    <table style={{color: 'black'}}>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nomi</th>
+                            <th>O'zgartirish</th>
+                            <th>O'chirish</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            ages?.map((item, index) =>
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.name}</td>
 
-                                <td>
-                                    <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 1)}>
-                                        O'zgartirish
-                                    </Button>
-                                </td>
-                                <td>
-                                    <Button variant='outline-danger' size='sm' onClick={() => onClickDepartment(item, 2)}>
-                                        O'chirish
-                                    </Button>
-                                </td>
-                            </tr>
-                        )
-                    }
-                </tbody>
-            </Table>
+                                    <td>
+                                        <Button variant='outline-info' size='sm'
+                                                onClick={() => onClickDepartment(item, 1)}>
+                                            O'zgartirish
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant='outline-danger' size='sm'
+                                                onClick={() => onClickDepartment(item, 2)}>
+                                            O'chirish
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitAge}>
                     <Modal.Header closeButton>
@@ -106,8 +113,8 @@ function Age() {
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Control name='name' required value={ageState.name} onChange={onChanges("name")}
-                            placeholder="Nomi " />
-                        <br />
+                                      placeholder="Nomi "/>
+                        <br/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" onClick={handleClose}>

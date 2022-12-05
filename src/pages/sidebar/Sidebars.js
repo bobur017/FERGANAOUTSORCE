@@ -15,9 +15,11 @@ import MultiMenu from "../multimenu/MultiMenu";
 import MultiMenuOne from "../multimenu/MultiMenuOne";
 import {TbBell} from "react-icons/tb";
 import {BiMessageDetail} from "react-icons/bi";
-import RelationMenu from "../relationMultiMenu/RelationMenu";
+import '../allStyle.scss';
 import Users from "../users/Users";
 import MenuView from "../relationMultiMenu/MenuView";
+import UsersDepartment from "../users/UsersDepartment";
+import RelationMenu from "../relationMultiMenu/RelationMenu";
 
 function Sidebars() {
     return (
@@ -51,7 +53,7 @@ function Sidebars() {
                             <div className={'p-2'} style={{backgroundColor:'#eeeeee',borderRadius:"50%",cursor:'pointer'}}><TbBell size={25}/></div>
                             <div className={'p-2'} style={{backgroundColor:'#eeeeee',borderRadius:"50%",cursor:'pointer'}}><BiMessageDetail size={25}/></div>
                             <div className={'d-flex justify-content-between align-items-center'}>
-                                <div className={'px-2'}>Falonchayev . M</div>
+                                <div className={'px-2'}>Hamidov . M</div>
                                 <img src={userLogo} alt="" width={35}/>
                             </div>
                         </div>
@@ -62,6 +64,7 @@ function Sidebars() {
             <Sidebar>
                 <Routes>
                     <Route path="/user" element={<Users/>}/>
+                    <Route path="/users-department" element={<UsersDepartment/>}/>
                     <Route path="/info" element={<About/>}/>
                     <Route path="/mtt" element={<Mtt/>}/>
                     <Route path="/meal" element={<Meal/>}/>
@@ -73,7 +76,8 @@ function Sidebars() {
                     <Route path="/department" element={<Department/>}/>
                     <Route path="/multiMenu" element={<MultiMenu/>}/>
                     <Route path="/multi-menu-one/:id" element={<MultiMenuOne/>}/>
-                    <Route path="/relation-menu" element={<MenuView/>}/>
+                    <Route path="/relation-view" element={<MenuView/>}/>
+                    <Route path="/relation-menu" element={<RelationMenu/>}/>
                 </Routes>
             </Sidebar>
         </div>

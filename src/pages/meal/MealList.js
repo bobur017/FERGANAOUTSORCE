@@ -153,7 +153,7 @@ function MealList() {
                 <img src={baseUrl() + mealState.attachmentId} width={'100%'}/>
                 <Card>
                     <Card.Header>
-                        { mealState.name} taomini tarkibi
+                        {mealState.name} taomini tarkibi
                     </Card.Header>
                     <Card.Body>
                         <Table>
@@ -166,9 +166,9 @@ function MealList() {
                             </thead>
                             <tbody>
                             {
-                                mealState?.productMealList?.map((item,index)=>
+                                mealState?.productMealList?.map((item, index) =>
                                     <tr>
-                                        <td>{index+1}</td>
+                                        <td>{index + 1}</td>
                                         <td>{item.name}</td>
                                         <td>{item.weight}</td>
                                     </tr>
@@ -180,7 +180,7 @@ function MealList() {
                 </Card>
                 <Card>
                     <Card.Header>
-                        { mealState.name} taomini energetik quvvati
+                        {mealState.name} taomini energetik quvvati
                     </Card.Header>
                     <Card.Body>
                         <Table>
@@ -207,7 +207,7 @@ function MealList() {
                 </Card>
                 <Card>
                     <Card.Header>
-                        { mealState.name} taomini umumiy malumotlari
+                        {mealState.name} taomini umumiy malumotlari
                     </Card.Header>
                     <Card.Body>
                         <Table>
@@ -219,15 +219,25 @@ function MealList() {
                             </tr>
                             </thead>
                             <tbody>
-                            <tr><td>1</td><td>Tayyorlanish vazni</td> <td>{mealState.weight}</td></tr>
-                            <tr><td>2</td><td>Taom turi</td><td>{mealState.mealCategoryName}</td></tr>
-                            <tr><td colSpan={3}>
-                                <strong>
-                                    Qo'shimcha ma'lumotlar:
-                                </strong>
-                                <br/>
-                                <br/>
-                                {mealState.comment}</td></tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Tayyorlanish vazni</td>
+                                <td>{mealState.weight}</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Taom turi</td>
+                                <td>{mealState.mealCategoryName}</td>
+                            </tr>
+                            <tr>
+                                <td colSpan={3}>
+                                    <strong>
+                                        Qo'shimcha ma'lumotlar:
+                                    </strong>
+                                    <br/>
+                                    <br/>
+                                    {mealState.comment}</td>
+                            </tr>
                             </tbody>
                         </Table>
                     </Card.Body>
@@ -237,45 +247,54 @@ function MealList() {
     }
 
     return (
-        <div>
+        <div className={'allMain'}>
             <NavbarHeader name={"Taomlar bo'limi"} handleShow={() => onClickDepartment(null, 0)}
                           buttonName={"Taom_qo'shish"}/>
             <br/>
-            <Table bordered size='sm' className='text-center'>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nomi</th>
-                    <th>O'zgartirish</th>
-                    <th>O'chirish</th>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    meals?.map((item, index) =>
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{item.name}</td>
-                            <td>
-                                <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 1)}>
-                                    O'zgartirish
-                                </Button>
-                            </td>
-                            <td>
-                                <Button variant='outline-info' size='sm' onClick={() => onClickDepartment(item, 3)}>
-                                    Ko'rish
-                                </Button>
-                            </td>
-                            <td>
-                                <Button variant='outline-danger' size='sm' onClick={() => onClickDepartment(item, 2)}>
-                                    O'chirish
-                                </Button>
-                            </td>
+            <div className={'figma-card'}>
+
+                <div className={'tableCalendar'}>
+                    <table style={{color: 'black'}}>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nomi</th>
+                            <th>O'zgartirish</th>
+                            <th>Ko'rish</th>
+                            <th>O'chirish</th>
                         </tr>
-                    )
-                }
-                </tbody>
-            </Table>
+                        </thead>
+                        <tbody>
+                        {
+                            meals?.map((item, index) =>
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.name}</td>
+                                    <td>
+                                        <Button variant='outline-info' size='sm'
+                                                onClick={() => onClickDepartment(item, 1)}>
+                                            O'zgartirish
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant='outline-info' size='sm'
+                                                onClick={() => onClickDepartment(item, 3)}>
+                                            Ko'rish
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant='outline-danger' size='sm'
+                                                onClick={() => onClickDepartment(item, 2)}>
+                                            O'chirish
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <Modal show={show} onHide={handleClose}>
                 {
                     number === 1 || number === 0 ? getForm() : null
