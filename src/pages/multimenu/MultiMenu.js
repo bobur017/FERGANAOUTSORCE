@@ -156,7 +156,7 @@ function MultiMenu() {
                     {/*    </tbody>*/}
                     {/*</table>*/}
                     {multiMenuList?.map((item, index) =>
-                        <Col xs={12} sm={12} md={12} lg={12} xl={12} className={'mt-3'} key={index}  style={{position:'relative'}}>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12} className={'mt-3 my-Hover'} key={index}  style={{position:'relative'}} onClick={()=>pushUrl(item)}>
                             <div className={'card px-2'}>
                                 <div className={'d-flex justify-content-between align-items-center w-100'}>
                                     <div className={``}>

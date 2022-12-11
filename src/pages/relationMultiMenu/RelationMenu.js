@@ -11,6 +11,8 @@ import {MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos} from "react-icons/md
 import {AiOutlineEnvironment} from "react-icons/ai";
 import {BiCircle} from "react-icons/bi";
 import {colorTextStr} from "../funcs/Funcs";
+import {getDepartmentFromRelation} from "../departments/RegionDepartmentReducer";
+import {getMttFromRelations} from "../mtt/MttReducer";
 
 
 export const district = [
@@ -120,23 +122,41 @@ function RelationMenu() {
         "menuId": ""
     }
     const [multiMenuState, setStateMultiMenu] = useState();
-    const [calendarState, setCalendarState] = useState();
-    const [relationMenu, setRelationMenu] = useState(defaultForRelation);
+    const [calendarState, setCalendarState] = useState([]);
     const [apex, setApex] = useState();
+    const [departmentId, setDepartmentId] = useState();
+    const [currentDate, setCurrentDate] = useState();
+    const [currentDay, setCurrentDay] = useState();
     const [apex2, setApex2] = useState();
     const [apex3, setApex3] = useState();
     const dispatch = useDispatch();
     const multiMenuList = useSelector(state => state.multiMenu.multiMenuList);
     const calendar = useSelector(state => state.multiMenu.checkCalendar);
+    const departmentsRel = useSelector(state => state.department.departmentsRel);
+    const mttsRelations = useSelector(state => state.mtt.mttsRelations);
     const firstUpdate = useRef(false);
 
+    useEffect(() => {
+        if (!firstUpdate.current) {
+        } else {
+            console.log(departmentsRel, "departmentsRel");
+            console.log(mttsRelations, "mttsRelations");
+        }
+    }, [departmentsRel,mttsRelations]);
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
             dispatch(getMultiMenu());
             dispatch(checkCalendar({month: 12}));
         } else {
-            setCalendarState(calendar);
+            let list = [...calendarState];
+            if (!list.some(cale => cale.month === calendar.month && cale.year === calendar.year)) {
+                list.push(calendar);
+                setCurrentDate({...calendar, index: list.indexOf(calendar)});
+                setCalendarState(list);
+            } else if (list.length === 0) {
+                setCalendarState(list);
+            }
         }
     }, [calendar]);
 
@@ -223,15 +243,49 @@ function RelationMenu() {
         )
     }
 
-    const getDates = (checked, index, index2) => {
-        let list = [...calendarState?.dayList];
+    const getDates = (checked, index, index2, date) => {
+        dispatch(getDepartmentFromRelation({date: parseInt(date)}));
+        setCurrentDay(date);
+        let list = [...currentDate?.dayList];
         let list2 = [...list[index]];
         list2[index2] = {...list2[index2], checked: checked};
         list[index] = [...list2];
-        setCalendarState({...calendarState, dayList: list});
-        console.log(list[index][index2], "list");
+        setCurrentDate({...currentDate, dayList: list});
+        let calendarList = [...calendarState];
+        calendarList[currentDate?.index] = {
+            ...calendarList[currentDate?.index],
+            dayList: list,
+            index: currentDate?.index
+        };
+        setCalendarState(calendarList);
     }
 
+    const changeDate = (num, year, month) => {
+        if (month === 12 && num > 0) {
+            year = year + 1;
+            month = 1;
+        } else if (month === 1 && num < 0) {
+            year = year - 1;
+            month = 12;
+        } else {
+            month = month + num;
+        }
+
+        getDateServer(year, month);
+
+    }
+    const getDateServer = (year, month) => {
+        if (!calendarState.some(cale => cale.month === month && cale.year === year)) {
+            dispatch(checkCalendar({month, year}));
+        } else {
+            setCurrentDate(calendarState.filter(date => date.year === year && date.month === month)[0]);
+        }
+    }
+
+    const getKindergarten = (data) => {
+        setDepartmentId(data.departmentId);
+        dispatch(getMttFromRelations(data.departmentId,{date:currentDay}));
+    }
     return (
         <Container fluid className={main.main}>
             <Row>
@@ -288,9 +342,13 @@ function RelationMenu() {
                          style={{backgroundColor: '#FFFFFFCC', borderRadius: 16}}>
                         <div className={'w-100'}>
                             <div className={'w-100 d-flex justify-content-between align-items-center mb-1'}>
-                                <div><MdOutlineArrowBackIosNew size={30}/></div>
-                                <div className={'fs-3'}>Iyun 2022</div>
-                                <div><MdOutlineArrowForwardIos size={30}/></div>
+                                <div className={'my-Hover'}
+                                     onClick={() => changeDate(-1, currentDate?.year, currentDate?.month)}>
+                                    <MdOutlineArrowBackIosNew size={30}/></div>
+                                <div className={'fs-3'}>{currentDate?.month} - {currentDate?.year}</div>
+                                <div className={'my-Hover'}
+                                     onClick={() => changeDate(1, currentDate?.year, currentDate?.month)}>
+                                    <MdOutlineArrowForwardIos size={30}/></div>
                             </div>
                             <table className={main.table}>
                                 <thead>
@@ -306,12 +364,12 @@ function RelationMenu() {
                                 </thead>
                                 <tbody>
                                 {
-                                    calendarState?.dayList?.map((week, index) =>
+                                    currentDate?.dayList?.map((week, index) =>
                                         <tr key={index}>
                                             {week.map((day, index2) =>
                                                 <td key={index2}
                                                     style={day?.checked ? {backgroundColor: 'rgba(72,177,171,0.55)'} : {}}
-                                                    onClick={() => getDates(!day.checked, index, index2)}><span
+                                                    onClick={() => getDates(!day.checked, index, index2, day?.date)}><span
                                                     style={index2 === 5 || index2 === 6 ? {color: 'red'} : {}}> {day.day !== 0 ? day.day : null}</span>
                                                 </td>
                                             )}
@@ -329,14 +387,19 @@ function RelationMenu() {
                         <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
 
                             {
-                                district.map((item, index) =>
-                                    <div key={index} className={`d-flex p-2 mt-1 ${main.district}`}
-                                         style={{backgroundColor: 'white'}}>
-                                        <div style={{color: '#48B1AB', paddingLeft: 10, borderColor: '#48B1AB'}}
+                                departmentsRel.map((item, index) =>
+                                    <div key={index} className={`d-flex p-2 mt-1 my-Hover ${main.district}`}
+                                         style={{backgroundColor: departmentId !== item.departmentId ? 'white' : '#48B1AB'}}
+                                    onClick={()=>getKindergarten(item)}>
+                                        <div style={{
+                                            color: departmentId !== item.departmentId ? '#48B1AB' : 'white',
+                                            paddingLeft: 10,
+                                            borderColor: departmentId !== item.id ? '#48B1AB' : 'white'
+                                        }}
                                              className={main.leftLine}><AiOutlineEnvironment
                                             size={30}/>
                                         </div>
-                                        <div className={'mx-2'}>{item.name}</div>
+                                        <div className={'mx-2'} style={{color:departmentId === item.departmentId ? 'white' : '#000'}}>{item?.departmentName}</div>
                                     </div>
                                 )
                             }

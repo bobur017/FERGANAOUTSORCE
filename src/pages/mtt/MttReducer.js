@@ -9,9 +9,13 @@ const slice = createSlice({
         result: {},
         error: {},
         mtts: [],
+        mttsRelations: [],
         mttsByDepartment: [],
     },
     reducers: {
+        mttsRelations: (state, action) => {
+            state.mttsRelations = action.payload;
+        },
         setMtt: (state, action) => {
             state.mtts = action.payload;
         },
@@ -37,6 +41,17 @@ export const getMtt = (params) => apiCall({
     },
     params,
     success: slice.actions.setMtt.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getMttFromRelations = (id,params) => apiCall({
+    url: "/menu/getKindergartenByDepartmentIdAddMenu/"+id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.mttsRelations.type,
     error: slice.actions.errorReducer.type
 })
 

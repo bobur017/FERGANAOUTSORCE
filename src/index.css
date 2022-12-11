@@ -39,7 +39,9 @@
   /*color: #00b2ff;*/
 }
 .my-Hover:hover{
+  border-radius: 7px;
   cursor: pointer;
+  background-color: rgba(207, 208, 208, 0.63);
 }
 .my-table-first{
   font-size: 10px;

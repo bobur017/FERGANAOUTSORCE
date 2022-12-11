@@ -8,6 +8,7 @@ const slice = createSlice({
         result: {},
         error: {},
         regionDepartments: [],
+        departmentsRel: [],
         departments: [],
     },
     reducers: {
@@ -16,6 +17,9 @@ const slice = createSlice({
         },
         regionDepartments: (state, action) => {
             state.regionDepartments = action.payload;
+        },
+        departmentsRel: (state, action) => {
+            state.departmentsRel = action.payload;
         },
         resultReducer: (state, action) => {
             getRegionDepartment();
@@ -80,6 +84,17 @@ export const getDepartment = () => apiCall({
         Authorization: getToken(),
     },
     success: slice.actions.departments.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getDepartmentFromRelation = (params) => apiCall({
+    url: "/menu/getDepartmentAddMenu",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.departmentsRel.type,
     error: slice.actions.errorReducer.type
 })
 
