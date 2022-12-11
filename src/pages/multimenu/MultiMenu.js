@@ -1,12 +1,17 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Button, Form, InputGroup, Modal, Table} from "react-bootstrap";
+import {Button, Col, Form, InputGroup, Modal, Table} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
 import {getMealTime} from "../meal/MealTimeReducer";
 import {addAge, editAge} from "../age/AgeReducer";
 import {addMultiMenu, deleteMultiMenu, editMultiMenu, getMultiMenu} from "./MultiMenuReducer";
 import {useNavigate} from "react-router-dom";
+import main from "../relationMultiMenu/relationStyle.module.scss";
+import ReactApexChart from "react-apexcharts";
+import {colorTextStr} from "../funcs/Funcs";
+import {RiDeleteBin2Fill} from "react-icons/ri";
+import {BsPencilSquare} from "react-icons/bs";
 
 function MultiMenu() {
     const defaultData = {
@@ -14,6 +19,37 @@ function MultiMenu() {
         "daily": '',
         "mealTimeIdList": [],
         "name": ""
+    }
+    const pie = {
+        series: [14, 85],
+        options: {
+            colors: ['#BABDC6', '#48B1AB'],
+            labels: ['Bajarilmadi %', 'Bajarildi %'],
+            chart: {
+                type: 'donut',
+            },
+            legend: {
+                show: false
+            },
+            dataLabels: {
+                enabled: false
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                showAlways: true,
+                                show: true,
+                                label: "Sanpin"
+                            },
+                        }
+                    }
+                }
+            },
+
+        },
     }
     const [multiMenuState, setMultiMenuState] = useState(defaultData);
     const [multiMenuList, setMultiList] = useState();
@@ -93,32 +129,125 @@ function MultiMenu() {
 
             <div className={'figma-card mt-3'}>
                 <div className={'tableCalendar'}>
-                    <table style={{color: 'black'}}>
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nomi</th>
-                            <th>Tayyorlanish vazni</th>
-                            <th>O'zgartirish</th>
-                            <th>O'chirish</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            multiMenuList?.map((item, index) =>
-                                <tr key={index}>
-                                    <td className={'my-Hover'} onClick={() => pushUrl(item)}>{index + 1}</td>
-                                    <td className={'my-Hover'} onClick={() => pushUrl(item)}>{item.name}</td>
-                                    <td className={'my-Hover'} onClick={() => pushUrl(item)}>{item.daily}</td>
-                                    <td><Button variant={"outline-info"} size={"sm"}
-                                                onClick={() => handleShow(2, item)}>O'zgartirish</Button></td>
-                                    <td><Button variant={"outline-danger"} size={"sm"}
-                                                onClick={() => handleShow(3, item)}>O'chirish</Button></td>
-                                </tr>
-                            )
-                        }
-                        </tbody>
-                    </table>
+                    {/*<table style={{color: 'black'}}>*/}
+                    {/*    <thead>*/}
+                    {/*    <tr>*/}
+                    {/*        <th>#</th>*/}
+                    {/*        <th>Nomi</th>*/}
+                    {/*        <th>Tayyorlanish vazni</th>*/}
+                    {/*        <th>O'zgartirish</th>*/}
+                    {/*        <th>O'chirish</th>*/}
+                    {/*    </tr>*/}
+                    {/*    </thead>*/}
+                    {/*    <tbody>*/}
+                    {/*    {*/}
+                    {/*        multiMenuList?.map((item, index) =>*/}
+                    {/*            <tr key={index}>*/}
+                    {/*                <td className={'my-Hover'} onClick={() => pushUrl(item)}>{index + 1}</td>*/}
+                    {/*                <td className={'my-Hover'} onClick={() => pushUrl(item)}>{item.name}</td>*/}
+                    {/*                <td className={'my-Hover'} onClick={() => pushUrl(item)}>{item.daily}</td>*/}
+                    {/*                <td><Button variant={"outline-info"} size={"sm"}*/}
+                    {/*                            onClick={() => handleShow(2, item)}>O'zgartirish</Button></td>*/}
+                    {/*                <td><Button variant={"outline-danger"} size={"sm"}*/}
+                    {/*                            onClick={() => handleShow(3, item)}>O'chirish</Button></td>*/}
+                    {/*            </tr>*/}
+                    {/*        )*/}
+                    {/*    }*/}
+                    {/*    </tbody>*/}
+                    {/*</table>*/}
+                    {multiMenuList?.map((item, index) =>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12} className={'mt-3'} key={index}  style={{position:'relative'}}>
+                            <div className={'card px-2'}>
+                                <div className={'d-flex justify-content-between align-items-center w-100'}>
+                                    <div className={``}>
+                                        <span style={{fontSize: 25}} className={'fw-semibold'}>{item.name}</span>
+                                        <br/>
+                                        <span style={{fontSize: 20}}>{item.daily} kun uchun mo‘ljallangan</span>
+                                        <br/>
+                                        <span>{item.regionalDepartmentName} tomonidan tuzilgan.</span>
+                                    </div>
+                                    <div className={'d-flex'}>
+                                        <ReactApexChart options={{
+                                            ...pie.options,
+                                            colors: ['#BABDC6', colorTextStr(item.sanPinPercentage)],
+                                            plotOptions: {
+                                                pie: {
+                                                    donut: {
+                                                        labels: {
+                                                            show: true,
+                                                            total: {
+                                                                showAlways: true,
+                                                                show: true,
+                                                                fontSize: '10px',
+                                                                label: "Sanpin \n o'rtacha",
+                                                                formatter: function (w) {
+                                                                    return item.sanPinPercentage;
+                                                                }
+                                                            },
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }}
+                                                        series={[item.sanPinPercentage > 100 ? 0 : 100 - item.sanPinPercentage, item.sanPinPercentage]}
+                                                        type="donut" width={120}
+                                                        height={150}/>
+                                        <ReactApexChart options={{
+                                            ...pie.options,
+                                            colors: ['#BABDC6', colorTextStr(item.sanPinPercentageMax)],
+                                            plotOptions: {
+                                                pie: {
+                                                    donut: {
+                                                        labels: {
+                                                            show: true,
+                                                            total: {
+                                                                showAlways: true,
+                                                                show: true,
+                                                                fontSize: '12px',
+                                                                label: "Sanpin max",
+                                                                formatter: function (w) {
+                                                                    return item.sanPinPercentageMax;
+                                                                }
+                                                            },
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }}
+                                                        series={[item.sanPinPercentageMax > 100 ? 0 : 100 - item.sanPinPercentageMax, item.sanPinPercentageMax]}
+                                                        type="donut" width={120}
+                                                        height={150}/>
+                                        <ReactApexChart options={{
+                                            ...pie.options,
+                                            colors: ['#BABDC6', colorTextStr(item.sanPinPercentageMin)],
+                                            plotOptions: {
+                                                pie: {
+                                                    donut: {
+                                                        labels: {
+                                                            show: true,
+                                                            total: {
+                                                                showAlways: true,
+                                                                show: true,
+                                                                fontSize: '10px',
+                                                                label: "Sanpin min",
+                                                                formatter: function (w) {
+                                                                    return item.sanPinPercentageMin;
+                                                                }
+                                                            },
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }}
+                                                        series={[item.sanPinPercentageMin > 100 ? 0 : 100 - item.sanPinPercentageMin, item.sanPinPercentageMin]}
+                                                        type="donut" width={120}
+                                                        height={150}/>
+                                    </div>
+                                </div>
+                            </div>
+                                        <div style={{position:'absolute',right:0,bottom:0,cursor:'pointer'}}  onClick={() => handleShow(3, item)}><RiDeleteBin2Fill color={'#E9573F'} size={20} /></div>
+                                        <div style={{position:'absolute',right:0,top:0,cursor:'pointer'}} onClick={() => handleShow(2, item)}><BsPencilSquare color={'orange'} size={20}/></div>
+                        </Col>)}
                 </div>
             </div>
             <Modal show={show} onHide={handleClose}>

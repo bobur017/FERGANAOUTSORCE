@@ -8,7 +8,8 @@ import {addMultiMenuMeal, deleteMultiMenuOne, getMultiMenuOne} from "./MultiMenu
 import {useParams} from "react-router-dom";
 import {getMeal} from "../meal/MealReducer";
 import DropdownCustom from "../more/DropdownCustom";
-import {tableRowCustomTd3} from "../more/Functions";
+import {percentage, tableRowCustomTd3} from "../more/Functions";
+import {colorText} from "../funcs/Funcs";
 
 function MultiMenuOne() {
     const defaultData = {
@@ -38,14 +39,14 @@ function MultiMenuOne() {
                 mealName: '',
                 mealId: ''
             });
+            dispatch(getAge());
+            dispatch(getMeal());
         } else if (num === 2) {
             setNumber(num);
         }
         setShow(true);
     };
-
     const [showCanvas, setShowCanvas] = useState(false);
-
     const handleCloseCanvas = () => setShowCanvas(false);
     const handleShowCanvas = () => setShowCanvas(true);
 
@@ -66,10 +67,6 @@ function MultiMenuOne() {
         }
     }, [multiMenu.result]);
 
-    // useEffect(() => {
-    //     setMealState(meals)
-    // }, [meals]);
-
     useEffect(() => {
         setMultiMenuState(multiMenu.multiMenu);
     }, [multiMenu.multiMenu]);
@@ -77,8 +74,6 @@ function MultiMenuOne() {
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
-            dispatch(getAge());
-            dispatch(getMeal());
             dispatch(getMultiMenuOne(multiMenuId.id));
         }
     }, []);
@@ -87,6 +82,7 @@ function MultiMenuOne() {
         e.preventDefault();
         dispatch(addMultiMenuMeal(mealState));
     }
+
 
     const onChangeItem = (index, data) => (e) => {
         let list = [...mealState.ageStandardList];
@@ -138,81 +134,139 @@ function MultiMenuOne() {
             return renderAddMealToMenu();
         }
     }
-   const deleteOnclick = (data) => {
+    const deleteOnclick = (data) => {
         dispatch(deleteMultiMenuOne(data))
     }
 
-
     return (
-        <div>
-            <NavbarHeader name={multiMenuState.name + " taomnoma"} buttonName={"Taomnoma qo'shish"}
+        <div className={'allMain'}>
+            <NavbarHeader name={multiMenuState.name + " taomnoma"}
                           handleShow={handleShowCanvas}/>
             <Container fluid>
                 <Row>
-                    {
-                        multiMenuState?.menuList?.map((menu, index) =>
-                            <Col key={index} xs={12} sm={12} md={12} lg={6} xl={6} className={'text-center'}>
-                                <Card>
-                                    <Card.Header>{menu.name}</Card.Header>
-
-                                    <Container fluid>
-                                        <Row className={'justify-content-center text-center'}>
-                                            {
-                                                menu?.mealTimeStandardList?.map((mealTime, index2) =>
-                                                    <Col key={index2} xs={12} sm={12} md={12} lg={12} xl={12}>
-                                                        <div>{mealTime.mealTimeName} <Button variant={"light"}
-                                                                                             size={"sm"}
-                                                                                             onClick={() => handleShow(1, mealTime)}>Taom
-                                                            qo'shish</Button></div>
-                                                        <Table bordered className={"my-table-first"}>
-                                                            <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>Taom nomi</th>
-                                                                <th>Yosh toifalari</th>
-                                                                <th>Miqdori</th>
-                                                                <th>O'chirish</th>
-                                                            </tr>
-                                                            </thead>
-                                                            {mealTime?.mealAgeStandardList?.map((meal, index3) => {
-                                                                    return (
-                                                                        <tbody key={index3}>
+                    <Col xs={8} sm={8} md={8} lg={8} xl={8} className={'figma-card-first mt-3'}>
+                        <Row>
+                            {
+                                multiMenuState?.menuList?.map((menu, index) =>
+                                    <Col key={index} xs={12} sm={12} md={12} lg={6} xl={6}
+                                         className={'text-center mt-3'}>
+                                        <Card className={'m-0'}>
+                                            <Card.Header style={{backgroundColor: '#d7d6d6'}}>{menu.name}</Card.Header>
+                                            <Container fluid>
+                                                <Row className={'justify-content-center text-center'}>
+                                                    {
+                                                        menu?.mealTimeStandardList?.map((mealTime, index2) =>
+                                                            <Col key={index2} xs={12} sm={12} md={12} lg={12} xl={12}>
+                                                                <div
+                                                                    className={'w-100 d-flex justify-content-between my-2 fw-bolder'}>{mealTime.mealTimeName}
+                                                                    <button className={'createButtons mx-2'}
+                                                                            style={{fontSize:13}}
+                                                                            onClick={() => handleShow(1, mealTime)}>Taom
+                                                                        qo'shish
+                                                                    </button>
+                                                                </div>
+                                                                <div className={'miniTable'}>
+                                                                    <table>
+                                                                        <thead>
                                                                         <tr>
-                                                                            <td rowSpan={meal.ageStandardList.length}>{index3 + 1}</td>
-                                                                            <td rowSpan={meal.ageStandardList.length}>{meal.mealName}</td>
-                                                                            <td>
-                                                                                {
-                                                                                    meal?.ageStandardList[0].ageGroupName
-                                                                                }
-                                                                            </td>
-                                                                            <td>
-                                                                                {meal?.ageStandardList[0].weight}
-                                                                            </td>
-                                                                            <td rowSpan={meal.ageStandardList.length}>
-                                                                                <Button variant={"outline-danger"}
-                                                                                        size={"sm"} onClick={()=>deleteOnclick(meal)}>
-                                                                                    O'chiirish
-                                                                                </Button>
-                                                                            </td>
+                                                                            <th>#</th>
+                                                                            <th>Taom nomi</th>
+                                                                            <th>Yosh toifalari</th>
+                                                                            <th>Miqdori</th>
+                                                                            <th>O'chirish</th>
                                                                         </tr>
-                                                                        {
-                                                                            tableRowCustomTd3(meal?.ageStandardList)
-                                                                        }
-                                                                        </tbody>
-                                                                    )
-                                                                }
-                                                            )}
-                                                        </Table>
-
-                                                    </Col>
-                                                )
-                                            }
-                                        </Row>
-                                    </Container>
-                                </Card>
-                            </Col>
-                        )
-                    }
+                                                                        </thead>
+                                                                        {mealTime?.mealAgeStandardList?.map((meal, index3) => {
+                                                                                return (
+                                                                                    <tbody key={index3}>
+                                                                                    <tr>
+                                                                                        <td rowSpan={meal.ageStandardList.length}>{index3 + 1}</td>
+                                                                                        <td rowSpan={meal.ageStandardList.length}>{meal.mealName}</td>
+                                                                                        <td>
+                                                                                            {
+                                                                                                meal?.ageStandardList[0].ageGroupName
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            {meal?.ageStandardList[0].weight}
+                                                                                        </td>
+                                                                                        <td rowSpan={meal.ageStandardList.length}>
+                                                                                            <Button
+                                                                                                variant={"outline-danger"}
+                                                                                                size={"sm"}
+                                                                                                onClick={() => deleteOnclick(meal)}>
+                                                                                                O'chiirish
+                                                                                            </Button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    {
+                                                                                        tableRowCustomTd3(meal?.ageStandardList)
+                                                                                    }
+                                                                                    </tbody>
+                                                                                )
+                                                                            }
+                                                                        )}
+                                                                    </table>
+                                                                </div>
+                                                            </Col>
+                                                        )
+                                                    }
+                                                </Row>
+                                            </Container>
+                                        </Card>
+                                    </Col>
+                                )
+                            }
+                        </Row>
+                    </Col>
+                    <Col xs={12} sm={12} md={4} lg={4} xl={4} className={'figma-card-first mt-3'}>
+                        <div className={'miniTable'}>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th style={{maxWidth:100}}>Nomi</th>
+                                    <th>Yosh toifa</th>
+                                    <th>Rejada</th>
+                                    <th>Amalda</th>
+                                    <th>Foiz</th>
+                                </tr>
+                                </thead>
+                                {
+                                    multiMenuState?.sanpinMenuNorm?.map((item, index) => {
+                                            return (
+                                                <tbody>
+                                                {
+                                                    item?.ageGroupSanpinNormList?.map((sanpinNorm, index2) => {
+                                                        if (index2 !== 0) {
+                                                            return (
+                                                                <tr key={index2}>
+                                                                    <td style={{maxWidth:100}}>{sanpinNorm?.ageGroupName}</td>
+                                                                    <td className={'text-center'}>{sanpinNorm?.planWeight}</td>
+                                                                    <td className={'text-center'}>{sanpinNorm?.doneWeight}</td>
+                                                                    <td className={'text-center'} style={colorText(percentage(sanpinNorm?.doneWeight, sanpinNorm?.planWeight))}>{percentage(sanpinNorm?.doneWeight, sanpinNorm?.planWeight)} %</td>
+                                                                </tr>
+                                                            )
+                                                        } else {
+                                                            return (<tr key={index}>
+                                                                <td rowSpan={item?.ageGroupSanpinNormList.length}>{index + 1}</td>
+                                                                <td rowSpan={item?.ageGroupSanpinNormList.length} style={{maxWidth:100}}>{item.sanpinCategoryName}</td>
+                                                                <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].ageGroupName}</td>
+                                                                <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].planWeight}</td>
+                                                                <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].doneWeight}</td>
+                                                                <td className={'text-center'} style={colorText(percentage(item?.ageGroupSanpinNormList[0].doneWeight, item?.ageGroupSanpinNormList[0].planWeight))}>{percentage(item?.ageGroupSanpinNormList[0].doneWeight, item?.ageGroupSanpinNormList[0].planWeight)} %</td>
+                                                            </tr>)
+                                                        }
+                                                    })
+                                                }
+                                                </tbody>
+                                            )
+                                        }
+                                    )
+                                }
+                            </table>
+                        </div>
+                    </Col>
                 </Row>
             </Container>
             <Modal show={show} onHide={handleClose}>

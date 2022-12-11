@@ -69,7 +69,7 @@ function MealCategory() {
 
     return (
         <div className={'allMain'}>
-            <NavbarHeader name={"Taomlar turi bo'limi"} handleShow={handleShow} buttonName={"Taom_turini_qo'shish"}/>
+            <NavbarHeader name={"Taom turilari"} handleShow={handleShow} buttonName={"Taom turini qo'shish"}/>
             <br/>
             <div className={'figma-card'}>
 

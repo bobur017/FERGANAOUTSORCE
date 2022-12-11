@@ -1,5 +1,4 @@
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
 import {getRefreshToken} from "./pages/more/Functions";
 import {baseUrl2} from "./Default";
 
@@ -27,11 +26,17 @@ const api = ({dispatch}) => (next) => (action) => {
             if (err?.response.status === 403) {
                 if (err?.response?.data?.error_message?.startsWith("The Token has expired")) {
                     renewAccessToken();
+                }else{
+                    dispatch({
+                        type: error,
+                        payload: err,
+                    });
+            console.log(err, "error");
                 }
             }else {
             dispatch({
                 type: error,
-                payload: err
+                payload: err,
             });
             console.log(err, "error");
             }
@@ -44,6 +49,7 @@ const api = ({dispatch}) => (next) => (action) => {
                     Authorization: getRefreshToken()
                 }
             }).then(res => {
+                console.log(res.data?.refresh_token,"refresh");
                 localStorage.setItem("Authorization", "Bearer " + res.data?.access_token);
                 localStorage.setItem("Refresh", "Bearer " + res.data?.refresh_token);
                 axios({
@@ -52,7 +58,7 @@ const api = ({dispatch}) => (next) => (action) => {
                     method,
                     data,
                     headers:{...headers,Authorization: "Bearer " +res.data?.access_token},
-                    params
+                    params,
                 }).then(res => {
                     dispatch({
                         type: success,

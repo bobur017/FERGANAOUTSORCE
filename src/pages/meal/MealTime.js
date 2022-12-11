@@ -82,7 +82,7 @@ function MealTime() {
 
     return (
         <div className={'allMain'}>
-            <NavbarHeader name={"Taom vaqtlari bo'limi"} handleShow={handleShow} buttonName={"Taom_vaqtini_qo'shish"}/>
+            <NavbarHeader name={"Taomlanish vaqtlari"} handleShow={handleShow} buttonName={"Taom vaqtini qo'shish"}/>
             <br/>
             <div className={'figma-card'}>
 

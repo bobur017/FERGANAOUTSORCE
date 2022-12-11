@@ -19,17 +19,16 @@ function SearchSelect({list, setData, itemName}) {
         }, 300);
     }
     const focus = (e) => {
+        setSearchList(list.filter(item => item[itemName].toLowerCase().includes(e.target.value.toLowerCase())))
         setSearchOpen(!searchOpen);
     }
     const search = (e) => {
-        setSearchList(list.filter(item => item[itemName].toLowerCase().includes(e.target.value.toLowerCase())))
     }
     return (
         <div className={`w-100 ${main.main}`}>
             <div className={main.search}>
                 <Form.Control type={'text'}
                               placeholder={currentItem[itemName]}
-                              onChange={search}
                               onBlur={(e) => blur(e)}
                               onFocus={(e) => focus(e)}/>
                 {searchOpen ? <div className={main.subSearch}>

@@ -2,11 +2,6 @@ import {
     FaCommentAlt,
     FaHome,
     FaNetworkWired,
-    FaRegChartBar,
-    FaShoppingBag,
-    FaTh,
-    FaThList,
-    FaUserAlt
 } from "react-icons/fa";
 import React from "react";
 import { GiGreenhouse, GiMeal, GiShoppingCart } from "react-icons/gi";
@@ -15,6 +10,8 @@ import {CgMenuHotdog} from "react-icons/cg";
 import {BsFillMenuButtonFill, BsFillMenuButtonWideFill} from "react-icons/bs";
 import {TiInfoLargeOutline} from "react-icons/ti";
 import {FaUserCog} from "react-icons/fa";
+import {HiOutlineTruck} from "react-icons/hi";
+import {MdOutlinePriceChange} from "react-icons/md";
 
 export const rolesList = (role) => {
 
@@ -65,6 +62,11 @@ export const rolesList = (role) => {
                 name: "Menyularni biriktirish",
                 icon: <BsFillMenuButtonFill size={25}/>
             },
+            {
+                path: "/sidebar/price",
+                name: "Narx-navo",
+                icon: <MdOutlinePriceChange size={25}/>
+            },
 
         ];
     } else if (role === "ROLE_SUPER_ADMIN") {
@@ -81,7 +83,18 @@ export const rolesList = (role) => {
             },
         ];
     } else  if(role === "ROLE_BO`LIM_BUXGALTER"){
-
+        return [
+            {
+                path: "/sidebar/info",
+                name: "Ma'lumotlar",
+                icon: <TiInfoLargeOutline size={25}/>
+            },
+            {
+                path: "/sidebar/supplier",
+                name: "Ma'lumotlar",
+                icon: <HiOutlineTruck size={25}/>
+            },
+        ];
     }else  if(role === "ROLE_XODIMLAR_BO`LIMI"){
         return [
             {

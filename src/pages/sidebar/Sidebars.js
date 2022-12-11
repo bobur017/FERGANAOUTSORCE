@@ -20,6 +20,8 @@ import Users from "../users/Users";
 import MenuView from "../relationMultiMenu/MenuView";
 import UsersDepartment from "../users/UsersDepartment";
 import RelationMenu from "../relationMultiMenu/RelationMenu";
+import Supplier from "../supplier/Supplier";
+import Price from "../price/Price";
 
 function Sidebars() {
     return (
@@ -78,6 +80,8 @@ function Sidebars() {
                     <Route path="/multi-menu-one/:id" element={<MultiMenuOne/>}/>
                     <Route path="/relation-view" element={<MenuView/>}/>
                     <Route path="/relation-menu" element={<RelationMenu/>}/>
+                    <Route path="/supplier" element={<Supplier/>}/>
+                    <Route path="/price" element={<Price/>}/>
                 </Routes>
             </Sidebar>
         </div>

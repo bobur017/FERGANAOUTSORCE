@@ -8,6 +8,7 @@ import {getProduct} from "../product/ProductReducer";
 import DropdownCustomChackList from "../more/DropdownCustomChackList";
 import {baseUrl} from "../../Default";
 import {map} from "react-bootstrap/ElementChildren";
+import {getMealCategory} from "./MealCategoryReducer";
 
 function MealList() {
     const [show, setShow] = useState(false);
@@ -47,6 +48,7 @@ function MealList() {
             firstUpdate.current = true;
             dispatch(getMeal());
             dispatch(getProduct());
+            dispatch(getMealCategory());
         }
     }, [])
 
@@ -248,8 +250,8 @@ function MealList() {
 
     return (
         <div className={'allMain'}>
-            <NavbarHeader name={"Taomlar bo'limi"} handleShow={() => onClickDepartment(null, 0)}
-                          buttonName={"Taom_qo'shish"}/>
+            <NavbarHeader name={"Taomlar "} handleShow={() => onClickDepartment(null, 0)}
+                          buttonName={"Taom qo'shish"}/>
             <br/>
             <div className={'figma-card'}>
 

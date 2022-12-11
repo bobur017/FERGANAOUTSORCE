@@ -4,7 +4,7 @@ import {IoMdArrowBack, IoMdArrowForward} from "react-icons/io";
 
 function FromPageSizeBottom({pageSize, allPageSize, currentPage, changesPage}) {
     return (
-        <div className={`w-100 d-flex justify-content-center`}>
+        <div className={`w-100 d-flex justify-content-center mb-3`}>
             <button  className={'mx-1 myDarkButtons'} onClick={() => changesPage(currentPage - 1)}
                     disabled={currentPage === 0}><IoMdArrowBack size={20}/></button>
             {currentPage - 1 > 0 ? <button  className={'mx-1 myDarkButtons'}  onClick={() => changesPage(currentPage - 2)}>{currentPage - 1}</button> : null}

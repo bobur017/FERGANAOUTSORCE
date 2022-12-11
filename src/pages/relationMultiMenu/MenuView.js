@@ -11,6 +11,7 @@ import {district, mtt} from "./RelationMenu";
 import {RiHome5Line} from "react-icons/ri";
 import {Link} from "react-router-dom";
 import {GoPrimitiveDot} from "react-icons/go";
+import TabsCustom from "../more/TabsCustom";
 
 function MenuView() {
     const dispatch = useDispatch();
@@ -35,17 +36,7 @@ function MenuView() {
                     Tumanlarga menyu biriktirilishi haqida ma’lumot
                 </div>
                 <div className={"w-50 d-flex justify-content-between align-items-center"}>
-                    <div className={`d-flex ${main.lineFromNavs}`}>
-                        <div className={`mx-2 ${main.myNavs}`} onClick={() => setActiveNav(0)}>
-                            <span style={activeNav === 0 ? {color: '#48B1AB'} : {color: '#777B82'}}>Kun bo‘yicha</span>
-                            <div style={activeNav === 0 ? {} : {display: 'none'}} className={main.myLineNavs}></div>
-                        </div>
-                        <div className={`mx-2 ${main.myNavs}`} onClick={() => setActiveNav(1)}>
-                            <span
-                                style={activeNav === 1 ? {color: '#48B1AB'} : {color: '#777B82'}}> Bog‘cha kesimida</span>
-                            <div style={activeNav === 1 ? {} : {display: 'none'}} className={main.myLineNavs}></div>
-                        </div>
-                    </div>
+                    <TabsCustom listTabs={[{name:"Kun bo‘yicha"},{name:"Bog‘cha kesimida"}]} currentTabs={setActiveNav}/>
                     <div>
                         <button className={'createButtons'}><Link to={"/sidebar/relation-menu"}
                                                                   style={{textDecoration: 'none', color: 'white'}}>Menyu

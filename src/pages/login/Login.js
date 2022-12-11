@@ -30,10 +30,9 @@ function Login() {
             console.log("Authorization", token?.access_token);
             if (token?.user_role === "ROLE_ADMIN") {
                 history("/sidebar/admin");
-
             } else if (token?.user_role === "ROLE_SUPER_ADMIN") {
                 history("/sidebar/super-admin");
-            }else if (token?.user_role === "ROLE_XODIMLAR_BO`LIMI") {
+            }else if (token?.user_role === "ROLE_XODIMLAR_BO`LIMI" || token?.user_role === "ROLE_BO`LIM_BUXGALTER") {
                 history("/sidebar/info");
             }
             dispatch(tokenNull())

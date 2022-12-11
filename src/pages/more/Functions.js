@@ -12,9 +12,13 @@ export const getRefreshToken = () => {
 }
 export const toastError = (error) => {
     toast.error(error?.response?.data?.text);
+    if (error?.response?.data) {
+        toast.error(error?.response?.data);
+    } else {
+        toast.error(!error?.response?.data?.text ? error.message + "\n  " + error.code : undefined);
+    }
     toast.error(error?.response);
     toast.error(error?.response?.error);
-    toast.error(!error?.response?.data?.text ? error.message + "\n  " + error.code : undefined);
 }
 export const checkSame = (array, data, paramA, paramB) => {
     let has = false;
@@ -36,14 +40,17 @@ export const tableRowCustomTd3 = (maiList) => {
 
     return (
         maiList?.map((item, index) => {
-            if (index !== 0){
-                return (
-                    <tr key={("a" + index) + 1}>
-                        <td>{item.ageGroupName}</td>
-                        <td>{item.weight}</td>
-                    </tr>
-                );
-            }
+                if (index !== 0) {
+                    return (
+                        <tr key={("a" + index) + 1}>
+                            <td>{item.ageGroupName}</td>
+                            <td>{item.weight}</td>
+                        </tr>
+                    );
+                }
             }
         ));
+}
+export const percentage = (item1,item2) => {
+  return ((item1/item2)*100).toFixed(0);
 }

@@ -55,6 +55,7 @@
 
   .figma-card {
     padding: 10px;
+    background-color: rgba(227, 223, 107, 0.69);
     background-color: white;
     width: 100%;
     border-radius: 13px;
@@ -274,4 +275,175 @@
   .bg-w {
     background-color: white;
   }
+
+
 }
+.infoText {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2px;
+  border-bottom: rgba(72, 177, 171, 0.42) 2px dashed;
+  div{
+
+  &:nth-child(2){
+    font-weight: 600;
+  }
+  }
+}
+
+
+.tableCalendar {
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-top-left-radius: 10px;
+    border-spacing: 0;
+
+    thead {
+
+      tr {
+
+        th {
+          padding: 5px;
+          background-color: #F6F6F7;
+          min-width: 60px;
+          height: 60px;
+          //text-align: center;
+          border-top: #B6BCCD solid 1px;
+
+          &:first-child {
+            text-align: center;
+            border-left: #B6BCCD solid 1px;
+            border-top-left-radius: 10px;
+          }
+
+          &:last-child {
+            border-right: #B6BCCD solid 1px;
+            border-top-right-radius: 10px;
+          }
+        }
+
+
+      }
+    }
+
+    tbody {
+      tr {
+        &:nth-child(even) {
+          background-color: rgba(246, 246, 246, 0.76);
+        }
+
+        &:hover {
+          //cursor: pointer;
+          background-color: rgba(234, 232, 232, 0.79);
+        }
+
+        &:last-child {
+          td {
+            padding: 5px;
+            border-bottom: #B6BCCD solid 1px;
+          }
+        }
+
+        td {
+
+          &:first-child {
+            text-align: center;
+            border-left: #B6BCCD solid 1px;
+          }
+
+          &:last-child {
+            border-right: #B6BCCD solid 1px;
+          }
+
+          //position: relative;
+          //background-color: #ffffff;
+          padding: 5px;
+          //text-align: center;
+          //border-top: #B6BCCD solid 1px;
+        }
+      }
+    }
+  }
+
+}
+.figma-card-first {
+  padding: 10px;
+  background-color: white;
+  border-radius: 13px;
+  border: solid 1px #48B1AB;
+}
+
+.miniTable{
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-top-left-radius: 10px;
+    border-spacing: 0;
+
+    thead {
+
+      tr {
+
+        th {
+          font-size: 10px;
+          padding: 2px;
+          background-color: #F6F6F7;
+          //min-width: 60px;
+          //height: 60px;
+          //text-align: center;
+          border-top: #B6BCCD solid 1px;
+
+          &:first-child {
+            text-align: center;
+            border-left: #B6BCCD solid 1px;
+            border-top-left-radius: 10px;
+          }
+
+          &:last-child {
+            border-right: #B6BCCD solid 1px;
+            border-top-right-radius: 10px;
+          }
+        }
+
+
+      }
+    }
+
+    tbody {
+      tr {
+        &:nth-child(even) {
+          background-color: rgba(246, 246, 246, 0.76);
+        }
+
+        &:hover {
+          //cursor: pointer;
+          background-color: rgba(234, 232, 232, 0.79);
+        }
+
+        &:last-child {
+          td {
+            padding: 2px;
+          }
+        }
+
+        td {
+            border: #B6BCCD solid 1px;
+          font-size: 10px;
+          &:first-child {
+            text-align: center;
+            border-left: #B6BCCD solid 1px;
+          }
+
+          &:last-child {
+            border-right: #B6BCCD solid 1px;
+          }
+          padding: 2px;
+        }
+      }
+    }
+  }
+
+}
+

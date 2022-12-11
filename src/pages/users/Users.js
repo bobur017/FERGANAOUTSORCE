@@ -231,8 +231,8 @@ function Users() {
                                       onChange={onChangeState} required/>
                         <Form.Label>Tel:</Form.Label>
                         <Form.Control name={'phoneNumber'} className={'mb-2'} value={userState.phoneNumber}
-                                      maxLength={13}
-                                      minLength={13}
+                                      maxLength={9}
+                                      minLength={9}
                                       onChange={onChangeState} required placeholder={"+998"}/>
                         {userState.id === null ? <> <Form.Label>Parol</Form.Label>
                             <Form.Control name={'password'} minLength={8} className={'mb-2'} value={userState.password}

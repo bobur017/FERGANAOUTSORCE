@@ -27,7 +27,8 @@
   background-color: #48B1AB;
   color: white;
   border-radius: 20px;
-
+  justify-content: space-between;
+  align-items: center;
 }
 .bottom-line{
   padding-top: 1vh;
