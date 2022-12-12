@@ -9,34 +9,13 @@ import ReactApexChart from 'react-apexcharts'
 import {AiOutlineCheck, AiOutlineClose} from "react-icons/ai";
 import {MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos} from "react-icons/md";
 import {AiOutlineEnvironment} from "react-icons/ai";
-import {BiCircle} from "react-icons/bi";
 import {colorTextStr} from "../funcs/Funcs";
 import {getDepartmentFromRelation} from "../departments/RegionDepartmentReducer";
 import {getMttFromRelations} from "../mtt/MttReducer";
+import {GoCheck, GoPrimitiveDot} from "react-icons/go";
+import {toast} from "react-toastify";
+import {BsCheckAll} from "react-icons/bs";
 
-
-export const district = [
-    {
-        id: 1,
-        name: 'Fargona tumani'
-    },
-    {
-        id: 3,
-        name: 'Fargona tumani'
-    },
-    {
-        id: 2,
-        name: 'Fargona tumani'
-    },
-    {
-        id: 4,
-        name: 'Fargona tumani'
-    },
-    {
-        id: 5,
-        name: 'Fargona tumani'
-    },
-];
 export const mtt = [
     {
         id: 5,
@@ -73,6 +52,28 @@ export const mtt = [
         name: '24-dmtt',
         checked: true,
 
+    },
+];
+export const district = [
+    {
+        id: 1,
+        name: 'Fargona tumani'
+    },
+    {
+        id: 3,
+        name: 'Fargona tumani'
+    },
+    {
+        id: 2,
+        name: 'Fargona tumani'
+    },
+    {
+        id: 4,
+        name: 'Fargona tumani'
+    },
+    {
+        id: 5,
+        name: 'Fargona tumani'
     },
 ];
 
@@ -125,10 +126,20 @@ function RelationMenu() {
     const [calendarState, setCalendarState] = useState([]);
     const [apex, setApex] = useState();
     const [departmentId, setDepartmentId] = useState();
+    const [mtts, setMtts] = useState([]);
+    const [newMtts, setNewMtts] = useState([]);
     const [currentDate, setCurrentDate] = useState();
-    const [currentDay, setCurrentDay] = useState();
+    const [currentDay, setCurrentDay] = useState({
+        date: '',
+        index: '',
+        index2: '',
+        attached: '',
+        checked: '',
+        kinList: []
+    });
     const [apex2, setApex2] = useState();
     const [apex3, setApex3] = useState();
+    const [emptyMtt, setEmptyMtt] = useState(false);
     const dispatch = useDispatch();
     const multiMenuList = useSelector(state => state.multiMenu.multiMenuList);
     const calendar = useSelector(state => state.multiMenu.checkCalendar);
@@ -138,11 +149,23 @@ function RelationMenu() {
 
     useEffect(() => {
         if (!firstUpdate.current) {
+
         } else {
             console.log(departmentsRel, "departmentsRel");
-            console.log(mttsRelations, "mttsRelations");
         }
-    }, [departmentsRel,mttsRelations]);
+    }, [departmentsRel]);
+
+    useEffect(() => {
+        if (!firstUpdate.current) {
+
+        } else {
+            setMtts(mttsRelations);
+            let list = [...newMtts];
+            let list2 = [...mttsRelations];
+            setNewMtts(list.concat(list2));
+        }
+    }, [mttsRelations]);
+
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
@@ -243,20 +266,64 @@ function RelationMenu() {
         )
     }
 
-    const getDates = (checked, index, index2, date) => {
-        dispatch(getDepartmentFromRelation({date: parseInt(date)}));
-        setCurrentDay(date);
+    const getDates = (checked, index, index2, day) => {
+        if (day?.state) {
+            if (currentDay.date !== day?.date) {
+                dispatch(getDepartmentFromRelation({date: parseInt(day?.date)}));
+            }
+            setCurrentDay({
+                ...currentDay,
+                index,
+                index2,
+                state: day.state,
+                attached: day?.attached,
+                date: day?.date,
+                kinList: day?.kinList ? day?.kinList : []
+            });
+        } else {
+            toast.error("Bu kunga bog'cha biriktirib bo'lmaydi!");
+        }
+    }
+
+    const getDates2 = (checked, data, index) => {
+        let mttList = [...mtts];
+        mttList[index] = {...mttList[index], checked};
+        let mttList2 = [...newMtts];
+        newMtts.forEach((mtt, index) => {
+            if (mtt.id === data.id) {
+                mttList2[index] = {...mttList2[index], checked};
+            }
+        })
+        setNewMtts(mttList2);
+        setMtts(mttList);
+        let kinderList = [...currentDay?.kinList];
+        if (checked) {
+            kinderList.push(mttList[index]);
+        } else {
+            kinderList = [...kinderList].filter(item => item.id !== data.id);
+        }
         let list = [...currentDate?.dayList];
-        let list2 = [...list[index]];
-        list2[index2] = {...list2[index2], checked: checked};
-        list[index] = [...list2];
+        let list2 = [...list[currentDay?.index]];
+        if (!checked) {
+            // console.log(checked, "checked")
+            // console.log(kinderList.some(kinde => kinde.checked), "kinderList.some(kinde => kinde.checked)")
+            if (!kinderList.some(kinde => kinde.checked)) {
+                list2[currentDay?.index2] = {...list2[currentDay?.index2], checked, kinList: kinderList};
+            } else {
+                list2[currentDay?.index2] = {...list2[currentDay?.index2], kinList: kinderList};
+            }
+        } else {
+            list2[currentDay?.index2] = {...list2[currentDay?.index2], checked, kinList: kinderList};
+        }
+        list[currentDay?.index] = [...list2];
+        console.log(list, "list");
         setCurrentDate({...currentDate, dayList: list});
         let calendarList = [...calendarState];
         calendarList[currentDate?.index] = {
             ...calendarList[currentDate?.index],
             dayList: list,
-            index: currentDate?.index
         };
+        setCurrentDay({...currentDay, kinList: kinderList});
         setCalendarState(calendarList);
     }
 
@@ -274,6 +341,7 @@ function RelationMenu() {
         getDateServer(year, month);
 
     }
+
     const getDateServer = (year, month) => {
         if (!calendarState.some(cale => cale.month === month && cale.year === year)) {
             dispatch(checkCalendar({month, year}));
@@ -284,7 +352,13 @@ function RelationMenu() {
 
     const getKindergarten = (data) => {
         setDepartmentId(data.departmentId);
-        dispatch(getMttFromRelations(data.departmentId,{date:currentDay}));
+        let list = newMtts.filter(mtt => mtt.departmentId === data.departmentId);
+        console.log(newMtts, "newMtts");
+        if (list.length > 0) {
+            setMtts(list);
+        } else {
+            dispatch(getMttFromRelations(data.departmentId, {date: currentDay?.date}));
+        }
     }
     return (
         <Container fluid className={main.main}>
@@ -368,16 +442,30 @@ function RelationMenu() {
                                         <tr key={index}>
                                             {week.map((day, index2) =>
                                                 <td key={index2}
-                                                    style={day?.checked ? {backgroundColor: 'rgba(72,177,171,0.55)'} : {}}
-                                                    onClick={() => getDates(!day.checked, index, index2, day?.date)}><span
-                                                    style={index2 === 5 || index2 === 6 ? {color: 'red'} : {}}> {day.day !== 0 ? day.day : null}</span>
+                                                    style={day?.state ? {
+                                                        backgroundColor: day?.date === currentDay?.date ? '#48B1AB' : '',
+                                                        position: 'relative',
+                                                        color: day?.date === currentDay?.date ? 'white' : ''
+                                                    } : {
+                                                        backgroundColor: 'rgba(209,211,210,0.55)',
+                                                        color: '#4f4e4e',
+                                                        position: "relative"
+                                                    }}
+                                                    onClick={() => getDates(day.checked, index, index2, day)}>
+                                                    <div className={day.attached ? `${main.borderTd}` : ''}
+                                                         style={index2 === 5 || index2 === 6 ? {color: 'red'} : {}}>{day.day !== 0 ? day.day : null}</div>
+                                                    <span style={day?.state && day.checked ? {
+                                                        position: 'absolute',
+                                                        right: 10,
+                                                        bottom: 0
+                                                    } : {display: 'none'}}><BsCheckAll size={20}
+                                                                                       color={day?.date === currentDay?.date ? 'white' : '#48B1AB'}/></span>
                                                 </td>
                                             )}
                                         </tr>
                                     )
                                 }
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
@@ -385,12 +473,11 @@ function RelationMenu() {
                 <Col xs={12} sm={12} md={12} lg={5} xl={5} className={'d-flex justify-content-between p-1 mt-3'}>
                     <div className={'w-50'}>
                         <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
-
                             {
                                 departmentsRel.map((item, index) =>
                                     <div key={index} className={`d-flex p-2 mt-1 my-Hover ${main.district}`}
                                          style={{backgroundColor: departmentId !== item.departmentId ? 'white' : '#48B1AB'}}
-                                    onClick={()=>getKindergarten(item)}>
+                                         onClick={() => getKindergarten(item)}>
                                         <div style={{
                                             color: departmentId !== item.departmentId ? '#48B1AB' : 'white',
                                             paddingLeft: 10,
@@ -399,7 +486,8 @@ function RelationMenu() {
                                              className={main.leftLine}><AiOutlineEnvironment
                                             size={30}/>
                                         </div>
-                                        <div className={'mx-2'} style={{color:departmentId === item.departmentId ? 'white' : '#000'}}>{item?.departmentName}</div>
+                                        <div className={'mx-2'}
+                                             style={{color: departmentId === item.departmentId ? 'white' : '#000'}}>{item?.departmentName}</div>
                                     </div>
                                 )
                             }
@@ -409,17 +497,23 @@ function RelationMenu() {
                     <div className={'px-2 w-50'}>
                         <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
                             {
-                                mtt.map((item, index) =>
+                                mtts?.map((item, index) =>
                                     <div key={index} className={`d-flex p-2 mt-1 ${main.district}`}
-                                         style={{backgroundColor: 'white'}}>
+                                         style={{backgroundColor: 'white', cursor: 'pointer'}}
+                                         onClick={() => getDates2(!item.checked, item, index)}>
                                         <div style={{
                                             color: item.checked ? '#8CC152' : '#E9573F',
                                             paddingLeft: 10,
-                                            borderColor: item.checked ? '#8CC152' : '#E9573F'
-                                        }} className={main.leftLine}><BiCircle
-                                            size={30}/>
+                                            borderColor: item.attached ? '#8CC152' : '#E9573F'
+                                        }}
+                                             className={`d-flex justify-content-center align-items-center ${main.leftLine}`}>
+                                            <div className={main.dotIcon}
+                                                 style={{borderColor: item.attached ? '#8CC152' : '#E9573F'}}>
+                                                {item.checked ?
+                                                    <GoCheck color={item.attached ? '#8CC152' : '#E9573F'}/> : null}
+                                            </div>
                                         </div>
-                                        <div className={'mx-2'}>{item.name}</div>
+                                        <div className={'mx-2'}>{item.number}{item.name}</div>
                                     </div>
                                 )
                             }

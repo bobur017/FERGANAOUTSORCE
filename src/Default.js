@@ -10,7 +10,7 @@ export const baseUrl = () => {
 export const baseUrl2 = () => {
     // return "https://feednet.uz/out/api"
     // return "http://185.217.15.41:8888/out/api"
-    return "http://192.168.8.100:8888/out/api"
+    return "http://192.168.8.101:8888/out/api"
 }
 
 function Default(props) {

@@ -21,6 +21,15 @@
       background-color: #f5f5f5;
     }
   }
+  .dotIcon{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: solid 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   .buttonClose {
     display: flex;
@@ -188,5 +197,10 @@
     height: 4px;
     background-color: #48B1AB;
     border-radius: 3px;
+  }
+  .borderTd{
+    width: 90%;
+    height: 90%;
+    border: #4cd964 solid 3px;
   }
 }
