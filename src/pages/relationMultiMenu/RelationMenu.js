@@ -125,9 +125,14 @@ function RelationMenu() {
     const [multiMenuState, setStateMultiMenu] = useState();
     const [calendarState, setCalendarState] = useState([]);
     const [apex, setApex] = useState();
+    const [checked1, setChecked1] = useState(false);
+    const [checked2, setChecked2] = useState(false);
+    const [checked3, setChecked3] = useState(false);
     const [departmentId, setDepartmentId] = useState();
     const [mtts, setMtts] = useState([]);
     const [newMtts, setNewMtts] = useState([]);
+    const [department, setDepartment] = useState([]);
+    const [departments, setDepartments] = useState([]);
     const [currentDate, setCurrentDate] = useState();
     const [currentDay, setCurrentDay] = useState({
         date: '',
@@ -139,7 +144,6 @@ function RelationMenu() {
     });
     const [apex2, setApex2] = useState();
     const [apex3, setApex3] = useState();
-    const [emptyMtt, setEmptyMtt] = useState(false);
     const dispatch = useDispatch();
     const multiMenuList = useSelector(state => state.multiMenu.multiMenuList);
     const calendar = useSelector(state => state.multiMenu.checkCalendar);
@@ -152,6 +156,9 @@ function RelationMenu() {
 
         } else {
             console.log(departmentsRel, "departmentsRel");
+            setDepartment(departmentsRel);
+            let list = [...departments];
+            setDepartments(list.concat(departmentsRel));
         }
     }, [departmentsRel]);
 
@@ -269,7 +276,12 @@ function RelationMenu() {
     const getDates = (checked, index, index2, day) => {
         if (day?.state) {
             if (currentDay.date !== day?.date) {
-                dispatch(getDepartmentFromRelation({date: parseInt(day?.date)}));
+                if (departments.some(item => item.date === day.date)) {
+                    setDepartment(departments.filter(item => item.date === day.date));
+                } else {
+                    dispatch(getDepartmentFromRelation({date: parseInt(day?.date)}));
+                }
+                setMtts([]);
             }
             setCurrentDay({
                 ...currentDay,
@@ -289,34 +301,91 @@ function RelationMenu() {
         let mttList = [...mtts];
         mttList[index] = {...mttList[index], checked};
         let mttList2 = [...newMtts];
+
         newMtts.forEach((mtt, index) => {
-            if (mtt.id === data.id) {
+            if (mtt.id === data.id && currentDay.date === mtt.date) {
                 mttList2[index] = {...mttList2[index], checked};
             }
-        })
+        });
         setNewMtts(mttList2);
         setMtts(mttList);
         let kinderList = [...currentDay?.kinList];
+        let departmentsList = [...departments];
+        let departmentList = [...department];
         if (checked) {
+            departments.forEach((department, index) => {
+                if (department.departmentId === departmentId?.departmentId && currentDay.date === department.date) {
+                    departmentsList[index] = {
+                        ...departmentsList[index],
+                        notAttachedNumber: department?.notAttachedNumber - 1,
+                        attachedNumber: department?.attachedNumber + 1
+                    };
+                    setDepartmentId({
+                        ...departmentsList[index],
+                        notAttachedNumber: department?.notAttachedNumber - 1,
+                        attachedNumber: department?.attachedNumber + 1
+                    })
+                }
+            });
+            department.forEach((department, index) => {
+                if (department.departmentId === departmentId?.departmentId && currentDay.date === department.date) {
+                    departmentList[index] = {
+                        ...departmentList[index],
+                        notAttachedNumber: department?.notAttachedNumber - 1,
+                        attachedNumber: department?.attachedNumber + 1
+                    };
+                }
+            });
             kinderList.push(mttList[index]);
         } else {
+            department.forEach((department, index) => {
+                if (department.departmentId === departmentId?.departmentId && department.date === currentDay.date) {
+                    departmentList[index] = {
+                        ...departmentList[index],
+                        notAttachedNumber: department?.notAttachedNumber + 1,
+                        attachedNumber: department?.attachedNumber - 1
+                    };
+                    setDepartmentId({
+                        ...departmentList[index],
+                        notAttachedNumber: department?.notAttachedNumber + 1,
+                        attachedNumber: department?.attachedNumber - 1
+                    });
+                }
+            });
+            departments.forEach((department, index) => {
+                if (department.departmentId === departmentId?.departmentId && department.date === currentDay.date) {
+                    departmentsList[index] = {
+                        ...departmentsList[index],
+                        notAttachedNumber: department?.notAttachedNumber + 1,
+                        attachedNumber: department?.attachedNumber - 1
+                    };
+                }
+            });
             kinderList = [...kinderList].filter(item => item.id !== data.id);
         }
+        setDepartments(departmentsList);
+        setDepartment(departmentList);
         let list = [...currentDate?.dayList];
         let list2 = [...list[currentDay?.index]];
         if (!checked) {
-            // console.log(checked, "checked")
-            // console.log(kinderList.some(kinde => kinde.checked), "kinderList.some(kinde => kinde.checked)")
             if (!kinderList.some(kinde => kinde.checked)) {
-                list2[currentDay?.index2] = {...list2[currentDay?.index2], checked, kinList: kinderList};
+                list2[currentDay?.index2] = {
+                    ...list2[currentDay?.index2], notAttachedNumber: list2[currentDay?.index2]?.notAttachedNumber + 1,
+                    attachedNumber: list2[currentDay?.index2]?.attachedNumber - 1, checked, kinList: kinderList
+                };
             } else {
-                list2[currentDay?.index2] = {...list2[currentDay?.index2], kinList: kinderList};
+                list2[currentDay?.index2] = {
+                    ...list2[currentDay?.index2], notAttachedNumber: list2[currentDay?.index2]?.notAttachedNumber + 1,
+                    attachedNumber: list2[currentDay?.index2]?.attachedNumber - 1, kinList: kinderList
+                };
             }
         } else {
-            list2[currentDay?.index2] = {...list2[currentDay?.index2], checked, kinList: kinderList};
+            list2[currentDay?.index2] = {
+                ...list2[currentDay?.index2], notAttachedNumber: list2[currentDay?.index2]?.notAttachedNumber - 1,
+                attachedNumber: list2[currentDay?.index2]?.attachedNumber + 1, checked, kinList: kinderList
+            };
         }
         list[currentDay?.index] = [...list2];
-        console.log(list, "list");
         setCurrentDate({...currentDate, dayList: list});
         let calendarList = [...calendarState];
         calendarList[currentDate?.index] = {
@@ -349,17 +418,167 @@ function RelationMenu() {
             setCurrentDate(calendarState.filter(date => date.year === year && date.month === month)[0]);
         }
     }
+    const allChe = (checked, num) => {
 
+        if (departmentId) {
+            if (num === 1) {
+                setChecked1(checked);
+            } else if (num === checked) {
+                setChecked2(checked);
+            } else {
+                setChecked3(checked);
+            }
+            let list = mtts.map((mtt, index) => {
+                    if (num === 1) {
+                        return {...mtt, checked};
+                    } else if (num === 2) {
+                        if (mtt.attached) {
+                            return {...mtt, checked};
+                        }
+                    } else {
+                        if (!mtt.attached) {
+                            return {...mtt, checked};
+                        }
+                    }
+                }
+            );
+            let allListKin = [...newMtts];
+            let listMtts = [...mtts];
+            newMtts.forEach((item, index) => {
+                    if (num === 1) {
+                        if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId) {
+                            allListKin[index] = {...item, checked}
+                        }
+                    } else {
+                        if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId && item.attached) {
+                            allListKin[index] = {...item, checked}
+                        } else {
+                            allListKin[index] = {...item, checked}
+                        }
+                    }
+                }
+            );
+            mtts.forEach((item, index) => {
+                    if (num === 1) {
+                        if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId) {
+                            listMtts[index] = {...item, checked}
+                        }
+                    } else {
+                        if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId && item.attached) {
+                            listMtts[index] = {...item, checked}
+                        } else {
+                            listMtts[index] = {...item, checked}
+                        }
+                    }
+                }
+            );
+            let listCurrentDayKinder = [...currentDay.kinList];
+            let kinList = [];
+            if (checked) {
+                let kinList2 = listCurrentDayKinder.concat(list);
+                kinList = [...kinList2];
+            } else {
+                for (let listCurrentDayKinderElement of listCurrentDayKinder) {
+                    let present = false;
+                    for (let listElement of list) {
+                        if (listCurrentDayKinderElement.id === listElement.id) {
+                            present = true;
+                        }
+                    }
+                    if (present) {
+                        kinList.push(listCurrentDayKinderElement);
+                    }
+                }
+            }
+            let listDepartments = [...departments];
+            let listDepartment = [...department];
+            departments.forEach((item, index) => {
+                    if (item.departmentId === departmentId?.departmentId && departmentId?.date === item.date) {
+                        listDepartments[index] = {
+                            ...listDepartments[index],
+                            notAttachedNumber: checked ? listDepartments[index].notAttachedNumber - listCurrentDayKinder.length:listDepartments[index].notAttachedNumber + listCurrentDayKinder.length,
+                            attachedNumber: listCurrentDayKinder.length
+                        }
+                    }
+                }
+            );
+            department.forEach((item, index) => {
+                    if (item.departmentId === departmentId?.departmentId && departmentId?.date === item.date) {
+                        listDepartment[index] = {
+                            ...listDepartment[index],
+                            notAttachedNumber: checked ? listDepartments[index].notAttachedNumber - listCurrentDayKinder.length:listDepartments[index].notAttachedNumber + listCurrentDayKinder.length,
+                            attachedNumber: listCurrentDayKinder.length
+                        }
+                    }
+                }
+            );
+            let listCurrentDate = [...calendarState[currentDate?.index]?.dayList];
+            let day = [...listCurrentDate[currentDay.index]];
+            if (checked) {
+                day[currentDay.index] = {
+                    ...day[currentDay.index2], kinList, notAttachedNumber:
+                        day[currentDay.index2].notAttachedNumber - kinList.length,
+                    attachedNumber:
+                        day[currentDay.index2].attachedNumber + kinList.length
+                }
+
+            } else {
+                day[currentDay.index] = {
+                    ...day[currentDay.index2], kinList, notAttachedNumber:
+                        day[currentDay.index2].notAttachedNumber + kinList.length,
+                    attachedNumber:
+                        day[currentDay.index2].attachedNumber - kinList.length
+                }
+            }
+            listCurrentDate[currentDay?.index] = [...day];
+            let calen = [...calendarState];
+            calen[currentDate?.index] = {...calen[currentDate?.index], dayList: listCurrentDate};
+            setCalendarState(calen);
+            setCurrentDay({...currentDay, kinList});
+            setMtts(listMtts);
+            setNewMtts(allListKin);
+            setDepartments(listDepartments);
+            setDepartment(listDepartment);
+        }
+    }
     const getKindergarten = (data) => {
-        setDepartmentId(data.departmentId);
-        let list = newMtts.filter(mtt => mtt.departmentId === data.departmentId);
-        console.log(newMtts, "newMtts");
+        setDepartmentId(data);
+        let list = newMtts.filter(mtt => mtt.departmentId === data.departmentId && currentDay?.date === mtt.date);
         if (list.length > 0) {
             setMtts(list);
         } else {
             dispatch(getMttFromRelations(data.departmentId, {date: currentDay?.date}));
         }
     }
+    const allChecked = (checked, num) => {
+        if (departmentId) {
+            if (num === 1) {
+                mtts.forEach((mtt, index) => {
+                        getDates2(checked, mtt, index);
+                    }
+                )
+                setChecked1(checked);
+            } else if (num === 2) {
+                mtts.forEach((mtt, index) => {
+                        if (mtt.attached) {
+                            getDates2(checked, mtt, index);
+                        }
+                    }
+                )
+                setChecked2(checked);
+            } else if (num === 3) {
+                mtts.forEach((mtt, index) => {
+                        if (!mtt.attached) {
+                            getDates2(checked, mtt, index);
+                        }
+                    }
+                )
+                setChecked3(checked);
+            }
+        }
+    }
+
+
     return (
         <Container fluid className={main.main}>
             <Row>
@@ -395,16 +614,26 @@ function RelationMenu() {
                 <Col xs={12} sm={12} md={12} lg={5} xl={5} className={'mt-3 '}>
                     <div className={`w-100 ${main.card}`}>
                         <div className={'text-center w-100'}>Tanlash</div>
-                        <div className={`p-1 d-flex ${main.checkedBorder}`} style={{borderColor: 'black'}}>
-                            <div style={{borderColor: '#000'}} className={main.checkeds}></div>
+                        <div className={`p-1 d-flex my-Hover ${main.checkedBorder}`} style={{borderColor: 'black'}}
+                             onClick={() => allChe(!checked1, 1)}>
+                            <div style={{borderColor: '#000'}} className={main.checkeds}>
+                                {checked1 ?
+                                    <GoCheck color={'#000'}/> : null}
+                            </div>
                             <div>Barchasini belgilash</div>
                         </div>
-                        <div className={`p-1 d-flex mt-1 ${main.checkedBorder}`} style={{borderColor: '#8CC152'}}>
-                            <div style={{borderColor: '#8CC152'}} className={main.checkeds}></div>
+                        <div className={`p-1 d-flex my-Hover mt-1 ${main.checkedBorder}`}
+                             style={{borderColor: '#8CC152'}} onClick={() => allChecked(!checked2, 2)}>
+                            <div style={{borderColor: '#8CC152'}} className={main.checkeds}>
+                                {checked2 ?
+                                    <GoCheck color={'#8CC152'}/> : null}
+                            </div>
                             <div>Barchasini belgilash</div>
                         </div>
-                        <div className={`p-1 d-flex mt-1 ${main.checkedBorder}`} style={{borderColor: '#E9573F'}}>
-                            <div style={{borderColor: '#E9573F'}} className={main.checkeds}></div>
+                        <div className={`p-1 d-flex mt-1 my-Hover ${main.checkedBorder}`}
+                             style={{borderColor: '#E9573F'}} onClick={() => allChecked(!checked3, 3)}>
+                            <div style={{borderColor: '#E9573F'}} className={main.checkeds}>{checked3 ?
+                                <GoCheck color={'#E9573F'}/> : null}</div>
                             <div>Barchasini belgilash</div>
                         </div>
                     </div>
@@ -424,49 +653,82 @@ function RelationMenu() {
                                      onClick={() => changeDate(1, currentDate?.year, currentDate?.month)}>
                                     <MdOutlineArrowForwardIos size={30}/></div>
                             </div>
-                            <table className={main.table}>
-                                <thead>
-                                <tr>
-                                    <th>Du</th>
-                                    <th>Se</th>
-                                    <th>Ch</th>
-                                    <th>Pa</th>
-                                    <th>Ju</th>
-                                    <th>Sh</th>
-                                    <th>Ya</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {
-                                    currentDate?.dayList?.map((week, index) =>
-                                        <tr key={index}>
-                                            {week.map((day, index2) =>
-                                                <td key={index2}
-                                                    style={day?.state ? {
-                                                        backgroundColor: day?.date === currentDay?.date ? '#48B1AB' : '',
-                                                        position: 'relative',
-                                                        color: day?.date === currentDay?.date ? 'white' : ''
-                                                    } : {
-                                                        backgroundColor: 'rgba(209,211,210,0.55)',
-                                                        color: '#4f4e4e',
-                                                        position: "relative"
-                                                    }}
-                                                    onClick={() => getDates(day.checked, index, index2, day)}>
-                                                    <div className={day.attached ? `${main.borderTd}` : ''}
-                                                         style={index2 === 5 || index2 === 6 ? {color: 'red'} : {}}>{day.day !== 0 ? day.day : null}</div>
-                                                    <span style={day?.state && day.checked ? {
-                                                        position: 'absolute',
-                                                        right: 10,
-                                                        bottom: 0
-                                                    } : {display: 'none'}}><BsCheckAll size={20}
-                                                                                       color={day?.date === currentDay?.date ? 'white' : '#48B1AB'}/></span>
-                                                </td>
-                                            )}
-                                        </tr>
-                                    )
-                                }
-                                </tbody>
-                            </table>
+                            <div className={main.tableCalendar}>
+                                <table
+                                >
+                                    <thead>
+                                    <tr>
+                                        <th>Du</th>
+                                        <th>Se</th>
+                                        <th>Ch</th>
+                                        <th>Pa</th>
+                                        <th>Ju</th>
+                                        <th>Sh</th>
+                                        <th>Ya</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        currentDate?.dayList?.map((week, index) =>
+                                            <tr key={index}>
+                                                {week.map((day, index2) =>
+                                                    <td key={index2}
+                                                        style={day?.state ? {
+                                                            backgroundColor: day?.date === currentDay?.date ? '#48B1AB' : '',
+                                                            position: 'relative',
+                                                            color: day?.date === currentDay?.date ? 'white' : ''
+                                                        } : {
+                                                            backgroundColor: 'rgba(209,211,210,0.55)',
+                                                            color: '#4f4e4e',
+                                                            position: "relative"
+                                                        }}
+                                                        onClick={() => getDates(day.checked, index, index2, day)}>
+                                                        {/*<div className={day.attached ? `${main.borderTd}` : ''}*/}
+                                                        {/*     style={index2 === 5 || index2 === 6 ? {color: 'red'} : {}}>{day.day !== 0 ? day.day : null}</div>*/}
+                                                        {day.day !== 0 ? <div style={{marginLeft: 20}}>
+                                                            <div
+                                                                className={'d-flex justify-content-start align-items-center mt-3'}>
+                                                                <GoPrimitiveDot color={'#8CC152'}/>
+                                                                <span style={{fontSize: 10}}
+                                                                      className={'text-start'}>{day.attachedNumber} ta</span>
+                                                            </div>
+                                                            <div
+                                                                className={'d-flex justify-content-start align-items-center'}>
+                                                                <GoPrimitiveDot color={'#E9573F'}/>
+                                                                <span style={{fontSize: 10}}
+                                                                      className={'text-start'}>{day.notAttachedNumber} ta</span>
+                                                            </div>
+                                                        </div> : null}
+                                                        {day.day !== 0 ?
+                                                            <div
+                                                                style={index2 === 5 || index2 === 6 ? {color: 'red'} : {color: 'black'}}
+                                                                className={main.inTd}>
+                                                                {day.day !== 0 ? day.day : null}</div> : null}
+                                                        <span style={day?.state && day.checked ? {
+                                                            position: 'absolute',
+                                                            right: 10,
+                                                            bottom: 0
+                                                        } : {display: 'none'}}><BsCheckAll size={20}
+                                                                                           color={day?.date === currentDay?.date ? 'white' : '#48B1AB'}/></span>
+                                                    </td>
+                                                )}
+                                            </tr>
+                                        )
+                                    }
+                                    </tbody>
+                                </table>
+                                <div className={'w-100 text-center justify-content-around d-flex mt-3'}>
+                                    <div><GoPrimitiveDot color={'#8CC152'} size={25}/>
+                                        <span style={{fontSize: 15}}
+                                              className={'text-start fw-semibold'}>Biriktirilgan MTT lar</span>
+                                    </div>
+                                    <div>
+                                        <GoPrimitiveDot color={'#E9573F'} size={25}/>
+                                        <span style={{fontSize: 15}}
+                                              className={'text-start fw-semibold'}>Biriktirilmagan MTT lar</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </Col>
@@ -474,24 +736,36 @@ function RelationMenu() {
                     <div className={'w-50'}>
                         <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
                             {
-                                departmentsRel.map((item, index) =>
-                                    <div key={index} className={`d-flex p-2 mt-1 my-Hover ${main.district}`}
-                                         style={{backgroundColor: departmentId !== item.departmentId ? 'white' : '#48B1AB'}}
-                                         onClick={() => getKindergarten(item)}>
-                                        <div style={{
-                                            color: departmentId !== item.departmentId ? '#48B1AB' : 'white',
-                                            paddingLeft: 10,
-                                            borderColor: departmentId !== item.id ? '#48B1AB' : 'white'
-                                        }}
-                                             className={main.leftLine}><AiOutlineEnvironment
-                                            size={30}/>
+                                department?.map((item, index) =>
+                                    <div key={index}
+                                         className={`d-flex justify-content-between  p-2 mt-1 my-Hover ${main.district}`}
+                                         style={{backgroundColor: departmentId?.departmentId !== item?.departmentId ? 'white' : '#48B1AB'}}>
+                                        <div className={`d-flex`}
+                                             onClick={() => getKindergarten(item)}>
+                                            <div style={{
+                                                color: departmentId?.departmentId !== item.departmentId ? '#48B1AB' : 'white',
+                                                paddingLeft: 10,
+                                                borderColor: departmentId?.departmentId !== item.departmentId ? '#48B1AB' : 'white'
+                                            }}
+                                                 className={main.leftLine}><AiOutlineEnvironment
+                                                size={30}/>
+                                            </div>
+                                            <div className={'mx-2'}
+                                                 style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item?.departmentName}</div>
                                         </div>
-                                        <div className={'mx-2'}
-                                             style={{color: departmentId === item.departmentId ? 'white' : '#000'}}>{item?.departmentName}</div>
+                                        <div>
+                                            <div style={{fontSize: 10}} className={'d-flex'}><GoPrimitiveDot
+                                                color={'#8CC152'} size={10}/><span className={'mx-2'}
+                                                                                   style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item.attachedNumber} ta</span>
+                                            </div>
+                                            <div style={{fontSize: 10}} className={'d-flex'}><GoPrimitiveDot
+                                                color={'#E9573F'} size={10}/><span className={'mx-2'}
+                                                                                   style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item.notAttachedNumber} ta</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 )
                             }
-
                         </div>
                     </div>
                     <div className={'px-2 w-50'}>
@@ -499,7 +773,7 @@ function RelationMenu() {
                             {
                                 mtts?.map((item, index) =>
                                     <div key={index} className={`d-flex p-2 mt-1 ${main.district}`}
-                                         style={{backgroundColor: 'white', cursor: 'pointer'}}
+                                         style={{backgroundColor: 'white', cursor: 'pointer', position: 'relative'}}
                                          onClick={() => getDates2(!item.checked, item, index)}>
                                         <div style={{
                                             color: item.checked ? '#8CC152' : '#E9573F',
@@ -514,6 +788,13 @@ function RelationMenu() {
                                             </div>
                                         </div>
                                         <div className={'mx-2'}>{item.number}{item.name}</div>
+                                        <div style={{
+                                            position: 'absolute',
+                                            bottom: 2,
+                                            right: 4,
+                                            fontSize: 10,
+                                            color: '#737373'
+                                        }}>Menyu: {item.menuName !== null ? item.menuName : "Biriktirilmagan"}</div>
                                     </div>
                                 )
                             }
