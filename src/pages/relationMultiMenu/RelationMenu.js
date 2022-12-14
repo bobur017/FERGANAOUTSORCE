@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Container, Form, Row, Table} from "react-bootstrap";
+import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {checkCalendar, getMultiMenu} from "../multimenu/MultiMenuReducer";
@@ -15,6 +15,7 @@ import {getMttFromRelations} from "../mtt/MttReducer";
 import {GoCheck, GoPrimitiveDot} from "react-icons/go";
 import {toast} from "react-toastify";
 import {BsCheckAll} from "react-icons/bs";
+import LoadingPage from "../loading/LoadingPage";
 
 export const mtt = [
     {
@@ -142,6 +143,7 @@ function RelationMenu() {
         checked: '',
         kinList: []
     });
+    const [load, setLoad] = useState(false);
     const [apex2, setApex2] = useState();
     const [apex3, setApex3] = useState();
     const dispatch = useDispatch();
@@ -159,6 +161,7 @@ function RelationMenu() {
             setDepartment(departmentsRel);
             let list = [...departments];
             setDepartments(list.concat(departmentsRel));
+            setLoad(false);
         }
     }, [departmentsRel]);
 
@@ -170,6 +173,7 @@ function RelationMenu() {
             let list = [...newMtts];
             let list2 = [...mttsRelations];
             setNewMtts(list.concat(list2));
+            setLoad(false);
         }
     }, [mttsRelations]);
 
@@ -187,6 +191,7 @@ function RelationMenu() {
             } else if (list.length === 0) {
                 setCalendarState(list);
             }
+            setLoad(false);
         }
     }, [calendar]);
 
@@ -275,11 +280,15 @@ function RelationMenu() {
 
     const getDates = (checked, index, index2, day) => {
         if (day?.state) {
+            setChecked1(false);
+            setChecked2(false);
+            setChecked3(false);
             if (currentDay.date !== day?.date) {
                 if (departments.some(item => item.date === day.date)) {
                     setDepartment(departments.filter(item => item.date === day.date));
                 } else {
                     dispatch(getDepartmentFromRelation({date: parseInt(day?.date)}));
+                    setLoad(true);
                 }
                 setMtts([]);
             }
@@ -290,7 +299,9 @@ function RelationMenu() {
                 state: day.state,
                 attached: day?.attached,
                 date: day?.date,
-                kinList: day?.kinList ? day?.kinList : []
+                kinList: day?.kinList ? day?.kinList : [],
+                notAttachedNumber: day?.notAttachedNumber,
+                attachedNumber: day?.attachedNumber,
             });
         } else {
             toast.error("Bu kunga bog'cha biriktirib bo'lmaydi!");
@@ -298,6 +309,9 @@ function RelationMenu() {
     }
 
     const getDates2 = (checked, data, index) => {
+        setChecked1(false);
+        setChecked2(false);
+        setChecked3(false);
         let mttList = [...mtts];
         mttList[index] = {...mttList[index], checked};
         let mttList2 = [...newMtts];
@@ -392,7 +406,12 @@ function RelationMenu() {
             ...calendarList[currentDate?.index],
             dayList: list,
         };
-        setCurrentDay({...currentDay, kinList: kinderList});
+        setCurrentDay({
+            ...currentDay,
+            kinList: kinderList,
+            attachedNumber: list2[currentDay?.index2]?.attachedNumber,
+            notAttachedNumber: list2[currentDay?.index2]?.notAttachedNumber
+        });
         setCalendarState(calendarList);
     }
 
@@ -413,35 +432,25 @@ function RelationMenu() {
 
     const getDateServer = (year, month) => {
         if (!calendarState.some(cale => cale.month === month && cale.year === year)) {
+            setLoad(true);
             dispatch(checkCalendar({month, year}));
         } else {
             setCurrentDate(calendarState.filter(date => date.year === year && date.month === month)[0]);
         }
+        setChecked1(false);
+        setChecked2(false);
+        setChecked3(false);
     }
     const allChe = (checked, num) => {
-
         if (departmentId) {
             if (num === 1) {
                 setChecked1(checked);
-            } else if (num === checked) {
+            } else if (num === 2) {
                 setChecked2(checked);
             } else {
                 setChecked3(checked);
             }
-            let list = mtts.map((mtt, index) => {
-                    if (num === 1) {
-                        return {...mtt, checked};
-                    } else if (num === 2) {
-                        if (mtt.attached) {
-                            return {...mtt, checked};
-                        }
-                    } else {
-                        if (!mtt.attached) {
-                            return {...mtt, checked};
-                        }
-                    }
-                }
-            );
+
             let allListKin = [...newMtts];
             let listMtts = [...mtts];
             newMtts.forEach((item, index) => {
@@ -450,54 +459,52 @@ function RelationMenu() {
                             allListKin[index] = {...item, checked}
                         }
                     } else {
-                        if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId && item.attached) {
+                        if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId && item.attached && num === 2) {
                             allListKin[index] = {...item, checked}
-                        } else {
+                        } else if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId && !item.attached && num === 3) {
                             allListKin[index] = {...item, checked}
                         }
                     }
                 }
             );
+            // eslint-disable-next-line no-unused-vars
+            let depAttachNumb = 0;
             mtts.forEach((item, index) => {
                     if (num === 1) {
                         if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId) {
-                            listMtts[index] = {...item, checked}
+                            listMtts[index] = {...item, checked};
                         }
                     } else {
-                        if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId && item.attached) {
-                            listMtts[index] = {...item, checked}
-                        } else {
-                            listMtts[index] = {...item, checked}
+                        if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId && item.attached && num === 2) {
+                            listMtts[index] = {...item, checked};
+                        } else if (item.date === currentDay.date && departmentId?.departmentId === item.departmentId && !item.attached && num === 3) {
+                            listMtts[index] = {...item, checked};
                         }
                     }
                 }
             );
-            let listCurrentDayKinder = [...currentDay.kinList];
-            let kinList = [];
-            if (checked) {
-                let kinList2 = listCurrentDayKinder.concat(list);
-                kinList = [...kinList2];
-            } else {
-                for (let listCurrentDayKinderElement of listCurrentDayKinder) {
-                    let present = false;
-                    for (let listElement of list) {
-                        if (listCurrentDayKinderElement.id === listElement.id) {
-                            present = true;
-                        }
-                    }
-                    if (present) {
-                        kinList.push(listCurrentDayKinderElement);
-                    }
+            let depAttachedNum = 0;
+            let depNotAttachedNum = 0;
+            let fromKinlist = []
+            listMtts.forEach((item) => {
+                if (item.checked) {
+                    fromKinlist.push(item);
+                    depAttachedNum++;
+                } else {
+                    depNotAttachedNum++;
                 }
-            }
+            })
+            let oldAttachedNumber = currentDay?.attachedNumber;
+            let newAttachedNumber = 0;
+            let notAttachedNumber = currentDay?.notAttachedNumber;
             let listDepartments = [...departments];
             let listDepartment = [...department];
             departments.forEach((item, index) => {
                     if (item.departmentId === departmentId?.departmentId && departmentId?.date === item.date) {
                         listDepartments[index] = {
                             ...listDepartments[index],
-                            notAttachedNumber: checked ? listDepartments[index].notAttachedNumber - listCurrentDayKinder.length:listDepartments[index].notAttachedNumber + listCurrentDayKinder.length,
-                            attachedNumber: listCurrentDayKinder.length
+                            notAttachedNumber: depNotAttachedNum,
+                            attachedNumber: depAttachedNum
                         }
                     }
                 }
@@ -506,37 +513,46 @@ function RelationMenu() {
                     if (item.departmentId === departmentId?.departmentId && departmentId?.date === item.date) {
                         listDepartment[index] = {
                             ...listDepartment[index],
-                            notAttachedNumber: checked ? listDepartments[index].notAttachedNumber - listCurrentDayKinder.length:listDepartments[index].notAttachedNumber + listCurrentDayKinder.length,
-                            attachedNumber: listCurrentDayKinder.length
+                            notAttachedNumber: depNotAttachedNum,
+                            attachedNumber: depAttachedNum
                         }
                     }
                 }
             );
+            let listCurrentDayKinder = [...currentDay.kinList].filter(kin => kin.departmentId !== departmentId?.departmentId);
+            let kinList = listCurrentDayKinder.concat(fromKinlist);
+            if (checked) {
+                newAttachedNumber = kinList.length;
+                notAttachedNumber = notAttachedNumber - (newAttachedNumber - oldAttachedNumber);
+            } else {
+                newAttachedNumber = kinList.length;
+                notAttachedNumber = notAttachedNumber + (oldAttachedNumber - newAttachedNumber);
+            }
             let listCurrentDate = [...calendarState[currentDate?.index]?.dayList];
             let day = [...listCurrentDate[currentDay.index]];
             if (checked) {
-                day[currentDay.index] = {
-                    ...day[currentDay.index2], kinList, notAttachedNumber:
-                        day[currentDay.index2].notAttachedNumber - kinList.length,
-                    attachedNumber:
-                        day[currentDay.index2].attachedNumber + kinList.length
+                day[currentDay.index2] = {
+                    ...day[currentDay.index2], kinList, notAttachedNumber, attachedNumber: newAttachedNumber, checked
                 }
-
             } else {
-                day[currentDay.index] = {
-                    ...day[currentDay.index2], kinList, notAttachedNumber:
-                        day[currentDay.index2].notAttachedNumber + kinList.length,
-                    attachedNumber:
-                        day[currentDay.index2].attachedNumber - kinList.length
+                day[currentDay.index2] = {
+                    ...day[currentDay.index2],
+                    kinList,
+                    notAttachedNumber,
+                    attachedNumber: newAttachedNumber,
+                    checked: kinList.some(kin => kin.checked)
                 }
             }
+
             listCurrentDate[currentDay?.index] = [...day];
             let calen = [...calendarState];
             calen[currentDate?.index] = {...calen[currentDate?.index], dayList: listCurrentDate};
             setCalendarState(calen);
-            setCurrentDay({...currentDay, kinList});
+            setCurrentDate({...currentDate, dayList: listCurrentDate});
+            setCurrentDay({...currentDay, kinList, notAttachedNumber, attachedNumber: newAttachedNumber});
             setMtts(listMtts);
             setNewMtts(allListKin);
+            setDepartmentId({...departmentId, attachedNumber: depAttachedNum, notAttachedNumber: depNotAttachedNum})
             setDepartments(listDepartments);
             setDepartment(listDepartment);
         }
@@ -548,6 +564,10 @@ function RelationMenu() {
             setMtts(list);
         } else {
             dispatch(getMttFromRelations(data.departmentId, {date: currentDay?.date}));
+            setChecked1(false);
+            setChecked2(false);
+            setChecked3(false);
+            setLoad(true);
         }
     }
     const allChecked = (checked, num) => {
@@ -578,9 +598,12 @@ function RelationMenu() {
         }
     }
 
-
+    const myCheck = () => {
+        console.log(currentDay, "currentDay");
+    }
     return (
         <Container fluid className={main.main}>
+            <Button onClick={() => myCheck()}>my</Button>
             <Row>
                 <Col xs={12} sm={12} md={12} lg={7} xl={7}>
                     <SearchSelect setData={getMultiMenuDrop} list={multiMenuList} itemName={"name"}/>
@@ -623,7 +646,7 @@ function RelationMenu() {
                             <div>Barchasini belgilash</div>
                         </div>
                         <div className={`p-1 d-flex my-Hover mt-1 ${main.checkedBorder}`}
-                             style={{borderColor: '#8CC152'}} onClick={() => allChecked(!checked2, 2)}>
+                             style={{borderColor: '#8CC152'}} onClick={() => allChe(!checked2, 2)}>
                             <div style={{borderColor: '#8CC152'}} className={main.checkeds}>
                                 {checked2 ?
                                     <GoCheck color={'#8CC152'}/> : null}
@@ -631,7 +654,7 @@ function RelationMenu() {
                             <div>Barchasini belgilash</div>
                         </div>
                         <div className={`p-1 d-flex mt-1 my-Hover ${main.checkedBorder}`}
-                             style={{borderColor: '#E9573F'}} onClick={() => allChecked(!checked3, 3)}>
+                             style={{borderColor: '#E9573F'}} onClick={() => allChe(!checked3, 3)}>
                             <div style={{borderColor: '#E9573F'}} className={main.checkeds}>{checked3 ?
                                 <GoCheck color={'#E9573F'}/> : null}</div>
                             <div>Barchasini belgilash</div>
@@ -802,6 +825,7 @@ function RelationMenu() {
                     </div>
                 </Col>
             </Row>
+            <LoadingPage load={load}/>
         </Container>
     );
 }
