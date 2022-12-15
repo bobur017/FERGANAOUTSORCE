@@ -22,6 +22,7 @@
     }
   }
 
+
   .buttonClose {
     display: flex;
     background-color: #E9573F;
@@ -278,19 +279,26 @@
 
 
 }
+
 .infoText {
   display: flex;
   justify-content: space-between;
   padding-bottom: 2px;
   border-bottom: rgba(72, 177, 171, 0.42) 2px dashed;
-  div{
 
-  &:nth-child(2){
-    font-weight: 600;
-  }
+  div {
+
+    &:nth-child(2) {
+      font-weight: 600;
+    }
   }
 }
 
+.my-header {
+  padding: 10px 10px;
+  background-color: white;
+  border-radius: 10px;
+}
 
 .tableCalendar {
   table {
@@ -367,6 +375,7 @@
   }
 
 }
+
 .figma-card-first {
   padding: 10px;
   background-color: white;
@@ -374,7 +383,7 @@
   border: solid 1px #48B1AB;
 }
 
-.miniTable{
+.miniTable {
 
   table {
     width: 100%;
@@ -429,8 +438,9 @@
         }
 
         td {
-            border: #B6BCCD solid 1px;
+          border: #B6BCCD solid 1px;
           font-size: 10px;
+
           &:first-child {
             text-align: center;
             border-left: #B6BCCD solid 1px;
@@ -439,6 +449,7 @@
           &:last-child {
             border-right: #B6BCCD solid 1px;
           }
+
           padding: 2px;
         }
       }

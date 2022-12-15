@@ -11,6 +11,7 @@ import user from "./pages/users/UserReducer";
 import mealTime from "./pages/meal/MealTimeReducer";
 import supplier from "./pages/supplier/SupplierReducer";
 import multiMenu from "./pages/multimenu/MultiMenuReducer";
+import contract from "./pages/contract/ContractReducer";
 import price from "./pages/price/PriceReducer";
 import sanpinCategory from "./pages/product/SanpinCategoryReducer";
 import Api from "./Api"
@@ -31,6 +32,7 @@ export default configureStore({
         user,
         supplier,
         price,
+        contract,
     },
     middleware: [Api],
 });

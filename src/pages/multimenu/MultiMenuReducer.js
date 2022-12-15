@@ -7,10 +7,12 @@ const slice = createSlice({
     name: "multiMenu",
     initialState: {
         result: {},
+        relationsResult: {},
         error: {},
         multiMenuList: [],
         multiMenu: {},
         checkCalendar: {},
+        checkCalendar2: {},
     },
     reducers: {
         multiMenuList: (state, action) => {
@@ -19,11 +21,18 @@ const slice = createSlice({
         checkCalendar: (state, action) => {
             state.checkCalendar = action.payload;
         },
+        checkCalendar2: (state, action) => {
+            state.checkCalendar2 = action.payload;
+        },
         multiMenu: (state, action) => {
             state.multiMenu = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
+            toast.success(action.payload?.text);
+        },
+        resultMenuRelationsReducer: (state, action) => {
+            state.relationsResult = action.payload;
             toast.success(action.payload?.text);
         },
         errorReducer: (state, action) => {
@@ -84,6 +93,16 @@ export const addMultiMenu = (data) => apiCall({
     success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
 })
+export const relationMultiMenu = (data,id) => apiCall({
+    url: "/menu/"+id,
+    method: "POST",
+    headers: {
+        Authorization: getToken(),
+    },
+    data,
+    success: slice.actions.resultMenuRelationsReducer.type,
+    error: slice.actions.errorReducer.type
+})
 export const addMultiMenuMeal = (data) => apiCall({
     url: "/multiMenu/addMeal/"+data.id,
     method: "POST",
@@ -116,7 +135,18 @@ export const checkCalendar = (params) => apiCall({
     params,
     success: slice.actions.checkCalendar.type,
     error: slice.actions.errorReducer.type
-})
+});
+
+export const checkCalendarByMtts = (id,params) => apiCall({
+    url: "/byCalendarKindergarten/"+id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.checkCalendar2.type,
+    error: slice.actions.errorReducer.type
+});
 
 
 

@@ -22,6 +22,8 @@ import UsersDepartment from "../users/UsersDepartment";
 import RelationMenu from "../relationMultiMenu/RelationMenu";
 import Supplier from "../supplier/Supplier";
 import Price from "../price/Price";
+import Contract from "../contract/Contract";
+import CreateContract from "../contract/CreateContract";
 
 function Sidebars() {
     return (
@@ -82,6 +84,8 @@ function Sidebars() {
                     <Route path="/relation-menu" element={<RelationMenu/>}/>
                     <Route path="/supplier" element={<Supplier/>}/>
                     <Route path="/price" element={<Price/>}/>
+                    <Route path="/contract" element={<Contract/>}/>
+                    <Route path="/create-contract" element={<CreateContract/>}/>
                 </Routes>
             </Sidebar>
         </div>

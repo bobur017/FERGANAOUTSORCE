@@ -9,7 +9,7 @@ function FromPageSizeBottom({pageSize, allPageSize, currentPage, changesPage}) {
                     disabled={currentPage === 0}><IoMdArrowBack size={20}/></button>
             {currentPage - 1 > 0 ? <button  className={'mx-1 myDarkButtons'}  onClick={() => changesPage(currentPage - 2)}>{currentPage - 1}</button> : null}
             {currentPage > 0 ? <button  className={'mx-1 myDarkButtons'}  onClick={() => changesPage(currentPage - 1)}>{currentPage}</button> : null}
-            <div className={'mx-1 myDarkButtons2'}>{currentPage+1}</div>
+            <div className={'mx-1 myDarkButtons2'}>{currentPage ? currentPage+1 : 0}</div>
             {currentPage + 1 < allPageSize ?
                 <button  className={'mx-1 myDarkButtons'}  onClick={() => changesPage(currentPage + 1)}>{currentPage + 2}</button> : null}
             {currentPage + 2 < allPageSize ?

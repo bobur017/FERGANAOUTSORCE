@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
+import {Button, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {checkCalendar, getMultiMenu} from "../multimenu/MultiMenuReducer";
+import {checkCalendar, getMultiMenu, relationMultiMenu} from "../multimenu/MultiMenuReducer";
 import main from './relationStyle.module.scss'
 import SearchSelect from "../more/SearchSelect";
 import ReactApexChart from 'react-apexcharts'
@@ -16,6 +16,7 @@ import {GoCheck, GoPrimitiveDot} from "react-icons/go";
 import {toast} from "react-toastify";
 import {BsCheckAll} from "react-icons/bs";
 import LoadingPage from "../loading/LoadingPage";
+import {useNavigate} from "react-router-dom";
 
 export const mtt = [
     {
@@ -151,19 +152,31 @@ function RelationMenu() {
     const calendar = useSelector(state => state.multiMenu.checkCalendar);
     const departmentsRel = useSelector(state => state.department.departmentsRel);
     const mttsRelations = useSelector(state => state.mtt.mttsRelations);
+    const relationsResult = useSelector(state => state.multiMenu.relationsResult);
     const firstUpdate = useRef(false);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const history = useNavigate();
 
     useEffect(() => {
         if (!firstUpdate.current) {
 
         } else {
-            console.log(departmentsRel, "departmentsRel");
             setDepartment(departmentsRel);
             let list = [...departments];
             setDepartments(list.concat(departmentsRel));
             setLoad(false);
         }
     }, [departmentsRel]);
+
+    useEffect(() => {
+        if (!firstUpdate.current) {
+
+        } else {
+            history("/sidebar/relation-view");
+        }
+    }, [relationsResult]);
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -181,12 +194,12 @@ function RelationMenu() {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
             dispatch(getMultiMenu());
-            dispatch(checkCalendar({month: 12}));
+            dispatch(checkCalendar());
         } else {
             let list = [...calendarState];
             if (!list.some(cale => cale.month === calendar.month && cale.year === calendar.year)) {
-                list.push(calendar);
-                setCurrentDate({...calendar, index: list.indexOf(calendar)});
+                list.push({...calendar, index: list.length});
+                setCurrentDate({...calendar, index: list.length - 1});
                 setCalendarState(list);
             } else if (list.length === 0) {
                 setCalendarState(list);
@@ -315,7 +328,13 @@ function RelationMenu() {
         let mttList = [...mtts];
         mttList[index] = {...mttList[index], checked};
         let mttList2 = [...newMtts];
-
+        let depAttachNumb = 0;
+        mtts.forEach((item, index) => {
+                if (item?.checked) {
+                    depAttachNumb++;
+                }
+            }
+        );
         newMtts.forEach((mtt, index) => {
             if (mtt.id === data.id && currentDay.date === mtt.date) {
                 mttList2[index] = {...mttList2[index], checked};
@@ -331,50 +350,38 @@ function RelationMenu() {
                 if (department.departmentId === departmentId?.departmentId && currentDay.date === department.date) {
                     departmentsList[index] = {
                         ...departmentsList[index],
-                        notAttachedNumber: department?.notAttachedNumber - 1,
-                        attachedNumber: department?.attachedNumber + 1
+                        checkedCount: departmentsList[index]?.checkedCount + 1
                     };
-                    setDepartmentId({
-                        ...departmentsList[index],
-                        notAttachedNumber: department?.notAttachedNumber - 1,
-                        attachedNumber: department?.attachedNumber + 1
-                    })
                 }
             });
             department.forEach((department, index) => {
                 if (department.departmentId === departmentId?.departmentId && currentDay.date === department.date) {
                     departmentList[index] = {
                         ...departmentList[index],
-                        notAttachedNumber: department?.notAttachedNumber - 1,
-                        attachedNumber: department?.attachedNumber + 1
+                        checkedCount: depAttachNumb + 1
                     };
                 }
             });
             kinderList.push(mttList[index]);
+            setDepartmentId({...departmentId, checkedCount: depAttachNumb + 1})
         } else {
             department.forEach((department, index) => {
                 if (department.departmentId === departmentId?.departmentId && department.date === currentDay.date) {
                     departmentList[index] = {
                         ...departmentList[index],
-                        notAttachedNumber: department?.notAttachedNumber + 1,
-                        attachedNumber: department?.attachedNumber - 1
+                        checkedCount: depAttachNumb - 1
                     };
-                    setDepartmentId({
-                        ...departmentList[index],
-                        notAttachedNumber: department?.notAttachedNumber + 1,
-                        attachedNumber: department?.attachedNumber - 1
-                    });
                 }
             });
             departments.forEach((department, index) => {
                 if (department.departmentId === departmentId?.departmentId && department.date === currentDay.date) {
                     departmentsList[index] = {
                         ...departmentsList[index],
-                        notAttachedNumber: department?.notAttachedNumber + 1,
-                        attachedNumber: department?.attachedNumber - 1
+                        checkedCount: depAttachNumb - 1
                     };
                 }
             });
+            setDepartmentId({...departmentId, checkedCount: depAttachNumb - 1})
             kinderList = [...kinderList].filter(item => item.id !== data.id);
         }
         setDepartments(departmentsList);
@@ -384,19 +391,16 @@ function RelationMenu() {
         if (!checked) {
             if (!kinderList.some(kinde => kinde.checked)) {
                 list2[currentDay?.index2] = {
-                    ...list2[currentDay?.index2], notAttachedNumber: list2[currentDay?.index2]?.notAttachedNumber + 1,
-                    attachedNumber: list2[currentDay?.index2]?.attachedNumber - 1, checked, kinList: kinderList
+                    ...list2[currentDay?.index2], checked, kinList: kinderList, checkedCount: kinderList.length
                 };
             } else {
                 list2[currentDay?.index2] = {
-                    ...list2[currentDay?.index2], notAttachedNumber: list2[currentDay?.index2]?.notAttachedNumber + 1,
-                    attachedNumber: list2[currentDay?.index2]?.attachedNumber - 1, kinList: kinderList
+                    ...list2[currentDay?.index2], kinList: kinderList, checkedCount: kinderList.length
                 };
             }
         } else {
             list2[currentDay?.index2] = {
-                ...list2[currentDay?.index2], notAttachedNumber: list2[currentDay?.index2]?.notAttachedNumber - 1,
-                attachedNumber: list2[currentDay?.index2]?.attachedNumber + 1, checked, kinList: kinderList
+                ...list2[currentDay?.index2], checked, kinList: kinderList, checkedCount: kinderList.length
             };
         }
         list[currentDay?.index] = [...list2];
@@ -408,9 +412,7 @@ function RelationMenu() {
         };
         setCurrentDay({
             ...currentDay,
-            kinList: kinderList,
-            attachedNumber: list2[currentDay?.index2]?.attachedNumber,
-            notAttachedNumber: list2[currentDay?.index2]?.notAttachedNumber
+            kinList: kinderList, checkedCount: kinderList.length
         });
         setCalendarState(calendarList);
     }
@@ -425,9 +427,7 @@ function RelationMenu() {
         } else {
             month = month + num;
         }
-
         getDateServer(year, month);
-
     }
 
     const getDateServer = (year, month) => {
@@ -484,27 +484,20 @@ function RelationMenu() {
                 }
             );
             let depAttachedNum = 0;
-            let depNotAttachedNum = 0;
             let fromKinlist = []
             listMtts.forEach((item) => {
                 if (item.checked) {
                     fromKinlist.push(item);
                     depAttachedNum++;
-                } else {
-                    depNotAttachedNum++;
                 }
             })
-            let oldAttachedNumber = currentDay?.attachedNumber;
             let newAttachedNumber = 0;
-            let notAttachedNumber = currentDay?.notAttachedNumber;
             let listDepartments = [...departments];
             let listDepartment = [...department];
             departments.forEach((item, index) => {
                     if (item.departmentId === departmentId?.departmentId && departmentId?.date === item.date) {
                         listDepartments[index] = {
-                            ...listDepartments[index],
-                            notAttachedNumber: depNotAttachedNum,
-                            attachedNumber: depAttachedNum
+                            ...listDepartments[index], checkedCount: depAttachedNum
                         }
                     }
                 }
@@ -512,9 +505,7 @@ function RelationMenu() {
             department.forEach((item, index) => {
                     if (item.departmentId === departmentId?.departmentId && departmentId?.date === item.date) {
                         listDepartment[index] = {
-                            ...listDepartment[index],
-                            notAttachedNumber: depNotAttachedNum,
-                            attachedNumber: depAttachedNum
+                            ...listDepartment[index], checkedCount: depAttachedNum
                         }
                     }
                 }
@@ -523,23 +514,20 @@ function RelationMenu() {
             let kinList = listCurrentDayKinder.concat(fromKinlist);
             if (checked) {
                 newAttachedNumber = kinList.length;
-                notAttachedNumber = notAttachedNumber - (newAttachedNumber - oldAttachedNumber);
             } else {
                 newAttachedNumber = kinList.length;
-                notAttachedNumber = notAttachedNumber + (oldAttachedNumber - newAttachedNumber);
             }
             let listCurrentDate = [...calendarState[currentDate?.index]?.dayList];
             let day = [...listCurrentDate[currentDay.index]];
             if (checked) {
                 day[currentDay.index2] = {
-                    ...day[currentDay.index2], kinList, notAttachedNumber, attachedNumber: newAttachedNumber, checked
+                    ...day[currentDay.index2], kinList, checkedCount: newAttachedNumber, checked
                 }
             } else {
                 day[currentDay.index2] = {
                     ...day[currentDay.index2],
                     kinList,
-                    notAttachedNumber,
-                    attachedNumber: newAttachedNumber,
+                    checkedCount: newAttachedNumber,
                     checked: kinList.some(kin => kin.checked)
                 }
             }
@@ -549,10 +537,10 @@ function RelationMenu() {
             calen[currentDate?.index] = {...calen[currentDate?.index], dayList: listCurrentDate};
             setCalendarState(calen);
             setCurrentDate({...currentDate, dayList: listCurrentDate});
-            setCurrentDay({...currentDay, kinList, notAttachedNumber, attachedNumber: newAttachedNumber});
+            setCurrentDay({...currentDay, kinList, checkedCount: newAttachedNumber});
             setMtts(listMtts);
             setNewMtts(allListKin);
-            setDepartmentId({...departmentId, attachedNumber: depAttachedNum, notAttachedNumber: depNotAttachedNum})
+            setDepartmentId({...departmentId, checkedCount: depAttachedNum})
             setDepartments(listDepartments);
             setDepartment(listDepartment);
         }
@@ -570,40 +558,26 @@ function RelationMenu() {
             setLoad(true);
         }
     }
-    const allChecked = (checked, num) => {
-        if (departmentId) {
-            if (num === 1) {
-                mtts.forEach((mtt, index) => {
-                        getDates2(checked, mtt, index);
-                    }
-                )
-                setChecked1(checked);
-            } else if (num === 2) {
-                mtts.forEach((mtt, index) => {
-                        if (mtt.attached) {
-                            getDates2(checked, mtt, index);
+    const submitKinlist = () => {
+        let dayList = [];
+        if (multiMenuState) {
+            calendarState.forEach(item =>
+                item.dayList.forEach(week =>
+                    week.forEach(day => {
+                            if (day.checked) {
+                                dayList.push(day);
+                            }
                         }
-                    }
+                    )
                 )
-                setChecked2(checked);
-            } else if (num === 3) {
-                mtts.forEach((mtt, index) => {
-                        if (!mtt.attached) {
-                            getDates2(checked, mtt, index);
-                        }
-                    }
-                )
-                setChecked3(checked);
-            }
+            );
+            dispatch(relationMultiMenu(dayList, multiMenuState?.id));
+        } else {
+            toast.error("Taomnoma tanlanmagan!")
         }
-    }
-
-    const myCheck = () => {
-        console.log(currentDay, "currentDay");
     }
     return (
         <Container fluid className={main.main}>
-            <Button onClick={() => myCheck()}>my</Button>
             <Row>
                 <Col xs={12} sm={12} md={12} lg={7} xl={7}>
                     <SearchSelect setData={getMultiMenuDrop} list={multiMenuList} itemName={"name"}/>
@@ -611,7 +585,7 @@ function RelationMenu() {
                 <Col xs={12} sm={12} md={12} lg={5} xl={5} className={'d-flex justify-content-end'}>
                     <button className={main.buttonClose}><AiOutlineClose size={25}/><span className={'mx-2'}>Bekor qilish</span>
                     </button>
-                    <button className={main.buttonSuccess}><AiOutlineCheck size={25}/><span
+                    <button className={main.buttonSuccess} onClick={() => handleShow()}><AiOutlineCheck size={25}/><span
                         className={'mx-2'}>Tayyor</span></button>
                 </Col>
             </Row>
@@ -620,11 +594,13 @@ function RelationMenu() {
                     <div className={main.card}>
                         <div className={'d-flex justify-content-between align-items-center'}>
                             <div className={` ${main.textMenu}`}>
-                                <span style={{fontSize: 25}} className={'fw-semibold'}>{multiMenuState?.name}</span>
-                                <br/>
-                                <span style={{fontSize: 20}}>{multiMenuState?.daily} kun uchun mo‘ljallangan</span>
-                                <br/>
-                                <span>{multiMenuState?.regionalDepartmentName} tomonidan tuzilgan.</span>
+                                {multiMenuState?<>
+                                    <span style={{fontSize: 25}} className={'fw-semibold'}>{multiMenuState?.name}</span>
+                                    <br/>
+                                    <span style={{fontSize: 20}}>{multiMenuState?.daily} kun uchun mo‘ljallangan</span>
+                                    <br/>
+                                    <span>{multiMenuState?.regionalDepartmentName} tomonidan tuzilgan.</span>
+                                </>:<span style={{color:'red',fontSize:25}}>Taomnoma tanlanmagan!</span>}
                             </div>
                             <div className={'d-flex'}>
                                 {apex}
@@ -730,9 +706,11 @@ function RelationMenu() {
                                                         <span style={day?.state && day.checked ? {
                                                             position: 'absolute',
                                                             right: 10,
-                                                            bottom: 0
-                                                        } : {display: 'none'}}><BsCheckAll size={20}
-                                                                                           color={day?.date === currentDay?.date ? 'white' : '#48B1AB'}/></span>
+                                                            top: 0
+                                                        } : {display: 'none'}}><span
+                                                            className={'mx-1'}>{day?.checkedCount}</span><BsCheckAll
+                                                            size={20}
+                                                            color={day?.date === currentDay?.date ? 'white' : '#48B1AB'}/></span>
                                                     </td>
                                                 )}
                                             </tr>
@@ -761,7 +739,7 @@ function RelationMenu() {
                             {
                                 department?.map((item, index) =>
                                     <div key={index}
-                                         className={`d-flex justify-content-between  p-2 mt-1 my-Hover ${main.district}`}
+                                         className={`d-flex justify-content-between align-items-center  p-2 mt-1 my-Hover ${main.district}`}
                                          style={{backgroundColor: departmentId?.departmentId !== item?.departmentId ? 'white' : '#48B1AB'}}>
                                         <div className={`d-flex`}
                                              onClick={() => getKindergarten(item)}>
@@ -774,7 +752,7 @@ function RelationMenu() {
                                                 size={30}/>
                                             </div>
                                             <div className={'mx-2'}
-                                                 style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item?.departmentName}</div>
+                                                 style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item?.departmentName?.substring(0, 10)}{item?.departmentName?.length > 10 ? "..." : ""}</div>
                                         </div>
                                         <div>
                                             <div style={{fontSize: 10}} className={'d-flex'}><GoPrimitiveDot
@@ -785,6 +763,13 @@ function RelationMenu() {
                                                 color={'#E9573F'} size={10}/><span className={'mx-2'}
                                                                                    style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item.notAttachedNumber} ta</span>
                                             </div>
+                                        </div>
+                                        <div style={{fontSize: 15, fontWeight: 600}} className={'d-flex'}><span
+                                            className={'mx-2'}
+                                            style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item?.checkedCount}</span>
+                                            <BsCheckAll
+                                                color={departmentId?.departmentId === item.departmentId ? 'white' : '#8CC152'}
+                                                size={15} style={item?.checkedCount > -1 ? {} : {display: 'none'}}/>
                                         </div>
                                     </div>
                                 )
@@ -813,11 +798,11 @@ function RelationMenu() {
                                         <div className={'mx-2'}>{item.number}{item.name}</div>
                                         <div style={{
                                             position: 'absolute',
-                                            bottom: 2,
+                                            bottom: 1,
                                             right: 4,
                                             fontSize: 10,
                                             color: '#737373'
-                                        }}>Menyu: {item.menuName !== null ? item.menuName : "Biriktirilmagan"}</div>
+                                        }}>Menyu: {item.menuName !== null ? item.menuName?.substring(0, 15) : "Biriktirilmagan"}</div>
                                     </div>
                                 )
                             }
@@ -825,6 +810,20 @@ function RelationMenu() {
                     </div>
                 </Col>
             </Row>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+
+                </Modal.Header>
+                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleClose}>
+                        YO'Q
+                    </Button>
+                    <Button variant="primary" onClick={() => submitKinlist()}>
+                        HA
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <LoadingPage load={load}/>
         </Container>
     );

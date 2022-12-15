@@ -7,10 +7,10 @@ import React from "react";
 import { GiGreenhouse, GiMeal, GiShoppingCart } from "react-icons/gi";
 import { TbNumbers } from "react-icons/tb";
 import {CgMenuHotdog} from "react-icons/cg";
-import {BsFillMenuButtonFill, BsFillMenuButtonWideFill} from "react-icons/bs";
+import {BsFillMenuButtonFill} from "react-icons/bs";
 import {TiInfoLargeOutline} from "react-icons/ti";
 import {FaUserCog} from "react-icons/fa";
-import {HiOutlineTruck} from "react-icons/hi";
+import {HiOutlineDocumentText, HiOutlineTruck} from "react-icons/hi";
 import {MdOutlinePriceChange} from "react-icons/md";
 
 export const rolesList = (role) => {
@@ -88,6 +88,11 @@ export const rolesList = (role) => {
                 path: "/sidebar/info",
                 name: "Ma'lumotlar",
                 icon: <TiInfoLargeOutline size={25}/>
+            },
+            {
+                path: "/sidebar/contract",
+                name: "Ma'lumotlar",
+                icon: <HiOutlineDocumentText size={25}/>
             },
             {
                 path: "/sidebar/supplier",

@@ -3,30 +3,81 @@ import {Col, Container, Row} from "react-bootstrap";
 import main from './relationStyle.module.scss'
 import {MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos} from "react-icons/md";
 import {AiOutlineEnvironment} from "react-icons/ai";
-import {BiCircle} from "react-icons/bi";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useRef} from "react";
-import {checkCalendar, getMultiMenu} from "../multimenu/MultiMenuReducer";
-import {district, mtt} from "./RelationMenu";
-import {RiHome5Line} from "react-icons/ri";
+import {checkCalendar, checkCalendarByMtts, getMultiMenu} from "../multimenu/MultiMenuReducer";
 import {Link} from "react-router-dom";
-import {GoPrimitiveDot} from "react-icons/go";
+import {GoCheck, GoPrimitiveDot} from "react-icons/go";
 import TabsCustom from "../more/TabsCustom";
+import {BsCheckAll} from "react-icons/bs";
+import {getDepartment, getDepartmentFromRelation} from "../departments/RegionDepartmentReducer";
+import {getByDepartmentMtt, getMttFromRelations} from "../mtt/MttReducer";
 
 function MenuView() {
     const dispatch = useDispatch();
     const [activeNav, setActiveNav] = useState(0);
+    const [days, setDays] = useState(0);
+    const [departmentId, setDepartmentId] = useState();
+    const [kindergarten, setKindergarten] = useState();
+    const departmentsRel = useSelector(state => state.department.departmentsRel);
+    const mttsRelations = useSelector(state => state.mtt.mttsRelations);
+    const mtts = useSelector(state => state.mtt.mtts);
     const calendar = useSelector(state => state.multiMenu.checkCalendar);
+    const calendar2 = useSelector(state => state.multiMenu.checkCalendar2);
+    const departments = useSelector(state => state.department.departments);
     const firstUpdate = useRef(false);
+    const [currentDay, setCurrentDay] = useState();
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
             dispatch(getMultiMenu());
-            dispatch(checkCalendar({month: 12}));
+            dispatch(checkCalendar());
+            dispatch(getDepartment())
         } else {
 
         }
     }, [])
+
+    const changeDate = (num, year, month) => {
+        if (month === 12 && num > 0) {
+            year = year + 1;
+            month = 1;
+        } else if (month === 1 && num < 0) {
+            year = year - 1;
+            month = 12;
+        } else {
+            month = month + num;
+        }
+        getDateServer(year, month);
+    }
+
+    const getDateServer = (year, month) => {
+        dispatch(checkCalendar({month, year}));
+    }
+
+    const getDates = (day) => {
+        dispatch(getDepartmentFromRelation({date: parseInt(day?.date)}));
+        setCurrentDay(day);
+    }
+
+    const getKindergartenDays = (data) => {
+        setKindergarten(data);
+        dispatch(checkCalendarByMtts(data.id, {date: Date.now()}));
+    }
+    const getMttsByDepartment = (data) => {
+        dispatch(getMttFromRelations(data.departmentId, {date: currentDay?.date}));
+        setDepartmentId(data);
+
+    }
+    const getMttsByDepartment2 = (data) => {
+        setDepartmentId(data);
+        dispatch(getByDepartmentMtt(data.id))
+    }
+    const setDay2 = (data) => {
+        console.log(data,"ssss");
+        setDays(data);
+    }
+
 
     return (
         <Container className={`w-100 ${main.main}`} fluid>
@@ -36,7 +87,8 @@ function MenuView() {
                     Tumanlarga menyu biriktirilishi haqida ma’lumot
                 </div>
                 <div className={"w-50 d-flex justify-content-between align-items-center"}>
-                    <TabsCustom listTabs={[{name:"Kun bo‘yicha"},{name:"Bog‘cha kesimida"}]} currentTabs={setActiveNav}/>
+                    <TabsCustom listTabs={[{name: "Kun bo‘yicha"}, {name: "Bog‘cha kesimida"}]}
+                                currentTabs={setActiveNav}/>
                     <div>
                         <button className={'createButtons'}><Link to={"/sidebar/relation-menu"}
                                                                   style={{textDecoration: 'none', color: 'white'}}>Menyu
@@ -72,33 +124,52 @@ function MenuView() {
                                         calendar.dayList?.map((week, index) =>
                                             <tr key={index}>
                                                 {week.map((day, index2) =>
-                                                    <td key={index2}>
-                                                        {day.day !== 0 ?<div style={{marginLeft:20}}>
-                                                           <div
+                                                    <td key={index2}
+                                                        style={day?.state ? {
+                                                            backgroundColor: day?.date === currentDay?.date ? '#48B1AB' : '',
+                                                            position: 'relative',
+                                                            color: day?.date === currentDay?.date ? 'white' : ''
+                                                        } : {
+                                                            backgroundColor: 'rgba(209,211,210,0.55)',
+                                                            color: '#4f4e4e',
+                                                            position: "relative"
+                                                        }}
+                                                        onClick={() => getDates(day)}>
+                                                        {/*<div className={day.attached ? `${main.borderTd}` : ''}*/}
+                                                        {/*     style={index2 === 5 || index2 === 6 ? {color: 'red'} : {}}>{day.day !== 0 ? day.day : null}</div>*/}
+                                                        {day.day !== 0 ? <div style={{marginLeft: 20}}>
+                                                            <div
                                                                 className={'d-flex justify-content-start align-items-center mt-3'}>
                                                                 <GoPrimitiveDot color={'#8CC152'}/>
                                                                 <span style={{fontSize: 10}}
-                                                                      className={'text-start fw-bolder'}>214 ta</span>
+                                                                      className={'text-start'}>{day.attachedNumber} ta</span>
                                                             </div>
                                                             <div
                                                                 className={'d-flex justify-content-start align-items-center'}>
                                                                 <GoPrimitiveDot color={'#E9573F'}/>
                                                                 <span style={{fontSize: 10}}
-                                                                      className={'text-start fw-bolder'}>125 ta</span>
+                                                                      className={'text-start'}>{day.notAttachedNumber} ta</span>
                                                             </div>
-                                                        </div>: null}
+                                                        </div> : null}
                                                         {day.day !== 0 ?
                                                             <div
-                                                                style={index2 === 5 || index2 === 6 ? {color: 'red'} : null}
+                                                                style={index2 === 5 || index2 === 6 ? {color: 'red'} : {color: 'black'}}
                                                                 className={main.inTd}>
                                                                 {day.day !== 0 ? day.day : null}</div> : null}
+                                                        <span style={day?.state && day.checked ? {
+                                                            position: 'absolute',
+                                                            right: 10,
+                                                            top: 0
+                                                        } : {display: 'none'}}><span
+                                                            className={'mx-1'}>{day?.checkedCount}</span><BsCheckAll
+                                                            size={20}
+                                                            color={day?.date === currentDay?.date ? 'white' : '#48B1AB'}/></span>
                                                     </td>
                                                 )}
                                             </tr>
                                         )
                                     }
                                     </tbody>
-
                                 </table>
                                 <div className={'w-100 text-center justify-content-around d-flex mt-3'}>
                                     <div><GoPrimitiveDot color={'#8CC152'} size={25}/>
@@ -119,14 +190,40 @@ function MenuView() {
                     <div className={'w-50'}>
                         <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
                             {
-                                district.map((item, index) =>
-                                    <div key={index} className={`d-flex p-2 mt-1 ${main.district}`}
-                                         style={{backgroundColor: 'white'}}>
-                                        <div style={{color: '#48B1AB', paddingLeft: 10, borderColor: '#48B1AB'}}
-                                             className={main.leftLine}><AiOutlineEnvironment
-                                            size={30}/>
+                                departmentsRel?.map((item, index) =>
+                                    <div key={index}
+                                         className={`d-flex justify-content-between align-items-center  p-2 mt-1 my-Hover ${main.district}`}
+                                         style={{backgroundColor: departmentId?.departmentId !== item?.departmentId ? 'white' : '#48B1AB'}}>
+                                        <div className={`d-flex`}
+                                             onClick={() => getMttsByDepartment(item)}>
+                                            <div style={{
+                                                color: departmentId?.departmentId !== item.departmentId ? '#48B1AB' : 'white',
+                                                paddingLeft: 10,
+                                                borderColor: departmentId?.departmentId !== item.departmentId ? '#48B1AB' : 'white'
+                                            }}
+                                                 className={main.leftLine}><AiOutlineEnvironment
+                                                size={30}/>
+                                            </div>
+                                            <div className={'mx-2'}
+                                                 style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item?.departmentName?.substring(0, 10)}{item?.departmentName?.length > 10 ? "..." : ""}</div>
                                         </div>
-                                        <div className={'mx-2'}>{item.name}</div>
+                                        <div>
+                                            <div style={{fontSize: 10}} className={'d-flex'}><GoPrimitiveDot
+                                                color={'#8CC152'} size={10}/><span className={'mx-2'}
+                                                                                   style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item.attachedNumber} ta</span>
+                                            </div>
+                                            <div style={{fontSize: 10}} className={'d-flex'}><GoPrimitiveDot
+                                                color={'#E9573F'} size={10}/><span className={'mx-2'}
+                                                                                   style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item.notAttachedNumber} ta</span>
+                                            </div>
+                                        </div>
+                                        <div style={{fontSize: 15, fontWeight: 600}} className={'d-flex'}><span
+                                            className={'mx-2'}
+                                            style={{color: departmentId?.departmentId === item.departmentId ? 'white' : '#000'}}>{item?.checkedCount}</span>
+                                            <BsCheckAll
+                                                color={departmentId?.departmentId === item.departmentId ? 'white' : '#8CC152'}
+                                                size={15} style={item?.checkedCount > -1 ? {} : {display: 'none'}}/>
+                                        </div>
                                     </div>
                                 )
                             }
@@ -135,17 +232,29 @@ function MenuView() {
                     <div className={'px-2 w-50'}>
                         <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
                             {
-                                mtt.map((item, index) =>
+                                mttsRelations?.map((item, index) =>
                                     <div key={index} className={`d-flex p-2 mt-1 ${main.district}`}
-                                         style={{backgroundColor: 'white'}}>
+                                         style={{backgroundColor: 'white', cursor: 'pointer', position: 'relative'}}>
                                         <div style={{
                                             color: item.checked ? '#8CC152' : '#E9573F',
                                             paddingLeft: 10,
-                                            borderColor: item.checked ? '#8CC152' : '#E9573F'
-                                        }} className={main.leftLine}><RiHome5Line
-                                            size={30}/>
+                                            borderColor: item.attached ? '#8CC152' : '#E9573F'
+                                        }}
+                                             className={`d-flex justify-content-center align-items-center ${main.leftLine}`}>
+                                            <div className={main.dotIcon}
+                                                 style={{borderColor: item.attached ? '#8CC152' : '#E9573F'}}>
+                                                {item.checked ?
+                                                    <GoCheck color={item.attached ? '#8CC152' : '#E9573F'}/> : null}
+                                            </div>
                                         </div>
-                                        <div className={'mx-2'}>{item.name}</div>
+                                        <div className={'mx-2'}>{item.number}{item.name}</div>
+                                        <div style={{
+                                            position: 'absolute',
+                                            bottom: 1,
+                                            right: 4,
+                                            fontSize: 10,
+                                            color: '#737373'
+                                        }}>Menyu: {item.menuName !== null ? item.menuName?.substring(0, 15) : "Biriktirilmagan"}</div>
                                     </div>
                                 )
                             }
@@ -177,17 +286,25 @@ function MenuView() {
                                 </thead>
                                 <tbody>
                                 {
-                                    calendar.dayList?.map((week, index) =>
+                                    calendar2?.dayList?.map((week, index) =>
                                         <tr key={index}>
                                             {week.map((day, index2) =>
                                                 <td key={index2}
-                                                    style={index2 === 5 || index2 === 6 ? {color: 'red'} : null}>{day.day !== 0 ? day.day : null}</td>
+                                                    onMouseEnter={() => setDays(day.day)}
+                                                    onMouseLeave={() => setDays(null)}
+                                                    style={index2 === 5 || index2 === 6 ? {
+                                                        color: 'red',
+                                                        position: 'relative'
+                                                    } : {position: 'relative'}}>{day.day !== 0 ? day.day : null}
+                                                    {day?.attached ? <BsCheckAll color={'#48B1AB'}
+                                                                 style={{position: "absolute", right: 2, bottom: 1}}/> : null}
+                                                    <div className={days === day.day ? `shadow ${main.tooltipText}`:'d-none'}>{day.menuName !== null ? day.menuName : <span style={{fontSize:10,color:'red'}}>Menyu biriktirilmagan</span>}</div>
+                                                </td>
                                             )}
                                         </tr>
                                     )
                                 }
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
@@ -195,36 +312,53 @@ function MenuView() {
                 <Col xs={12} sm={12} md={12} lg={5} xl={5} className={'d-flex justify-content-between p-1 mt-3'}>
                     <div className={'w-50'}>
                         <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
-
                             {
-                                district.map((item, index) =>
-                                    <div key={index} className={`d-flex p-2 mt-1 ${main.district}`}
-                                         style={{backgroundColor: 'white'}}>
-                                        <div style={{color: '#48B1AB', paddingLeft: 10, borderColor: '#48B1AB'}}
-                                             className={main.leftLine}><AiOutlineEnvironment
-                                            size={30}/>
+                                departments?.map((item, index) =>
+                                    <div key={index}
+                                         className={`d-flex justify-content-between align-items-center  p-2 mt-1 my-Hover ${main.district}`}
+                                         style={{backgroundColor: departmentId?.id !== item?.id ? 'white' : '#48B1AB'}}>
+                                        <div className={`d-flex`}
+                                             onClick={() => getMttsByDepartment2(item)}>
+                                            <div style={{
+                                                color: departmentId?.id !== item.id ? '#48B1AB' : 'white',
+                                                paddingLeft: 10,
+                                                borderColor: departmentId?.id !== item.id ? '#48B1AB' : 'white'
+                                            }}
+                                                 className={main.leftLine}>
+                                                <AiOutlineEnvironment
+                                                    size={30}/>
+                                            </div>
+                                            <div className={'mx-2'}
+                                                 style={{color: departmentId?.id === item.id ? 'white' : '#000'}}>{item?.name?.substring(0, 15)}{item?.name?.length > 10 ? "..." : ""}</div>
                                         </div>
-                                        <div className={'mx-2'}>{item.name}</div>
                                     </div>
                                 )
                             }
-
                         </div>
                     </div>
                     <div className={'px-2 w-50'}>
                         <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
                             {
-                                mtt.map((item, index) =>
+                                mtts?.map((item, index) =>
                                     <div key={index} className={`d-flex p-2 mt-1 ${main.district}`}
-                                         style={{backgroundColor: 'white'}}>
+                                         style={item.id === kindergarten?.id ? {
+                                             backgroundColor: '#48B1AB',
+                                             cursor: 'pointer',
+                                             position: 'relative',
+                                             color: 'white'
+                                         } : {backgroundColor: 'white', cursor: 'pointer', position: 'relative'}}
+                                         onClick={() => getKindergartenDays(item)}>
                                         <div style={{
-                                            color: item.checked ? '#8CC152' : '#E9573F',
+                                            color: item.id !== kindergarten?.id ? '#48B1AB' : 'white',
                                             paddingLeft: 10,
-                                            borderColor: item.checked ? '#8CC152' : '#E9573F'
-                                        }} className={main.leftLine}><BiCircle
-                                            size={30}/>
+                                            borderColor: item.id !== kindergarten?.id ? '#48B1AB' : 'white'
+                                        }}
+                                             className={`d-flex justify-content-center align-items-center ${main.leftLine}`}>
+                                            <div className={main.dotIcon}
+                                                 style={{borderColor: item.id !== kindergarten?.id ? '#48B1AB' : 'white'}}>
+                                            </div>
                                         </div>
-                                        <div className={'mx-2'}>{item.name}</div>
+                                        <div className={'mx-2'}>{item.number}{item.name}</div>
                                     </div>
                                 )
                             }
