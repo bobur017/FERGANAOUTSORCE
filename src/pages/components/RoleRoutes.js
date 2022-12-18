@@ -1,11 +1,12 @@
 import {
+    FaChild,
     FaCommentAlt,
     FaHome,
     FaNetworkWired,
 } from "react-icons/fa";
 import React from "react";
 import { GiGreenhouse, GiMeal, GiShoppingCart } from "react-icons/gi";
-import { TbNumbers } from "react-icons/tb";
+import {TbBuildingWarehouse, TbNumbers} from "react-icons/tb";
 import {CgMenuHotdog} from "react-icons/cg";
 import {BsFillMenuButtonFill} from "react-icons/bs";
 import {TiInfoLargeOutline} from "react-icons/ti";
@@ -98,6 +99,42 @@ export const rolesList = (role) => {
                 path: "/sidebar/supplier",
                 name: "Ma'lumotlar",
                 icon: <HiOutlineTruck size={25}/>
+            },
+        ];
+    }else    if(role === "ROLE_OMBORCHI"){
+        return [
+            {
+                path: "/sidebar/info",
+                name: "Ma'lumotlar",
+                icon: <TiInfoLargeOutline size={25}/>
+            },
+            {
+                path: "/sidebar/menu-mtt",
+                name: "Kunlik menu",
+                icon: <HiOutlineDocumentText size={25}/>
+            },
+            {
+                path: "/sidebar/warehouse",
+                name: "Ombor",
+                icon: <TbBuildingWarehouse size={25}/>
+            },
+        ];
+    }else    if(role === "ROLE_HAMSHIRA"){
+        return [
+            {
+                path: "/sidebar/info",
+                name: "Ma'lumotlar",
+                icon: <TiInfoLargeOutline size={25}/>
+            },
+            {
+                path: "/sidebar/menu-mtt",
+                name: "Kunlik menu",
+                icon: <HiOutlineDocumentText size={25}/>
+            },
+            {
+                path: "/sidebar/children-number",
+                name: "Bolalar soni",
+                icon: <FaChild size={25}/>
             },
         ];
     }else  if(role === "ROLE_XODIMLAR_BO`LIMI"){

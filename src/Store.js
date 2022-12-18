@@ -13,6 +13,9 @@ import supplier from "./pages/supplier/SupplierReducer";
 import multiMenu from "./pages/multimenu/MultiMenuReducer";
 import contract from "./pages/contract/ContractReducer";
 import price from "./pages/price/PriceReducer";
+import warehouse from "./pages/warehouse/WarehouseReducer";
+import report from "./pages/report/ReportReducer";
+import kidsNumber from "./pages/children-number/ChildrenNumberReducer";
 import sanpinCategory from "./pages/product/SanpinCategoryReducer";
 import Api from "./Api"
 
@@ -33,6 +36,9 @@ export default configureStore({
         supplier,
         price,
         contract,
+        kidsNumber,
+        warehouse,
+        report,
     },
     middleware: [Api],
 });

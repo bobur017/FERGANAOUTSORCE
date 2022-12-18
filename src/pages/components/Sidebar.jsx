@@ -5,6 +5,7 @@ import {NavLink} from 'react-router-dom';
 import {ImExit} from 'react-icons/im';
 import {rolesList} from "./RoleRoutes";
 import logo from '../login/image/img.png'
+import {useMediaQuery} from "react-responsive";
 
 const Sidebar = ({children}) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,10 +15,10 @@ const Sidebar = ({children}) => {
     useEffect(() => {
         setMenuItem(rolesList(localStorage.getItem("role")));
     }, []);
-
+    const isBigScreen = useMediaQuery({query: '(max-width: 576px)'});
     return (
         <div className={'d-flex'} style={{height: "90%"}}>
-            <div style={{width: isOpen ? "200px" : "80px"}} className="sidebar shadow">
+            {!isBigScreen ? <div style={{width: isOpen ? "200px" : "80px"}} className="sidebar shadow">
                 <div className={`w-100 inSidebars`}>
                     <div className="link d-flex w-100 justify-content-end">
                         <div style={{marginLeft: isOpen ? "50px" : "0px"}} className="bars">
@@ -25,7 +26,7 @@ const Sidebar = ({children}) => {
                                 <FaAngleDoubleRight onClick={toggle} className={'rightLeft'}/>}
                         </div>
                     </div>
-                    {menuItem.map((item, index) => {
+                    {menuItem?.map((item, index) => {
                         return (
                             <NavLink to={item.path} key={index} className="link">
                                 <div className="icon">{item.icon}</div>
@@ -40,11 +41,25 @@ const Sidebar = ({children}) => {
                         <div style={{display: isOpen ? "block" : "none"}} className="link_text">Chiqish</div>
                     </NavLink>
                 </div>
-            </div>
+            </div> : <nav className={"mobile-navbar"}>
+                <ul>
+                    {menuItem?.map((item, index) => {
+                        return (
+                            <NavLink to={item.path} key={index} className="link" style={{display:'inline-block',textAlign:'center'}}>
+                                <div className="icon">{item.icon}</div>
+                                <div style={{display: isOpen ? "block" : "none"}}
+                                     className="link_text">{item.name}</div>
+                                <div style={{fontSize:13}}>{item.name}</div>
+                            </NavLink>
+                        );
+                    })
+                    }
+                </ul>
+            </nav>}
             <div className={"main"}>
-               <div>
-                {children}
-               </div>
+                <div>
+                    {children}
+                </div>
             </div>
         </div>
     );

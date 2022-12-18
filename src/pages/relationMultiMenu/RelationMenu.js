@@ -583,7 +583,7 @@ function RelationMenu() {
                     <SearchSelect setData={getMultiMenuDrop} list={multiMenuList} itemName={"name"}/>
                 </Col>
                 <Col xs={12} sm={12} md={12} lg={5} xl={5} className={'d-flex justify-content-end'}>
-                    <button className={main.buttonClose}><AiOutlineClose size={25}/><span className={'mx-2'}>Bekor qilish</span>
+                    <button className={main.buttonClose} onClick={()=>history("/sidebar/relation-view")}><AiOutlineClose size={25}/><span className={'mx-2'}>Bekor qilish</span>
                     </button>
                     <button className={main.buttonSuccess} onClick={() => handleShow()}><AiOutlineCheck size={25}/><span
                         className={'mx-2'}>Tayyor</span></button>
@@ -814,7 +814,7 @@ function RelationMenu() {
                 <Modal.Header closeButton>
 
                 </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Body>Menyu biriktirishni yakunlash</Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={handleClose}>
                         YO'Q

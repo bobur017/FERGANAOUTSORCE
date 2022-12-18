@@ -11,6 +11,7 @@ const slice = createSlice({
         error: {},
         multiMenuList: [],
         multiMenu: {},
+        menu: {},
         checkCalendar: {},
         checkCalendar2: {},
     },
@@ -26,6 +27,9 @@ const slice = createSlice({
         },
         multiMenu: (state, action) => {
             state.multiMenu = action.payload;
+        },
+        menu: (state, action) => {
+            state.menu = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -58,6 +62,16 @@ export const getMultiMenuOne = (id) => apiCall({
         Authorization: getToken(),
     },
     success: slice.actions.multiMenu.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getMenuOne = (id) => apiCall({
+    url: "/menu/"+id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.menu.type,
     error: slice.actions.errorReducer.type
 })
 

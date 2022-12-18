@@ -35,7 +35,9 @@ function Price() {
         } else if (num === 2) {
             setProductState(data);
         }
-        setShow(true)
+        if (oneProduct?.id) {
+            setShow(true)
+        }
     };
 
     useEffect(() => {
@@ -73,15 +75,15 @@ function Price() {
 
     const submitFunc = (e) => {
         e.preventDefault();
-        if (productState.minPrice >0 && productState.maxPrice > 0){
+        if (productState.minPrice > 0 && productState.maxPrice > 0) {
 
-        if (productState?.id) {
-            dispatch(editPrice({...productState, productId: oneProduct?.id}));
-        }else {
-            dispatch(addPrice({...productState, productId: oneProduct?.id}));
+            if (productState?.id) {
+                dispatch(editPrice({...productState, productId: oneProduct?.id}));
+            } else {
+                dispatch(addPrice({...productState, productId: oneProduct?.id}));
 
-        }
-        }else {
+            }
+        } else {
             toast.error("kiritilgan narxlar 0 dan katta bo'lsin!");
         }
     }
@@ -90,7 +92,7 @@ function Price() {
         dispatch(getPriceAll({pageNumber}));
     }
     const getPrices = (pageNumber) => {
-        dispatch(byProductPrice({productId: oneProduct?.id,pageNumber}));
+        dispatch(byProductPrice({productId: oneProduct?.id, pageNumber}));
     }
     return (
         <div className={"allMain"}>
@@ -119,7 +121,8 @@ function Price() {
                                 </tbody>
                             </table>
                             <br/>
-                            <FromPageSizeBottom allPageSize={pricesState?.allPageSize} pageSize={pricesState?.pageSize} currentPage={pricesState?.getPageNumber} changesPage={getProduct}/>
+                            <FromPageSizeBottom allPageSize={pricesState?.allPageSize} pageSize={pricesState?.pageSize}
+                                                currentPage={pricesState?.getPageNumber} changesPage={getProduct}/>
                         </div>
 
                     </div>
@@ -178,7 +181,9 @@ function Price() {
                                 </tbody>
                             </table>
                             <br/>
-                            <FromPageSizeBottom allPageSize={pricesByProduct?.allPageSize} pageSize={pricesByProduct?.pageSize} currentPage={pricesByProduct?.getPageNumber} changesPage={getPrices}/>
+                            <FromPageSizeBottom allPageSize={pricesByProduct?.allPageSize}
+                                                pageSize={pricesByProduct?.pageSize}
+                                                currentPage={pricesByProduct?.getPageNumber} changesPage={getPrices}/>
                         </div>
                     </div>
                 </Col>
@@ -212,10 +217,10 @@ function Price() {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" onClick={handleClose}>
-                            Close
+                            Bekor qilish
                         </Button>
                         <Button variant="primary" type={'submit'}>
-                            Save Changes
+                            Tayyor
                         </Button>
                     </Modal.Footer>
                 </Form>

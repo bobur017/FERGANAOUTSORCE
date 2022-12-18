@@ -8,11 +8,11 @@ import {TimestampToInputDate} from "../funcs/Funcs";
 import {getProduct} from "../product/ProductReducer";
 import {toast} from "react-toastify";
 import {getMttDepartment} from "../mtt/MttReducer";
-import {addContract} from "./ContractReducer";
+import {addContract, editContract, getContract, getContractOne} from "./ContractReducer";
 import {MdDeleteForever} from "react-icons/md";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
-function CreateContract() {
+function EditContract() {
     const def = {
         "endDay": '',
         "kindergartenContractList": [
@@ -33,6 +33,7 @@ function CreateContract() {
         "startDay": '',
         "supplierId": ''
     }
+    const contractId = useParams("id")
     const [kindergartenState, setKindergartenState] = useState();
     const [productState, setProductState] = useState();
     const [departmentState, setDepartmentState] = useState({name: "Ta'minotchini tanlang"});
@@ -41,6 +42,7 @@ function CreateContract() {
     const suppliers = useSelector(state => state.supplier.suppliers);
     const products = useSelector(state => state.product.products);
     const mttsByDepartment = useSelector(state => state.mtt.mttsByDepartment);
+    const contract = useSelector(state => state.contract.contract);
     const result = useSelector(state => state.contract.result);
     const firstUpdate = useRef(false);
     const history = useNavigate();
@@ -48,7 +50,16 @@ function CreateContract() {
     useEffect(() => {
         if (!firstUpdate.current) {
 
-        } else {
+        }else {
+            console.log(contract,"contract");
+            setPostStateContract(contract);
+        }
+    }, [contract]);
+
+    useEffect(() => {
+        if (!firstUpdate.current) {
+
+        }else {
             history("/sidebar/contract");
         }
     }, [result]);
@@ -59,6 +70,7 @@ function CreateContract() {
             dispatch(getSupplier());
             dispatch(getProduct());
             dispatch(getMttDepartment());
+            dispatch(getContractOne(contractId?.id));
         }
     }, []);
     const getSupplierDrop = (data) => {
@@ -103,7 +115,7 @@ function CreateContract() {
         } else {
             if (kindergartenContractList.length > 0) {
                 let productContracts = [...kindergartenContractList[0]?.productContracts].map((product) => {
-                        return {...product, price: 0, weight: 0};
+                    return {...product, price: 0, weight: 0};
                     }
                 );
                 if (kindergartenContractList[0].kindergartenId === "empty") {
@@ -136,10 +148,9 @@ function CreateContract() {
     }
     const changeProductWeight = (index, index2) => (e) => {
         let kindergartenContractList = [...postStateContract?.kindergartenContractList];
-        kindergartenContractList[index].productContracts[index2] = {
-            ...kindergartenContractList[index].productContracts[index2],
-            [e.target.name]: e.target.value
-        };
+        let productLisy = [...kindergartenContractList[index].productContracts];
+        productLisy[index2] = {...productLisy[index2],weight: e.target.value}
+        kindergartenContractList[index] = {...kindergartenContractList[index],productContracts:productLisy};
         setPostStateContract({...postStateContract, kindergartenContractList});
     }
     const onClickProductWeight = (kinder, product) => {
@@ -149,21 +160,20 @@ function CreateContract() {
     const changePrice = (index2) => (e) => {
         let kindergartenContractList = [...postStateContract.kindergartenContractList];
         postStateContract.kindergartenContractList.forEach((kin, index) => {
-                kindergartenContractList[index].productContracts[index2] = {
-                    ...kindergartenContractList[index].productContracts[index2],
-                    price: e.target.value
-                };
+            let productLisy = [...kindergartenContractList[index].productContracts];
+            productLisy[index2] = {...productLisy[index2],price: e.target.value}
+            kindergartenContractList[index] = {...kindergartenContractList[index],productContracts:productLisy};
+            setPostStateContract({...postStateContract, kindergartenContractList});
             }
         );
         setPostStateContract({...postStateContract, kindergartenContractList});
     }
     const submit = (e) => {
         e.preventDefault();
-        console.log(postStateContract, "Tayyor");
         if (postStateContract.supplierId === '' || postStateContract.kindergartenContractList.some(item => item.id === "empty")) {
             toast.error("Barcha joylar to'ldirilishi shart");
         } else {
-            dispatch(addContract(postStateContract));
+            dispatch(editContract(postStateContract));
         }
 
     }
@@ -243,83 +253,83 @@ function CreateContract() {
                     </div>
                 </div>
                 <div className={'figma-card mt-3'}>
-                        <div className={'miniTable2'}>
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>№</th>
-                                    <th colSpan={2}>MTT</th>
-                                    {
-                                        postStateContract?.kindergartenContractList[0]?.productContracts?.map((product, index) =>
-                                            <th key={index}>
-                                                <div>{product?.productName}</div>
-                                                <MdDeleteForever size={20} color={'red'}
-                                                                 onClick={() => removeProduct(product?.productId)}
-                                                                 style={{cursor: 'pointer'}}/>
-                                            </th>
-                                        )
-                                    }
-                                    <th><DropdownCustom name={"Masulot +"} list={products}
-                                                        setData={addProductInKinder}/>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td colSpan={2}>Narx</td>
-                                    {
-                                        postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
-                                            <td key={index}>
-                                                <input className={"myTdInput"} type="number"
-                                                       name={'price'}
-                                                       value={prod?.price}
-                                                       onWheel={e => e.target.blur()}
-                                                       required
-                                                       onChange={changePrice(index)}/>
-                                                <span>{prod?.maxPrice}</span>
-                                            </td>
-                                        )
-                                    }
-                                </tr>
+                    <div className={'miniTable2'}>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th colSpan={2}>MTT</th>
                                 {
-                                    postStateContract?.kindergartenContractList?.map((kinder, index) =>
-                                        <tr key={index}>
-                                            <td>{index + 2}</td>
-                                            <td style={{width:100}}>{kinder?.number}{kinder?.kindergartenName}</td>
-                                            <td><MdDeleteForever size={20} color={'red'}
-                                                                 onClick={() => removeKinder(kinder?.kindergartenId)}
-                                                                 style={{cursor: 'pointer'}}/></td>
-                                            {
-                                                kinder?.productContracts?.map((prod, index2) =>
-                                                    <td key={index2} onClick={() => onClickProductWeight(kinder, prod)}>
-                                                        <input className={"myTdInput"} type="number"
-                                                               name={'weight'}
-                                                               value={prod?.weight}
-                                                               onWheel={e => e.target.blur()}
-                                                               required
-                                                               disabled={!(kinder?.kindergartenId === kindergartenState?.kindergartenId && prod?.productId === productState?.productId)}
-                                                               onChange={changeProductWeight(index, index2)}/>
-                                                    </td>
-                                                )
-                                            }
-                                        </tr>
+                                    postStateContract?.kindergartenContractList[0]?.productContracts?.map((product, index) =>
+                                        <th key={index}>
+                                            <div>{product?.productName}</div>
+                                            <MdDeleteForever size={20} color={'red'}
+                                                             onClick={() => removeProduct(product?.productId)}
+                                                             style={{cursor: 'pointer'}}/>
+                                        </th>
                                     )
                                 }
-                                <tr>
-                                    <td colSpan={3}><DropdownCustom name={"MTT +"} list={mttsByDepartment}
-                                                                    setData={addToKindergarten}/></td>
-                                    {
-                                        postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
-                                            <td key={index}>
-                                                {totalByProduct(index)}
-                                            </td>
-                                        )
-                                    }
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                <th><DropdownCustom name={"Masulot +"} list={products}
+                                                    setData={addProductInKinder}/>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td colSpan={2}>Narx</td>
+                                {
+                                    postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
+                                        <td key={index}>
+                                            <input className={"myTdInput"} type="number"
+                                                   name={'price'}
+                                                   value={prod?.price}
+                                                   onWheel={e => e.target.blur()}
+                                                   required
+                                                   onChange={changePrice(index)}/>
+                                            <span>{prod?.maxPrice}</span>
+                                        </td>
+                                    )
+                                }
+                            </tr>
+                            {
+                                postStateContract?.kindergartenContractList?.map((kinder, index) =>
+                                    <tr key={index}>
+                                        <td>{index + 2}</td>
+                                        <td>{kinder?.number}{kinder?.kindergartenName}</td>
+                                        <td><MdDeleteForever size={20} color={'red'}
+                                                             onClick={() => removeKinder(kinder?.kindergartenId)}
+                                                             style={{cursor: 'pointer'}}/></td>
+                                        {
+                                            kinder?.productContracts?.map((prod, index2) =>
+                                                <td key={index2} onClick={() => onClickProductWeight(kinder, prod)}>
+                                                    <input className={"myTdInput"} type="number"
+                                                           name={'weight'}
+                                                           value={prod?.weight}
+                                                           onWheel={e => e.target.blur()}
+                                                           required
+                                                           disabled={!(kinder?.kindergartenId === kindergartenState?.kindergartenId && prod?.productId === productState?.productId)}
+                                                           onChange={changeProductWeight(index, index2)}/>
+                                                </td>
+                                            )
+                                        }
+                                    </tr>
+                                )
+                            }
+                            <tr>
+                                <td colSpan={3}><DropdownCustom name={"MTT +"} list={mttsByDepartment}
+                                                                setData={addToKindergarten}/></td>
+                                {
+                                    postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
+                                        <td key={index}>
+                                            {totalByProduct(index)}
+                                        </td>
+                                    )
+                                }
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <button className={'createButtons mt-3'} type={'submit'}>TAYYOR</button>
                 </div>
             </Form>
@@ -327,4 +337,4 @@ function CreateContract() {
     );
 }
 
-export default CreateContract;
+export default EditContract;

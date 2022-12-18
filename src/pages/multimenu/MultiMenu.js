@@ -59,7 +59,13 @@ function MultiMenu() {
     const multiMenu = useSelector(state => state.multiMenu);
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);
+    const [show2, setShow2] = useState(false);
     const history = useNavigate();
+    const handleClose2 = () => {
+        setMultiMenuState(defaultData);
+        setShow2(false);
+        setNumber(0);
+    };
     const handleClose = () => {
         setMultiMenuState(defaultData);
         setShow(false);
@@ -74,8 +80,13 @@ function MultiMenu() {
             setMultiMenuState(data);
             setShow(true);
         } else if (num === 3) {
-            dispatch(deleteMultiMenu(data));
         }
+    };
+    const handleShow2 = (num, data) => {
+        if (num === 3) {
+            setMultiMenuState(data);
+        }
+        setShow2(true);
     };
 
 
@@ -129,37 +140,11 @@ function MultiMenu() {
 
             <div className={'figma-card mt-3'}>
                 <div className={'tableCalendar'}>
-                    {/*<table style={{color: 'black'}}>*/}
-                    {/*    <thead>*/}
-                    {/*    <tr>*/}
-                    {/*        <th>#</th>*/}
-                    {/*        <th>Nomi</th>*/}
-                    {/*        <th>Tayyorlanish vazni</th>*/}
-                    {/*        <th>O'zgartirish</th>*/}
-                    {/*        <th>O'chirish</th>*/}
-                    {/*    </tr>*/}
-                    {/*    </thead>*/}
-                    {/*    <tbody>*/}
-                    {/*    {*/}
-                    {/*        multiMenuList?.map((item, index) =>*/}
-                    {/*            <tr key={index}>*/}
-                    {/*                <td className={'my-Hover'} onClick={() => pushUrl(item)}>{index + 1}</td>*/}
-                    {/*                <td className={'my-Hover'} onClick={() => pushUrl(item)}>{item.name}</td>*/}
-                    {/*                <td className={'my-Hover'} onClick={() => pushUrl(item)}>{item.daily}</td>*/}
-                    {/*                <td><Button variant={"outline-info"} size={"sm"}*/}
-                    {/*                            onClick={() => handleShow(2, item)}>O'zgartirish</Button></td>*/}
-                    {/*                <td><Button variant={"outline-danger"} size={"sm"}*/}
-                    {/*                            onClick={() => handleShow(3, item)}>O'chirish</Button></td>*/}
-                    {/*            </tr>*/}
-                    {/*        )*/}
-                    {/*    }*/}
-                    {/*    </tbody>*/}
-                    {/*</table>*/}
                     {multiMenuList?.map((item, index) =>
-                        <Col xs={12} sm={12} md={12} lg={12} xl={12} className={'mt-3 my-Hover'} key={index}  style={{position:'relative'}} onClick={()=>pushUrl(item)}>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12} className={'mt-3'} key={index}  style={{position:'relative'}} >
                             <div className={'card px-2'}>
                                 <div className={'d-flex justify-content-between align-items-center w-100'}>
-                                    <div className={``}>
+                                    <div className={` my-Hover`}  onClick={()=>pushUrl(item)}>
                                         <span style={{fontSize: 25}} className={'fw-semibold'}>{item.name}</span>
                                         <br/>
                                         <span style={{fontSize: 20}}>{item.daily} kun uchun mo‘ljallangan</span>
@@ -245,7 +230,7 @@ function MultiMenu() {
                                     </div>
                                 </div>
                             </div>
-                                        <div style={{position:'absolute',right:0,bottom:0,cursor:'pointer'}}  onClick={() => handleShow(3, item)}><RiDeleteBin2Fill color={'#E9573F'} size={20} /></div>
+                                        <div style={{position:'absolute',right:0,bottom:0,cursor:'pointer'}}  onClick={() => handleShow2(3, item)}><RiDeleteBin2Fill color={'#E9573F'} size={20} /></div>
                                         <div style={{position:'absolute',right:0,top:0,cursor:'pointer'}} onClick={() => handleShow(2, item)}><BsPencilSquare color={'orange'} size={20}/></div>
                         </Col>)}
                 </div>
@@ -289,6 +274,20 @@ function MultiMenu() {
                         </Button>
                     </Modal.Footer>
                 </Form>
+            </Modal>
+
+            <Modal show={show2} onHide={handleClose2}>
+                <Modal.Header closeButton>
+                </Modal.Header>
+                <Modal.Body><span style={{fontSize:20,color:'#f57f08'}}>{multiMenuState.name}</span>ni o'chirishni xohlaysizmi?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose2}>
+                        YO'Q
+                    </Button>
+                    <Button variant="primary" onClick={()=> dispatch(deleteMultiMenu(multiMenuState))}>
+                        HA
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </div>
     )

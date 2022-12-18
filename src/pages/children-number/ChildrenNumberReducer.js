@@ -4,19 +4,19 @@ import {apiCall} from "../../ApiCall";
 import {getToken, toastError} from "../more/Functions";
 
 const slice = createSlice({
-    name: "contract",
+    name: "kidsNumber",
     initialState: {
         result: {},
         error: {},
-        contracts: [],
-        contract: {},
+        kidsNumbers: [],
+        kidsNumber: {},
     },
     reducers: {
-        contracts: (state, action) => {
-            state.contracts = action.payload;
+        kidsNumbers: (state, action) => {
+            state.kidsNumbers = action.payload;
         },
-        contract: (state, action) => {
-            state.contract = action.payload;
+        kidsNumber: (state, action) => {
+            state.kidsNumber = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -29,28 +29,30 @@ const slice = createSlice({
     }
 })
 
-export const getContractOne = (id) => apiCall({
-    url: "/contract/" + id,
+export const getKidsNumber = (params) => apiCall({
+    url: "/kidsNumber",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
-    success: slice.actions.contract.type,
+    params,
+    success: slice.actions.kidsNumbers.type,
     error: slice.actions.errorReducer.type
 })
 
-export const getContract = () => apiCall({
-    url: "/contract",
+export const getKidsNumberOne = (params) => apiCall({
+    url: "/kidsNumber/getOne",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
-    success: slice.actions.contracts.type,
+    params,
+    success: slice.actions.kidsNumber.type,
     error: slice.actions.errorReducer.type
 })
 
-export const deleteContract = (data) => apiCall({
-    url: "/contract/" + data.id,
+export const deleteKidsNumber = (data) => apiCall({
+    url: "/kidsNumber/" + data.id,
     method: "DELETE",
     headers: {
         Authorization: getToken(),
@@ -60,8 +62,8 @@ export const deleteContract = (data) => apiCall({
 })
 
 
-export const addContract = (data) => apiCall({
-    url: "/contract",
+export const addKidsNumber = (data) => apiCall({
+    url: "/kidsNumber",
     method: "POST",
     headers: {
         Authorization: getToken(),
@@ -71,18 +73,8 @@ export const addContract = (data) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const contractVerified = (id) => apiCall({
-    url: "/contract/verified/" + id,
-    method: "POST",
-    headers: {
-        Authorization: getToken(),
-    },
-    success: slice.actions.resultReducer.type,
-    error: slice.actions.errorReducer.type
-})
-
-export const editContract = (data) => apiCall({
-    url: "/contract/" + data.id,
+export const editKidsNumber = (data) => apiCall({
+    url: "/kidsNumber/" + data.id,
     method: "PUT",
     headers: {
         Authorization: getToken(),

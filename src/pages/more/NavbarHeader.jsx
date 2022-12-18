@@ -3,6 +3,7 @@ import {Button, Col, Row} from "react-bootstrap";
 import {GrAdd} from "react-icons/gr";
 import {FiPlusCircle} from "react-icons/fi";
 import TabsCustom from "./TabsCustom";
+import {useMediaQuery} from "react-responsive";
 
 function NavbarHeader({name, handleShow, buttonName, navs, currentNavs}) {
     return (

@@ -28,7 +28,7 @@ const CustomMenu = React.forwardRef(
         return (
             <div
                 ref={ref}
-                style={style}
+                style={{...style,zIndex:100}}
                 className={className}
                 aria-labelledby={labeledBy}
             >
@@ -40,7 +40,7 @@ const CustomMenu = React.forwardRef(
                     value={value}
                 />
                 <ul className="list-unstyled">
-                    {React.Children.toArray(children).filter(
+                    {React?.Children?.toArray(children)?.filter(
                         (child) =>
                             !value || child.props.children.toLowerCase().startsWith(value),
                     )}
@@ -50,15 +50,21 @@ const CustomMenu = React.forwardRef(
     },
 );
 
-function More({list, name,setData}) {
+const numAndName = (name1, name2) => {
+    if (name1) {
+        return (name1 + name2);
+    } else {
+        return name2;
+    }
+}
 
+function More({list, name, setData}) {
     const getItem = (data) => {
-      setData(data);
+        setData(data);
     }
 
-
     return (
-        <div>
+        <div >
             <Dropdown>
                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                     {name}
@@ -66,8 +72,9 @@ function More({list, name,setData}) {
 
                 <Dropdown.Menu as={CustomMenu}>
                     {
-                        list?.map((item,index) =>
-                            <Dropdown.Item key={index} onClick={()=>getItem(item)}>{item?.name}</Dropdown.Item>
+                        list?.map((item, index) =>
+                            <Dropdown.Item key={index}
+                                           onClick={() => getItem(item)}>{numAndName(item?.number, item?.name)}</Dropdown.Item>
                         )
                     }
                 </Dropdown.Menu>

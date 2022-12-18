@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
-import {Col, Container, Row} from "react-bootstrap";
+import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import main from './relationStyle.module.scss'
 import {MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos} from "react-icons/md";
 import {AiOutlineEnvironment} from "react-icons/ai";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useRef} from "react";
 import {checkCalendar, checkCalendarByMtts, getMultiMenu} from "../multimenu/MultiMenuReducer";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {GoCheck, GoPrimitiveDot} from "react-icons/go";
 import TabsCustom from "../more/TabsCustom";
 import {BsCheckAll} from "react-icons/bs";
 import {getDepartment, getDepartmentFromRelation} from "../departments/RegionDepartmentReducer";
 import {getByDepartmentMtt, getMttFromRelations} from "../mtt/MttReducer";
+import OneDayWithMtt from "../report/OneDayWithMtt";
 
 function MenuView() {
     const dispatch = useDispatch();
@@ -19,6 +20,12 @@ function MenuView() {
     const [days, setDays] = useState(0);
     const [departmentId, setDepartmentId] = useState();
     const [kindergarten, setKindergarten] = useState();
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = (data) => {
+        setCurrentDay(data);
+        setShow(true)
+    };
     const departmentsRel = useSelector(state => state.department.departmentsRel);
     const mttsRelations = useSelector(state => state.mtt.mttsRelations);
     const mtts = useSelector(state => state.mtt.mtts);
@@ -27,12 +34,13 @@ function MenuView() {
     const departments = useSelector(state => state.department.departments);
     const firstUpdate = useRef(false);
     const [currentDay, setCurrentDay] = useState();
+    const history = useNavigate();
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
             dispatch(getMultiMenu());
             dispatch(checkCalendar());
-            dispatch(getDepartment())
+            dispatch(getDepartment());
         } else {
 
         }
@@ -74,7 +82,6 @@ function MenuView() {
         dispatch(getByDepartmentMtt(data.id))
     }
     const setDay2 = (data) => {
-        console.log(data,"ssss");
         setDays(data);
     }
 
@@ -285,6 +292,7 @@ function MenuView() {
                                 </tr>
                                 </thead>
                                 <tbody>
+
                                 {
                                     calendar2?.dayList?.map((week, index) =>
                                         <tr key={index}>
@@ -292,6 +300,7 @@ function MenuView() {
                                                 <td key={index2}
                                                     onMouseEnter={() => setDays(day.day)}
                                                     onMouseLeave={() => setDays(null)}
+                                                    onClick={()=>handleShow(day)}
                                                     style={index2 === 5 || index2 === 6 ? {
                                                         color: 'red',
                                                         position: 'relative'
@@ -366,7 +375,16 @@ function MenuView() {
                     </div>
                 </Col>
             </Row> : null}
-
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Body>
+                    <OneDayWithMtt id={currentDay?.reportId}/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Ortga
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 }

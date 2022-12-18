@@ -176,7 +176,6 @@
 
   }
 
-
   .table {
     width: 100%;
     font-size: 30px;
@@ -384,7 +383,6 @@
 }
 
 .miniTable {
-
   table {
     width: 100%;
     border-collapse: separate;
@@ -397,11 +395,8 @@
 
         th {
           font-size: 10px;
-          padding: 2px;
           background-color: #F6F6F7;
-          //min-width: 60px;
-          //height: 60px;
-          //text-align: center;
+
           border-top: #B6BCCD solid 1px;
 
           &:first-child {
@@ -415,8 +410,6 @@
             border-top-right-radius: 10px;
           }
         }
-
-
       }
     }
 
@@ -449,12 +442,121 @@
           &:last-child {
             border-right: #B6BCCD solid 1px;
           }
-
-          padding: 2px;
         }
       }
     }
   }
 
 }
+
+.miniTable2 {
+  //max-width: 900px;
+  table {
+    border-collapse: separate;
+    border-top-left-radius: 10px;
+    border-spacing: 0;
+    thead {
+
+      tr {
+        th {
+          padding: 3px;
+          div {
+            //writing-mode: bt-lr;
+          }
+          text-align: center;
+          font-size: 10px;
+          background-color: #F6F6F7;
+
+          border-top: #B6BCCD solid 1px;
+
+          &:first-child {
+            text-align: center;
+            border-left: #B6BCCD solid 1px;
+            border-top-left-radius: 10px;
+          }
+
+          &:last-child {
+            border-right: #B6BCCD solid 1px;
+            border-top-right-radius: 10px;
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        &:nth-child(even) {
+          background-color: rgba(246, 246, 246, 0.76);
+        }
+
+        &:hover {
+          //cursor: pointer;
+          background-color: rgba(234, 232, 232, 0.79);
+        }
+
+        &:last-child {
+          td {
+            padding: 2px;
+          }
+        }
+
+        td {
+          padding: 3px;
+          border: #B6BCCD solid 1px;
+          font-size: 10px;
+
+          &:first-child {
+            text-align: center;
+            border-left: #B6BCCD solid 1px;
+          }
+
+          &:last-child {
+            border-right: #B6BCCD solid 1px;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+.myTdInput {
+  //border-color: white;
+  border: rgba(255, 255, 255, 0) solid 0.1px;
+  width: 100%;
+}
+
+.figma-card {
+  padding: 10px;
+  background-color: rgba(227, 223, 107, 0.69);
+  background-color: white;
+  width: 100%;
+  border-radius: 13px;
+  border: solid 1px #48B1AB;
+}
+
+.mobile-navbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #48B1AB;
+  align-items: center;
+  height: 60px;
+  padding: 5px;
+
+  ul {
+    //li {
+    //  padding: 5px;
+    //  cursor: pointer;
+    //}
+    padding-bottom: 5px;
+    text-decoration: none;
+    list-style-type: none;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
 

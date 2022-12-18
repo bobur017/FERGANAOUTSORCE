@@ -4,19 +4,23 @@ import {apiCall} from "../../ApiCall";
 import {getToken, toastError} from "../more/Functions";
 
 const slice = createSlice({
-    name: "contract",
+    name: "warehouse",
     initialState: {
         result: {},
         error: {},
-        contracts: [],
-        contract: {},
+        warehouses: [],
+        acceptedProduct: [],
+        acceptedProducts: [],
     },
     reducers: {
-        contracts: (state, action) => {
-            state.contracts = action.payload;
+        warehouses: (state, action) => {
+            state.warehouses = action.payload;
         },
-        contract: (state, action) => {
-            state.contract = action.payload;
+        acceptedProduct: (state, action) => {
+            state.acceptedProduct = action.payload;
+        },
+        acceptedProducts: (state, action) => {
+            state.acceptedProducts = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -29,28 +33,28 @@ const slice = createSlice({
     }
 })
 
-export const getContractOne = (id) => apiCall({
-    url: "/contract/" + id,
+export const getWarehouse = () => apiCall({
+    url: "/warehouse",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
-    success: slice.actions.contract.type,
+    success: slice.actions.warehouses.type,
     error: slice.actions.errorReducer.type
 })
 
-export const getContract = () => apiCall({
-    url: "/contract",
+export const getAcceptedProduct = () => apiCall({
+    url: "/acceptedProduct/contract",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
-    success: slice.actions.contracts.type,
+    success: slice.actions.acceptedProduct.type,
     error: slice.actions.errorReducer.type
 })
 
-export const deleteContract = (data) => apiCall({
-    url: "/contract/" + data.id,
+export const deleteWarehouse = (data) => apiCall({
+    url: "/warehouse/" + data.id,
     method: "DELETE",
     headers: {
         Authorization: getToken(),
@@ -60,8 +64,8 @@ export const deleteContract = (data) => apiCall({
 })
 
 
-export const addContract = (data) => apiCall({
-    url: "/contract",
+export const addWarehouse = (data) => apiCall({
+    url: "/warehouse",
     method: "POST",
     headers: {
         Authorization: getToken(),
@@ -71,9 +75,20 @@ export const addContract = (data) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const contractVerified = (id) => apiCall({
-    url: "/contract/verified/" + id,
+export const addProductContract = (data) => apiCall({
+    url: "/acceptedProduct/"+data.id,
     method: "POST",
+    headers: {
+        Authorization: getToken(),
+    },
+    data,
+    success: slice.actions.resultReducer.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getAcceptedProductAll = () => apiCall({
+    url: "/acceptedProduct",
+    method: "GET",
     headers: {
         Authorization: getToken(),
     },
@@ -81,8 +96,8 @@ export const contractVerified = (id) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const editContract = (data) => apiCall({
-    url: "/contract/" + data.id,
+export const editWarehouse = (data) => apiCall({
+    url: "/warehouse/" + data.id,
     method: "PUT",
     headers: {
         Authorization: getToken(),
