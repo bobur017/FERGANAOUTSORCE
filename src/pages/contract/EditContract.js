@@ -253,7 +253,8 @@ function EditContract() {
                     </div>
                 </div>
                 <div className={'figma-card mt-3'}>
-                    <div className={'miniTable2'}>
+                    <div className={' d-flex'}>
+                    <div className={'miniTable2'}  style={{overflowX:'auto'}}>
                         <table>
                             <thead>
                             <tr>
@@ -269,9 +270,7 @@ function EditContract() {
                                         </th>
                                     )
                                 }
-                                <th><DropdownCustom name={"Masulot +"} list={products}
-                                                    setData={addProductInKinder}/>
-                                </th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -317,8 +316,7 @@ function EditContract() {
                                 )
                             }
                             <tr>
-                                <td colSpan={3}><DropdownCustom name={"MTT +"} list={mttsByDepartment}
-                                                                setData={addToKindergarten}/></td>
+                                <th colSpan={3} >Umumiy</th>
                                 {
                                     postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
                                         <td key={index}>
@@ -330,6 +328,12 @@ function EditContract() {
                             </tbody>
                         </table>
                     </div>
+                        <DropdownCustom name={"Masulot +"} list={products}
+                                            setData={addProductInKinder}/>
+
+                    </div>
+                    <DropdownCustom name={"MTT +"} list={mttsByDepartment}
+                                                    setData={addToKindergarten}/>
                     <button className={'createButtons mt-3'} type={'submit'}>TAYYOR</button>
                 </div>
             </Form>

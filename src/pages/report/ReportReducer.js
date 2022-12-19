@@ -49,6 +49,17 @@ export const oneDay = (id) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
+export const oneDayFromAll = (params) => apiCall({
+    url: "/report/getReportByDate",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.oneDay.type,
+    error: slice.actions.errorReducer.type
+})
+
 export const deleteReport = (data) => apiCall({
     url: "/report/" + data.id,
     method: "DELETE",

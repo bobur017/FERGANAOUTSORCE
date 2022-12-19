@@ -4,19 +4,15 @@ import {apiCall} from "../../ApiCall";
 import {getToken, toastError} from "../more/Functions";
 
 const slice = createSlice({
-    name: "kidsNumber",
+    name: "getFiles",
     initialState: {
         result: {},
         error: {},
-        kidsNumbers: [],
-        kidsNumber: {},
+        getFiless:{},
     },
     reducers: {
-        kidsNumbers: (state, action) => {
-            state.kidsNumbers = action.payload;
-        },
-        kidsNumber: (state, action) => {
-            state.kidsNumber = action.payload;
+        getFiless: (state, action) => {
+            state.getFiless = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -29,30 +25,18 @@ const slice = createSlice({
     }
 })
 
-export const getKidsNumber = (params) => apiCall({
-    url: "/kidsNumber",
+export const getGetFiles = () => apiCall({
+    url: "/warehouse/getFile",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
-    params,
-    success: slice.actions.kidsNumbers.type,
+    success: slice.actions.getFiless.type,
     error: slice.actions.errorReducer.type
 })
 
-export const getKidsNumberOne = (params) => apiCall({
-    url: "/kidsNumber/getOne",
-    method: "GET",
-    headers: {
-        Authorization: getToken(),
-    },
-    params,
-    success: slice.actions.kidsNumber.type,
-    error: slice.actions.errorReducer.type
-})
-
-export const deleteKidsNumber = (data) => apiCall({
-    url: "/kidsNumber/" + data.id,
+export const deleteGetFiles = (data) => apiCall({
+    url: "/getFiles/" + data.id,
     method: "DELETE",
     headers: {
         Authorization: getToken(),
@@ -62,8 +46,8 @@ export const deleteKidsNumber = (data) => apiCall({
 })
 
 
-export const addKidsNumber = (data) => apiCall({
-    url: "/kidsNumber",
+export const addGetFiles = (data) => apiCall({
+    url: "/getFiles",
     method: "POST",
     headers: {
         Authorization: getToken(),
@@ -73,19 +57,8 @@ export const addKidsNumber = (data) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const verifide = (data) => apiCall({
-    url: "/kidsNumber/verified/data?.id",
-    method: "POST",
-    headers: {
-        Authorization: getToken(),
-    },
-    data,
-    success: slice.actions.resultReducer.type,
-    error: slice.actions.errorReducer.type
-})
-
-export const editKidsNumber = (data) => apiCall({
-    url: "/kidsNumber/" + data.id,
+export const editGetFiles = (data) => apiCall({
+    url: "/getFiles/" + data.id,
     method: "PUT",
     headers: {
         Authorization: getToken(),

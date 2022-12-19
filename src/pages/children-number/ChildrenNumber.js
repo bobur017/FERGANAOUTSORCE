@@ -1,10 +1,11 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addKidsNumber, getKidsNumber, getKidsNumberOne} from "./ChildrenNumberReducer";
+import {addKidsNumber, getKidsNumber, getKidsNumberOne, verifide} from "./ChildrenNumberReducer";
 import {Col, Container, Form, Row} from "react-bootstrap";
 import {TimestampToInputDate} from "../funcs/Funcs";
 import {getAge} from "../age/AgeReducer";
+import {getRoleStorage} from "../more/Functions";
 
 function ChildrenNumber() {
     const [childrenState, setChildrenState] = useState();
@@ -44,7 +45,7 @@ function ChildrenNumber() {
                 return {...age, number: 0, ageGroupId: age.ageGroupId, ageGroupName: age.name}
             }
         )
-        setChildrenState({...childrenState, subDTO,date: params.date, status: "KIRITISH"});
+        setChildrenState({...childrenState, subDTO, date: params.date, status: "KIRITISH"});
         setEditState(false);
     }
     const onChangeKidsNumber = (index) => (e) => {
@@ -56,6 +57,9 @@ function ChildrenNumber() {
     const submit = (e) => {
         e.preventDefault();
         dispatch(addKidsNumber(childrenState));
+    }
+    const thisverifide = () => {
+        dispatch(verifide(childrenState));
     }
     return (
         <div className={'figma-card'}>
@@ -73,28 +77,31 @@ function ChildrenNumber() {
                         <Form onSubmit={submit}>
 
                             {childrenState ? childrenState?.subDTO?.map((age, index2) =>
-                                        < div key={index2} className={'infoText d-flex justify-content-between '}>
-                                            <div>{age?.ageGroupName}</div>
-                                            <input type="number" className={"w-25"} value={age?.number}
-                                                   onWheel={e => e.target.blur()} onChange={onChangeKidsNumber(index2)}
-                                                   disabled={editState}/>
-                                        </div>
-                                    ) :
+                                    < div key={index2} className={'infoText d-flex justify-content-between '}>
+                                        <div>{age?.ageGroupName}</div>
+                                        <input type="number" className={"w-25"} value={age?.number}
+                                               onWheel={e => e.target.blur()} onChange={onChangeKidsNumber(index2)}
+                                               disabled={editState}/>
+                                    </div>
+                                ) :
                                 <div>
                                     <span style={{
                                         color: '#944b0f',
                                         fontSize: 25
-                                    }}>Bu kunga bolalar soni kiritilmagan</span>
-                                    <button className={'createButtons'} onClick={() => makeAgeGroup()}>
+                                    }}>
+                                        Bu kunga bolalar soni kiritilmagan</span>
+                                    {getRoleStorage() !== 'ROLE_RAXBAR' ?<button className={'createButtons'} onClick={() => makeAgeGroup()}>
                                         Bolalar sonini
                                         kiritish
-                                    </button>
+                                    </button>:null}
                                 </div>
                             }
-                            {childrenState?.status === "KIRITILDI" ?
+                            {childrenState?.status === "KIRITILDI" && getRoleStorage() !== 'ROLE_RAXBAR' ?
                                 <button className={'createButtons mt-3'} type={'submit'}>O'zgartirish</button> : null}
-                            {childrenState?.status === "KIRITISH" ? <button type={'submit'} className={'createButtons mt-3'}
-                                                                                     >Tayyor</button> : null}
+                            {childrenState?.status === "KIRITISH" && getRoleStorage() !== 'ROLE_RAXBAR' ?
+                                <button type={'submit'} className={'createButtons mt-3'}>Tayyor</button> : null}
+                            {childrenState && getRoleStorage() === 'ROLE_RAXBAR' ? <button onClick={() => thisverifide()}
+                                                                          className={'createButtons mt-3'}>Tasdiqlash</button> : null}
                         </Form>
                     </Col>
 

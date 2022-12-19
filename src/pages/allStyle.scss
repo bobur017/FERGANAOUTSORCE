@@ -452,13 +452,14 @@
 .miniTable2 {
   //max-width: 900px;
   table {
+    //width: 2000px;
     border-collapse: separate;
     border-top-left-radius: 10px;
     border-spacing: 0;
     thead {
-
       tr {
         th {
+
           padding: 3px;
           div {
             //writing-mode: bt-lr;
@@ -501,10 +502,10 @@
         }
 
         td {
+          min-width: 70px;
           padding: 3px;
           border: #B6BCCD solid 1px;
-          font-size: 10px;
-
+          font-size: 15px;
           &:first-child {
             text-align: center;
             border-left: #B6BCCD solid 1px;
@@ -541,19 +542,19 @@
   width: 100%;
   background-color: #48B1AB;
   align-items: center;
+  justify-content: center;
+  display: flex;
   height: 60px;
-  padding: 5px;
-
   ul {
-    //li {
-    //  padding: 5px;
-    //  cursor: pointer;
-    //}
-    padding-bottom: 5px;
+
+    padding-left: 0;
+    margin-bottom: 0;
+
     text-decoration: none;
     list-style-type: none;
     color: white;
     display: flex;
+    width: 100%;
     justify-content: space-around;
     align-items: center;
   }

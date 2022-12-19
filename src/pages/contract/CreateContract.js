@@ -49,7 +49,7 @@ function CreateContract() {
         if (!firstUpdate.current) {
 
         } else {
-            history("/sidebar/contract");
+            // history("/sidebar/contract");
         }
     }, [result]);
 
@@ -243,7 +243,8 @@ function CreateContract() {
                     </div>
                 </div>
                 <div className={'figma-card mt-3'}>
-                        <div className={'miniTable2'}>
+                    <div className={' d-flex'}>
+                        <div className={'miniTable2'}  style={{overflowX:'auto'}}>
                             <table>
                                 <thead>
                                 <tr>
@@ -252,16 +253,14 @@ function CreateContract() {
                                     {
                                         postStateContract?.kindergartenContractList[0]?.productContracts?.map((product, index) =>
                                             <th key={index}>
-                                                <div>{product?.productName}</div>
+                                                <div style={{maxWidth:100,minWidth:50}}>{product?.productName}</div>
                                                 <MdDeleteForever size={20} color={'red'}
                                                                  onClick={() => removeProduct(product?.productId)}
                                                                  style={{cursor: 'pointer'}}/>
                                             </th>
                                         )
                                     }
-                                    <th><DropdownCustom name={"Masulot +"} list={products}
-                                                        setData={addProductInKinder}/>
-                                    </th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -307,8 +306,8 @@ function CreateContract() {
                                     )
                                 }
                                 <tr>
-                                    <td colSpan={3}><DropdownCustom name={"MTT +"} list={mttsByDepartment}
-                                                                    setData={addToKindergarten}/></td>
+                                    <td colSpan={3}>Umumiy</td>
+
                                     {
                                         postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
                                             <td key={index}>
@@ -320,6 +319,13 @@ function CreateContract() {
                                 </tbody>
                             </table>
                         </div>
+                        <div>
+                            <DropdownCustom name={"Masulot +"} list={products}
+                                                setData={addProductInKinder}/>
+                        </div>
+                    </div>
+                    <DropdownCustom name={"MTT +"} list={mttsByDepartment}
+                                                    setData={addToKindergarten}/>
                     <button className={'createButtons mt-3'} type={'submit'}>TAYYOR</button>
                 </div>
             </Form>

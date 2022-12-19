@@ -44,6 +44,7 @@
   font-size: 25px;
   margin-left: 50px;
 }
+
 .link {
   display: flex;
   color: #ffffff;
@@ -53,7 +54,22 @@
   text-decoration: none;
   border-radius: 10px;
 }
+.mini-link {
+  display: flex;
+  color: #ffffff;
+  /*padding: 10px 13px;*/
+  padding: 5px;
+  gap: 15px;
+  transition: all 0.5s;
+  text-decoration: none;
+  border-radius: 10px;
+}
 .link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transition: all 0.5s;
+}
+.mini-link:hover {
   background: rgba(255, 255, 255, 0.2);
   color: #ffffff;
   transition: all 0.5s;

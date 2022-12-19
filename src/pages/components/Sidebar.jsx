@@ -45,11 +45,10 @@ const Sidebar = ({children}) => {
                 <ul>
                     {menuItem?.map((item, index) => {
                         return (
-                            <NavLink to={item.path} key={index} className="link" style={{display:'inline-block',textAlign:'center'}}>
+                            <NavLink to={item.path} key={index} className="mini-link" style={{display:'inline-block',textAlign:'center'}}>
                                 <div className="icon">{item.icon}</div>
-                                <div style={{display: isOpen ? "block" : "none"}}
-                                     className="link_text">{item.name}</div>
-                                <div style={{fontSize:13}}>{item.name}</div>
+
+                                <div style={{fontSize:10,display:'flex'}}>{item.name}</div>
                             </NavLink>
                         );
                     })

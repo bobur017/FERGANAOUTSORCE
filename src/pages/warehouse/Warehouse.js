@@ -4,6 +4,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {addProductContract, getAcceptedProduct, getAcceptedProductAll, getWarehouse} from "./WarehouseReducer";
 import NavbarHeader from "../more/NavbarHeader";
+import {getGetFiles} from "../getFiles/GetFilesReducer";
+import {downloadFilesa} from "../DownLOader";
+// import {downloadFile} from "react-file-downloader";
 
 function Warehouse() {
     const [wareHouseState, setWareHouseState] = useState();
@@ -16,12 +19,22 @@ function Warehouse() {
     const result = useSelector(state => state.warehouse.result);
     const acceptedProduct = useSelector(state => state.warehouse.acceptedProduct)
     const acceptedProducts = useSelector(state => state.warehouse.acceptedProducts)
+    const getFiless = useSelector(state => state.getFiless)
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    useEffect(() => {
+        if (!firstUpdate.current) {
+
+        } else {
+            // downloadFile(getFiless,"Qoldiq mahsulotlar.pdf");
+            downloadFilesa(getFiless,"Qoldiq mahsulotlar.pdf");
+        }
+    }, [getFiless]);
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -57,6 +70,9 @@ function Warehouse() {
         setProductReceived({...productReceived, receivedWeight: e.target.value})
     }
 
+    const getPdf = (e) => {
+      dispatch(getGetFiles());
+    }
     return (
         <div>
             <NavbarHeader
@@ -65,6 +81,7 @@ function Warehouse() {
             <Container fluid={true} className={'mt-3'}>
                 {currentNavs === 0 ? <Row>
                         <Col className={'figma-card'}>
+                            <div className={'w-100 d-flex justify-content-end'}><button className={'buttonPdf my-2'} onClick={getPdf}>PDF</button></div>
                             <div className={'tableCalendar'}>
                                 <table>
                                     <thead>
@@ -158,6 +175,7 @@ function Warehouse() {
                         </div>
                     </Col>
                 </Row> : null}
+                <embed/>
             </Container>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submit}>

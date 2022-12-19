@@ -1,11 +1,12 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {oneDay} from "./ReportReducer";
+import {oneDay, oneDayFromAll} from "./ReportReducer";
 import {TimestampToInputDate} from "../funcs/Funcs";
 import {useNavigate} from "react-router-dom";
+import {Form} from "react-bootstrap";
 
-function GetOneDayWithMtt({id}) {
+function OneDayWithMttFromUsers({id}) {
     const dispatch = useDispatch();
     const history = useNavigate();
     const stateSelector = useSelector(state => state.report.oneDay)
@@ -14,24 +15,31 @@ function GetOneDayWithMtt({id}) {
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
-            if (id) {
-                dispatch(oneDay());
-            } else {
-                dispatch(oneDay(id));
-            }
+            dispatch(oneDayFromAll());
         } else {
             console.log(stateSelector, "stateSelector");
         }
     }, [stateSelector]);
 
+    const getByDate = (e) => {
+        dispatch(oneDayFromAll({date:new Date(e.target.value).getTime()}));
+    }
+
     return (
         <div>
-            <div className={'d-flex'}>
+            <div className={'d-flex figma-card justify-content-around'}>
+                <div className={'d-flex align-items-center justify-content-around'}>
+
                 <button className={'buttonInfo mx-1'}
                         onClick={() => history("/sidebar/one-day-menu/" + stateSelector?.menu?.id)}>Batafsil
                 </button>
-                <button className={'buttonPdf mx-1'}>PDF</button>
+                <button className={'buttonPdf mx-1'} style={{width:100}}>PDF</button>
                 <button className={'buttonExcel mx-1'}>Excel</button>
+                </div>
+                <div>
+                    <Form.Label>Sana</Form.Label>
+                    <Form.Control onChange={getByDate} type={'date'} name={'date'}/>
+                </div>
             </div>
             <div className={'figma-card mt-3'}>
                 <div>
@@ -67,4 +75,4 @@ function GetOneDayWithMtt({id}) {
     );
 }
 
-export default GetOneDayWithMtt;
+export default OneDayWithMttFromUsers;

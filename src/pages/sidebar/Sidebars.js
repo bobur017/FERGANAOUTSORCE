@@ -30,6 +30,8 @@ import {useMediaQuery} from "react-responsive";
 import ChildrenNumber from "../children-number/ChildrenNumber";
 import Warehouse from "../warehouse/Warehouse";
 import GetOneDayMenu from "../report/GetOneDayMenu";
+import OneDayMenu from "../multimenu/OneDayMenu";
+import OneDayWithMttFromUsers from "../report/OneDayWithMttFromUsers";
 
 function Sidebars() {
 
@@ -99,7 +101,7 @@ function Sidebars() {
                                  style={{backgroundColor: '#eeeeee', borderRadius: "30%", cursor: 'pointer'}}>
                                 <BiMessageDetail size={15}/></div>
                             <div className={'d-flex justify-content-between align-items-center'}>
-                                <div className={'px-2'}>Hamidov . M</div>
+                                <div className={'px-2'} style={{fontSize:10}}>Hamidov . M</div>
                                 <img src={userLogo} alt="" width={15}/>
                             </div>
                         </div>
@@ -131,6 +133,8 @@ function Sidebars() {
                     <Route path="/children-number" element={<ChildrenNumber/>}/>
                     <Route path="/warehouse" element={<Warehouse/>}/>
                     <Route path="/one-day-menu/:id" element={<GetOneDayMenu/>}/>
+                    <Route path="/one-day-menu" element={<OneDayMenu/>}/>
+                    <Route path="/menu-mtt" element={<OneDayWithMttFromUsers />}/>
                 </Routes>
             </Sidebar>
         </div>

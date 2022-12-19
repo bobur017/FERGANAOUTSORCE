@@ -36,6 +36,10 @@ function Login() {
                 history("/sidebar/info");
             }else if (token?.user_role === "ROLE_HAMSHIRA") {
                 history("/sidebar/info");
+            }else if (token?.user_role === "ROLE_BOSHQARMA_BUXGALTER") {
+                history("/sidebar/info");
+            }else if (token?.user_role === "ROLE_RAXBAR") {
+                history("/sidebar/info");
             }else if (token?.user_role === "ROLE_XODIMLAR_BO`LIMI" || token?.user_role === "ROLE_BO`LIM_BUXGALTER") {
                 history("/sidebar/info");
             }
