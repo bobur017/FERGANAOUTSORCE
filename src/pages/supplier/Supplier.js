@@ -89,14 +89,20 @@ function Supplier() {
                         <th>Nomi</th>
                         <th>Manzili</th>
                         <th>Tel:</th>
+                        <th>Holati</th>
+                        <th>STIR</th>
+                        <th>Jamg'arma</th>
                     </tr>
                     </thead>
                     <tbody>
                     {suppliers?.list?.map((item, index) => <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{item.name}</td>
-                        <td>{item.name}</td>
-                        <td>{item.name}</td>
+                        <td>{item.address}</td>
+                        <td>{item.phoneNumber}</td>
+                        <td>{item.status}</td>
+                        <td>{item?.stir}</td>
+                        <td>{item?.fond}</td>
                     </tr>)
 
                     }

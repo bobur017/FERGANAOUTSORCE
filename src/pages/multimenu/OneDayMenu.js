@@ -7,7 +7,6 @@ function OneDayMenu(props) {
         <div>
             <div>
                 <div>Kunlik menu va bolalar soni</div>
-                <div></div>
             </div>
             <OneDayWithMttFromUsers/>
         </div>

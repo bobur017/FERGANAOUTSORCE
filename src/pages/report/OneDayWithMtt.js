@@ -2,7 +2,6 @@ import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {oneDay} from "./ReportReducer";
-import {TimestampToInputDate} from "../funcs/Funcs";
 import {useNavigate} from "react-router-dom";
 
 function GetOneDayWithMtt({id}) {

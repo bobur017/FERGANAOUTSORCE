@@ -5,8 +5,10 @@ import {getMenuReport, oneDay, oneDayFromAll} from "./ReportReducer";
 import {TimestampToInputDate} from "../funcs/Funcs";
 import {useNavigate} from "react-router-dom";
 import {Form} from "react-bootstrap";
+import fileDownload from "js-file-download";
 
 function OneDayWithMttFromUsers({id}) {
+    const [fileType,setFileType]=useState();
     const dispatch = useDispatch();
     const history = useNavigate();
     const menuOneDay = useSelector(state => state.report.menuOneDay);
@@ -18,7 +20,12 @@ function OneDayWithMttFromUsers({id}) {
 
         } else {
             console.log(menuOneDay, "menuOneDay");
-
+                var fileDownload = require('js-file-download');
+            if (fileType === 'pdf'){
+                fileDownload(menuOneDay, 'Kunlik-menyu-hisoboti.pdf');
+            }else {
+                fileDownload(menuOneDay, 'Kunlik-menyu-hisoboti.xlsx');
+            }
         }
     }, [menuOneDay]);
 
@@ -36,7 +43,6 @@ function OneDayWithMttFromUsers({id}) {
     }
     const getFiles = (type) => {
         dispatch(getMenuReport({type,reportId:stateSelector?.id}))
-        console.log(stateSelector,"stateSelector")
     }
 
     return (

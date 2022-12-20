@@ -17,7 +17,7 @@ function GetOneDayMenu() {
             firstUpdate.current = true;
             dispatch(getMenuOne(reportId?.id))
         }else {
-            console.log(stateSelector,"stateSelector")
+            console.log(stateSelector,"stateSelector");
         }
     }, [stateSelector]);
 

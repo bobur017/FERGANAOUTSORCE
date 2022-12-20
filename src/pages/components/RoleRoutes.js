@@ -8,7 +8,7 @@ import React from "react";
 import { GiGreenhouse, GiMeal, GiShoppingCart } from "react-icons/gi";
 import {TbBuildingWarehouse, TbNumbers, TbReportAnalytics} from "react-icons/tb";
 import {CgMenuHotdog} from "react-icons/cg";
-import {BsFillMenuButtonFill} from "react-icons/bs";
+import {BsArrowDownUp, BsFillMenuButtonFill} from "react-icons/bs";
 import {TiInfoLargeOutline} from "react-icons/ti";
 import {FaUserCog} from "react-icons/fa";
 import {HiOutlineDocumentText, HiOutlineTruck} from "react-icons/hi";
@@ -78,13 +78,23 @@ export const rolesList = (role) => {
             },
             {
                 path: "/sidebar/contract",
-                name: "Ma'lumotlar",
+                name: "Shartnomalar",
                 icon: <HiOutlineDocumentText size={25}/>
             },
             {
                 path: "/sidebar/supplier",
-                name: "Ma'lumotlar",
+                name: "Ta'minotchilar",
                 icon: <HiOutlineTruck size={25}/>
+            },
+            {
+                path: "/sidebar/input-output-admin",
+                name: "Kirim chiqim",
+                icon: <BsArrowDownUp size={25}/>
+            },
+            {
+                path: "/sidebar/report-kids-number",
+                name: "Bolalar soni",
+                icon: <FaChild size={25}/>
             },
         ];
     }else if(role === "ROLE_OMBORCHI"){

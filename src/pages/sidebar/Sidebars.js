@@ -32,6 +32,10 @@ import Warehouse from "../warehouse/Warehouse";
 import GetOneDayMenu from "../report/GetOneDayMenu";
 import OneDayMenu from "../multimenu/OneDayMenu";
 import OneDayWithMttFromUsers from "../report/OneDayWithMttFromUsers";
+import InputOutput from "../report/InputOutput";
+import InputOutputFromAdmin from "../report/InputOutputFromAdmin";
+import InputOutputKidsNumber from "../report/InputOutputKidsNumber";
+import InputOutputKidsNumberFromAdmin from "../report/InputOutputKidsNumberFromAdmin";
 
 function Sidebars() {
 
@@ -132,9 +136,13 @@ function Sidebars() {
                     <Route path="/edit-contract/:id" element={<EditContract/>}/>
                     <Route path="/children-number" element={<ChildrenNumber/>}/>
                     <Route path="/warehouse" element={<Warehouse/>}/>
+                    <Route path="/report-warehouse" element={<InputOutput/>}/>
                     <Route path="/one-day-menu/:id" element={<GetOneDayMenu/>}/>
                     <Route path="/one-day-menu" element={<OneDayMenu/>}/>
                     <Route path="/menu-mtt" element={<OneDayWithMttFromUsers />}/>
+                    <Route path="/input-output-admin" element={<InputOutputFromAdmin />}/>
+                    <Route path="/report-paramedic" element={<InputOutputKidsNumber />}/>
+                    <Route path="/report-kids-number" element={<InputOutputKidsNumberFromAdmin />}/>
                 </Routes>
             </Sidebar>
         </div>

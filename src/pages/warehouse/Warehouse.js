@@ -7,7 +7,6 @@ import NavbarHeader from "../more/NavbarHeader";
 import {getGetFiles} from "../getFiles/GetFilesReducer";
 import {downloadFilesa} from "../DownLOader";
 import {getRoleStorage} from "../more/Functions";
-// import {downloadFile} from "react-file-downloader";
 
 function Warehouse() {
     const [wareHouseState, setWareHouseState] = useState();
@@ -32,8 +31,8 @@ function Warehouse() {
         if (!firstUpdate.current) {
 
         } else {
-            // downloadFile(getFiless,"Qoldiq mahsulotlar.pdf");
-            downloadFilesa(getFiless,"Qoldiq mahsulotlar.pdf");
+            var fileDownload = require('js-file-download');
+            fileDownload(getFiless, 'Qoldiq-hisoboti.pdf');
         }
     }, [getFiless]);
 

@@ -24,7 +24,7 @@ function MenuView() {
     const handleClose = () => setShow(false);
     const handleShow = (data) => {
         setCurrentDay(data);
-        setShow(true)
+        setShow(true);
     };
     const departmentsRel = useSelector(state => state.department.departmentsRel);
     const mttsRelations = useSelector(state => state.mtt.mttsRelations);

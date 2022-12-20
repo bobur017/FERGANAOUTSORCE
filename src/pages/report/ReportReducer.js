@@ -11,10 +11,18 @@ const slice = createSlice({
         oneDay: {},
         menuOneDay: [],
         reports: [],
+        inputOutput:{},
+        kidsNumber:{},
     },
     reducers: {
+        kidsNumber: (state, action) => {
+            state.kidsNumber = action.payload;
+        },
         menuOneDay: (state, action) => {
             state.menuOneDay = action.payload;
+        },
+        inputOutput: (state, action) => {
+            state.inputOutput = action.payload;
         },
         reports: (state, action) => {
             state.reports = action.payload;
@@ -41,6 +49,28 @@ export const getMenuReport = (params) => apiCall({
     },
     params,
     success: slice.actions.reports.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const inputOutput = (params) => apiCall({
+    url: "/report/getReportInputOutPut",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.inputOutput.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getInputOutputKidsNumber = (params) => apiCall({
+    url: "/report/getKidsNumberReport",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.kidsNumber.type,
     error: slice.actions.errorReducer.type
 })
 
