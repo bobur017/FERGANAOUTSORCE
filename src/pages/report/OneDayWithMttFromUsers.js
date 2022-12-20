@@ -1,33 +1,42 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getMenuReport, oneDay, oneDayFromAll} from "./ReportReducer";
+import {getMenuReport, getMenuReport2, oneDay, oneDayFromAll} from "./ReportReducer";
 import {TimestampToInputDate} from "../funcs/Funcs";
 import {useNavigate} from "react-router-dom";
 import {Form} from "react-bootstrap";
 import fileDownload from "js-file-download";
+import {baseUrl2} from "../../Default";
+import FileDownload from "js-file-download";
 
 function OneDayWithMttFromUsers({id}) {
-    const [fileType,setFileType]=useState();
+    const [fileType, setFileType] = useState();
     const dispatch = useDispatch();
     const history = useNavigate();
     const menuOneDay = useSelector(state => state.report.menuOneDay);
     const stateSelector = useSelector(state => state.report.oneDay)
+    const menuOneDayReport = useSelector(state => state.report.menuOneDayReport2)
     const firstUpdate = useRef(false);
+    const FileDownload = require('js-file-download');
 
     useEffect(() => {
         if (!firstUpdate.current) {
 
         } else {
-            console.log(menuOneDay, "menuOneDay");
-                var fileDownload = require('js-file-download');
-            if (fileType === 'pdf'){
-                fileDownload(menuOneDay, 'Kunlik-menyu-hisoboti.pdf');
-            }else {
-                fileDownload(menuOneDay, 'Kunlik-menyu-hisoboti.xlsx');
+            // var win = window.open(baseUrl2()+`/attachment/file?name=${menuOneDayReport}`, '_blank');
+            // win.focus();
+            // window.open(url, '_blank').focus();
+            //     var fileDownload = require('js-file-download');
+            if (fileType === 'pdf') {
+                console.log(menuOneDayReport, "menuOneDayReport");
+                // FileDownload(menuOneDayReport, 'Kunlik-menyu-hisoboti.pdf');
+                FileDownload(menuOneDayReport, "bog'cha hisoboti.pdf");
+
+            } else {
+                FileDownload(menuOneDayReport, 'Kunlik-menyu-hisoboti.xlsx');
             }
         }
-    }, [menuOneDay]);
+    }, [menuOneDayReport]);
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -39,11 +48,14 @@ function OneDayWithMttFromUsers({id}) {
     }, [stateSelector]);
 
     const getByDate = (e) => {
-        dispatch(oneDayFromAll({date:new Date(e.target.value).getTime()}));
+        dispatch(oneDayFromAll({date: new Date(e.target.value).getTime()}));
     }
     const getFiles = (type) => {
         setFileType(type);
-        dispatch(getMenuReport({type,reportId:stateSelector?.id}))
+        console.log("ishlashi kerak")
+        // var win = window.open(baseUrl2()+`/report/getMenuReport?reportId=${stateSelector?.id}&type=excel`, '_blank');
+        // win.focus();
+        dispatch(getMenuReport2({type, reportId: stateSelector?.id}))
     }
 
     return (
@@ -51,11 +63,12 @@ function OneDayWithMttFromUsers({id}) {
             <div className={'d-flex figma-card justify-content-around'}>
                 <div className={'d-flex align-items-center justify-content-around'}>
 
-                <button className={'buttonInfo mx-1'}
-                        onClick={() => history("/sidebar/one-day-menu/" + stateSelector?.menu?.id)}>Batafsil
-                </button>
-                <button className={'buttonPdf mx-1'} style={{width:100}} onClick={()=>getFiles("pdf")}>PDF</button>
-                <button className={'buttonExcel mx-1'}  onClick={()=>getFiles("excel")}>Excel</button>
+                    <button className={'buttonInfo mx-1'}
+                            onClick={() => history("/sidebar/one-day-menu/" + stateSelector?.menu?.id)}>Batafsil
+                    </button>
+                    <button className={'buttonPdf mx-1'} style={{width: 100}} onClick={() => getFiles("pdf")}>PDF
+                    </button>
+                    <button className={'buttonExcel mx-1'} onClick={() => getFiles("excel")}>Excel</button>
                 </div>
                 <div>
                     <Form.Label>Sana</Form.Label>

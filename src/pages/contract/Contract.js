@@ -6,7 +6,7 @@ import {
     contractVerified,
     deleteContract,
     editContract,
-    getContract,
+    getContract, getContractFile,
     getContractOne
 } from "./ContractReducer";
 import {Button, Form, Modal, Row, Table} from "react-bootstrap";
@@ -19,6 +19,7 @@ import {getMenuReport} from "../report/ReportReducer";
 function Contract() {
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
+    const [id, setId] = useState();
     const [contractState, setContractState] = useState({id: '', name: ''});
     const [contracts, setContracts] = useState([]);
     const handleClose = () => {
@@ -33,6 +34,7 @@ function Contract() {
     };
     const handleShow2 = (id) => {
         dispatch(getContractOne(id));
+        setId(id);
         setShow2(true)
     };
     const history = useNavigate();
@@ -40,6 +42,7 @@ function Contract() {
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     const contract = useSelector(state => state.contract)
+    const contractFile = useSelector(state => state.contract.contractFile)
     const menuOneDay = useSelector(state => state.report.menuOneDay);
     const [fileType,setFileType]=useState();
 
@@ -50,12 +53,13 @@ function Contract() {
             console.log(menuOneDay, "menuOneDay");
             var fileDownload = require('js-file-download');
             if (fileType === 'pdf'){
-                fileDownload(menuOneDay, 'Kunlik-menyu-hisoboti.pdf');
+                fileDownload(contractFile, 'Kunlik-menyu-hisoboti.pdf');
             }else {
-                fileDownload(menuOneDay, 'Kunlik-menyu-hisoboti.xlsx');
+                fileDownload(contractFile, 'Kunlik-menyu-hisoboti.xls');
             }
         }
-    }, [menuOneDay]);
+    }, [contractFile]);
+
     useEffect(() => {
         if (firstUpdate.current) {
             dispatch(getContract());
@@ -109,9 +113,9 @@ function Contract() {
         );
         return total;
     }
-    const getFiles = (type,data) => {
+    const getFiles = (type) => {
         setFileType(type);
-        // dispatch(getMenuReport({type,reportId:stateSelector?.id}))
+        dispatch(getContractFile(id));
     }
 
     return (
@@ -210,7 +214,7 @@ function Contract() {
                             {
                                 contract?.contract?.kindergartenContractList?.length > 0 ?
                                     contract.contract.kindergartenContractList[0].productContracts?.map((item,index)=>
-                                    <th>{item?.productName}</th>
+                                    <th key={index}>{item?.productName}</th>
                                     )
                                     : null
                             }

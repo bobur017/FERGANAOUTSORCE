@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import './loginPage.css';
 import logo from './image/img.png';
 import { useDispatch, useSelector } from "react-redux";
-import { login, tokenNull } from "./ReducerLogin";
+import {errorNull, login, tokenNull} from "./ReducerLogin";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -44,6 +44,7 @@ function Login() {
                 history("/sidebar/info");
             }
             dispatch(tokenNull())
+            dispatch(errorNull())
         }
     }, [token]);
 

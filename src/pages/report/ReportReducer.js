@@ -13,6 +13,8 @@ const slice = createSlice({
         reports: [],
         inputOutput:{},
         kidsNumber:{},
+        menuOneDayReport:{},
+        menuOneDayReport2:'',
     },
     reducers: {
         kidsNumber: (state, action) => {
@@ -20,6 +22,12 @@ const slice = createSlice({
         },
         menuOneDay: (state, action) => {
             state.menuOneDay = action.payload;
+        },
+        menuOneDayReport: (state, action) => {
+            state.menuOneDayReport = action.payload;
+        },
+        menuOneDayReport2: (state, action) => {
+            state.menuOneDayReport2 = action.payload;
         },
         inputOutput: (state, action) => {
             state.inputOutput = action.payload;
@@ -46,9 +54,24 @@ export const getMenuReport = (params) => apiCall({
     method: "GET",
     headers: {
         Authorization: getToken(),
+        // "Content-Type": "application/octet-stream"
     },
+    responseType:"blob",
     params,
-    success: slice.actions.reports.type,
+    success: slice.actions.menuOneDayReport.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getMenuReport2 = () => apiCall({
+    url: "/attachment/file3?name=59eca636-c11f-4073-a74a-e5bf8c43c4d3.pdf",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+        "Content-Type": "application/octet-stream"
+    },
+    // params,
+    responseType:"blob",
+    success: slice.actions.menuOneDayReport2.type,
     error: slice.actions.errorReducer.type
 })
 

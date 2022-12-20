@@ -38,6 +38,12 @@ export const tokenNull = () => {
         payload: null
     }
 }
+export const errorNull = () => {
+    return {
+        type: slice.actions.errorReducer.type,
+        payload: {}
+    }
+}
 
 
 export default slice.reducer;

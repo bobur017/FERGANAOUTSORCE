@@ -52,12 +52,14 @@ export const getContract = () => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const getContractFile = () => apiCall({
-    url: "/contract",
+export const getContractFile = (id) => apiCall({
+    url: "/contract/getFile/" + id,
     method: "GET",
     headers: {
         Authorization: getToken(),
+        "Content-Type": "application/octet-stream"
     },
+    responseType:"blob",
     success: slice.actions.contractFile.type,
     error: slice.actions.errorReducer.type
 })

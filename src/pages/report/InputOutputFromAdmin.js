@@ -29,7 +29,7 @@ function InputOutputFromAdmin({data}) {
         } else {
             console.log(inputOutputs, "inputOutputs");
             var fileDownload = require('js-file-download');
-            fileDownload(data, 'Kirim-chiqim-hisoboti.xlsx');
+            fileDownload(data, 'Kirim-chiqim-hisoboti.xls');
         }
     }, [inputOutputs]);
 
