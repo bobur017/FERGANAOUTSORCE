@@ -13,8 +13,7 @@ import {Button, Form, Modal, Row, Table} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
 import {useNavigate} from "react-router-dom";
 import {TimestampToInputDate} from "../funcs/Funcs";
-import {MdDeleteForever} from "react-icons/md";
-import DropdownCustom from "../more/DropdownCustom";
+import {getMenuReport} from "../report/ReportReducer";
 
 
 function Contract() {
@@ -41,8 +40,22 @@ function Contract() {
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     const contract = useSelector(state => state.contract)
+    const menuOneDay = useSelector(state => state.report.menuOneDay);
+    const [fileType,setFileType]=useState();
 
+    useEffect(() => {
+        if (!firstUpdate.current) {
 
+        } else {
+            console.log(menuOneDay, "menuOneDay");
+            var fileDownload = require('js-file-download');
+            if (fileType === 'pdf'){
+                fileDownload(menuOneDay, 'Kunlik-menyu-hisoboti.pdf');
+            }else {
+                fileDownload(menuOneDay, 'Kunlik-menyu-hisoboti.xlsx');
+            }
+        }
+    }, [menuOneDay]);
     useEffect(() => {
         if (firstUpdate.current) {
             dispatch(getContract());
@@ -95,6 +108,10 @@ function Contract() {
             total += parseInt(kin?.productContracts[index]?.weight)
         );
         return total;
+    }
+    const getFiles = (type,data) => {
+        setFileType(type);
+        // dispatch(getMenuReport({type,reportId:stateSelector?.id}))
     }
 
     return (
@@ -191,7 +208,7 @@ function Contract() {
                             <th>№</th>
                             <th>MTT</th>
                             {
-                                contract.contract.kindergartenContractList?.length > 0 ?
+                                contract?.contract?.kindergartenContractList?.length > 0 ?
                                     contract.contract.kindergartenContractList[0].productContracts?.map((item,index)=>
                                     <th>{item?.productName}</th>
                                     )
@@ -204,7 +221,7 @@ function Contract() {
                             <td>1</td>
                             <td>Narx</td>
                             {
-                                contract.contract.kindergartenContractList?.length > 0 ? contract.contract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
+                                contract?.contract?.kindergartenContractList?.length > 0 ? contract?.contract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
                                     <td key={index}>
                                         {prod?.price}
                                     </td>
@@ -231,7 +248,7 @@ function Contract() {
                         <tr>
                             <td colSpan={2}>UMUMIY</td>
                             {
-                                contract.contract.kindergartenContractList?.length > 0 ? contract.contract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
+                                contract?.contract?.kindergartenContractList?.length > 0 ? contract.contract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
                                     <td key={index}>
                                         {totalByProduct(index)}
                                     </td>
@@ -243,6 +260,9 @@ function Contract() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
+
+                    <button className={'buttonPdf mx-1'} style={{width:100}} onClick={()=>getFiles("pdf")}>PDF</button>
+                    <button className={'buttonExcel mx-1'}  onClick={()=>getFiles("excel")}>Excel</button>
                     <Button variant="danger" onClick={handleClose2}>
                         Ortga
                     </Button>

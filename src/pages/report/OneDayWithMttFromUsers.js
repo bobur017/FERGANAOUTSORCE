@@ -42,6 +42,7 @@ function OneDayWithMttFromUsers({id}) {
         dispatch(oneDayFromAll({date:new Date(e.target.value).getTime()}));
     }
     const getFiles = (type) => {
+        setFileType(type);
         dispatch(getMenuReport({type,reportId:stateSelector?.id}))
     }
 

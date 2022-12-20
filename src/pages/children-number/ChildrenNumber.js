@@ -22,6 +22,7 @@ function ChildrenNumber() {
 
         } else {
             setChildrenState(true);
+            dispatch(getKidsNumberOne(params));
         }
     }, [result]);
 
@@ -100,7 +101,7 @@ function ChildrenNumber() {
                                 <button className={'createButtons mt-3'} type={'submit'}>O'zgartirish</button> : null}
                             {childrenState?.status === "KIRITISH" && getRoleStorage() !== 'ROLE_RAXBAR' ?
                                 <button type={'submit'} className={'createButtons mt-3'}>Tayyor</button> : null}
-                            {childrenState && getRoleStorage() === 'ROLE_RAXBAR' ? <button onClick={() => thisverifide()}
+                            {childrenState && getRoleStorage() === 'ROLE_RAXBAR' && childrenState?.status !== "TASDIQLANDI"? <button onClick={() => thisverifide()}
                                                                           className={'createButtons mt-3'}>Tasdiqlash</button> : null}
                         </Form>
                     </Col>

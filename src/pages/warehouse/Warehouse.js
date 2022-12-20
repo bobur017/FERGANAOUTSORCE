@@ -19,7 +19,7 @@ function Warehouse() {
     const result = useSelector(state => state.warehouse.result);
     const acceptedProduct = useSelector(state => state.warehouse.acceptedProduct)
     const acceptedProducts = useSelector(state => state.warehouse.acceptedProducts)
-    const getFiless = useSelector(state => state.getFiless)
+    const getFiless = useSelector(state => state.getFiles?.getFiless)
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);

@@ -74,7 +74,7 @@ export const addKidsNumber = (data) => apiCall({
 })
 
 export const verifide = (data) => apiCall({
-    url: "/kidsNumber/verified/data?.id",
+    url: "/kidsNumber/verified/"+data?.id,
     method: "POST",
     headers: {
         Authorization: getToken(),

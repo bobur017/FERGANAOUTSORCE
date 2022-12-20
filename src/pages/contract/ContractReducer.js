@@ -9,7 +9,7 @@ const slice = createSlice({
         result: {},
         error: {},
         contracts: [],
-        contract: {},
+        contractFile: {},
     },
     reducers: {
         contracts: (state, action) => {
@@ -17,6 +17,9 @@ const slice = createSlice({
         },
         contract: (state, action) => {
             state.contract = action.payload;
+        },
+        contractFile: (state, action) => {
+            state.contractFile = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -46,6 +49,16 @@ export const getContract = () => apiCall({
         Authorization: getToken(),
     },
     success: slice.actions.contracts.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getContractFile = () => apiCall({
+    url: "/contract",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.contractFile.type,
     error: slice.actions.errorReducer.type
 })
 
