@@ -25,15 +25,15 @@ function OneDayWithMttFromUsers({id}) {
         } else {
             // var win = window.open(baseUrl2()+`/attachment/file?name=${menuOneDayReport}`, '_blank');
             // win.focus();
-            // window.open(url, '_blank').focus();
+            window.open(menuOneDayReport, '_blank').focus();
             //     var fileDownload = require('js-file-download');
             if (fileType === 'pdf') {
-                console.log(menuOneDayReport, "menuOneDayReport");
+                // console.log(menuOneDayReport, "menuOneDayReport");
                 // FileDownload(menuOneDayReport, 'Kunlik-menyu-hisoboti.pdf');
-                FileDownload(menuOneDayReport, "bog'cha hisoboti.pdf");
+                // FileDownload(menuOneDayReport, "bog'cha hisoboti.pdf");
 
             } else {
-                FileDownload(menuOneDayReport, 'Kunlik-menyu-hisoboti.xlsx');
+                // FileDownload(menuOneDayReport, 'report.csv');
             }
         }
     }, [menuOneDayReport]);
