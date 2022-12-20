@@ -28,14 +28,14 @@ function OneDayWithMttFromUsers({id}) {
             win.focus();
             // window.open(menuOneDayReport, '_blank').focus();
             //     var fileDownload = require('js-file-download');
-            if (fileType === 'pdf') {
-                // console.log(menuOneDayReport, "menuOneDayReport");
-                // FileDownload(menuOneDayReport, 'Kunlik-menyu-hisoboti.pdf');
+            // if (fileType === 'pdf') {
+            //     console.log(menuOneDayReport, "menuOneDayReport");
+            //     FileDownload(menuOneDayReport);
                 // FileDownload(menuOneDayReport, "bog'cha hisoboti.pdf");
 
-            } else {
+            // } else {
                 // FileDownload(menuOneDayReport, 'report.csv');
-            }
+            // }
         }
     }, [menuOneDayReport]);
 

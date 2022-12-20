@@ -37,10 +37,10 @@ function GetOneDayMenu() {
                                                    <div
                                                        className={'w-100 d-flex justify-content-between my-2 fw-bolder'}>{mealTime.mealTimeName}
                                                    </div>
-                                                   <div className={'miniTable'}>
-                                                       <table>
+                                                   <div className={'miniTable1'}>
+                                                       <table >
                                                            <thead>
-                                                           <tr>
+                                                           <tr style={{fontSize:20}}>
                                                                <th>#</th>
                                                                <th>Taom nomi</th>
                                                                <th>Yosh toifalari</th>
@@ -50,7 +50,7 @@ function GetOneDayMenu() {
                                                            {mealTime?.mealAgeStandardList?.map((meal, index3) => {
                                                                    return (
                                                                        <tbody key={index3}>
-                                                                       <tr>
+                                                                       <tr style={{fontSize:20}}>
                                                                            <td rowSpan={meal.ageStandardList.length}>{index3 + 1}</td>
                                                                            <td rowSpan={meal.ageStandardList.length}>{meal.mealName}</td>
                                                                            <td>
