@@ -8,6 +8,7 @@ import {Form} from "react-bootstrap";
 import fileDownload from "js-file-download";
 import {baseUrl2} from "../../Default";
 import FileDownload from "js-file-download";
+import {toast} from "react-toastify";
 
 function OneDayWithMttFromUsers({id}) {
     const [fileType, setFileType] = useState();
@@ -31,10 +32,10 @@ function OneDayWithMttFromUsers({id}) {
             // if (fileType === 'pdf') {
             //     console.log(menuOneDayReport, "menuOneDayReport");
             //     FileDownload(menuOneDayReport);
-                // FileDownload(menuOneDayReport, "bog'cha hisoboti.pdf");
+            // FileDownload(menuOneDayReport, "bog'cha hisoboti.pdf");
 
             // } else {
-                // FileDownload(menuOneDayReport, 'report.csv');
+            // FileDownload(menuOneDayReport, 'report.csv');
             // }
         }
     }, [menuOneDayReport]);
@@ -59,13 +60,20 @@ function OneDayWithMttFromUsers({id}) {
         dispatch(getMenuReport({type, reportId: stateSelector?.id}))
     }
 
+    const pushMenuId = () => {
+        if (stateSelector?.menu?.id) {
+            history("/sidebar/one-day-menu/" + stateSelector?.menu?.id)
+        }else {
+            toast.error("Bu kunga menyu biriktirilmagan!")
+        }
+    }
     return (
         <div>
             <div className={'d-flex figma-card justify-content-around'}>
                 <div className={'d-flex align-items-center justify-content-around'}>
 
                     <button className={'buttonInfo mx-1'}
-                            onClick={() => history("/sidebar/one-day-menu/" + stateSelector?.menu?.id)}>Batafsil
+                            onClick={() => pushMenuId()}>Batafsil
                     </button>
                     <button className={'buttonPdf mx-1'} style={{width: 100}} onClick={() => getFiles("pdf")}>PDF
                     </button>

@@ -92,7 +92,7 @@ export const getAcceptedProductAll = () => apiCall({
     headers: {
         Authorization: getToken(),
     },
-    success: slice.actions.resultReducer.type,
+    success: slice.actions.acceptedProducts.type,
     error: slice.actions.errorReducer.type
 })
 

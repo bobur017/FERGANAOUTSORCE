@@ -21,8 +21,10 @@ function MenuView() {
     const [departmentId, setDepartmentId] = useState();
     const [kindergarten, setKindergarten] = useState();
     const [show, setShow] = useState(false);
+    const [currentDay, setCurrentDay] = useState();
     const handleClose = () => setShow(false);
     const handleShow = (data) => {
+        console.log(data,"data");
         setCurrentDay(data);
         setShow(true);
     };
@@ -33,7 +35,6 @@ function MenuView() {
     const calendar2 = useSelector(state => state.multiMenu.checkCalendar2);
     const departments = useSelector(state => state.department.departments);
     const firstUpdate = useRef(false);
-    const [currentDay, setCurrentDay] = useState();
     const history = useNavigate();
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -46,7 +47,7 @@ function MenuView() {
         }
     }, [])
 
-    const changeDate = (num, year, month) => {
+    const changeDate = (num, year, month, numFunc) => {
         if (month === 12 && num > 0) {
             year = year + 1;
             month = 1;
@@ -56,7 +57,11 @@ function MenuView() {
         } else {
             month = month + num;
         }
-        getDateServer(year, month);
+        if (numFunc === 0) {
+            getDateServer(year, month);
+        } else {
+            dispatch(checkCalendarByMtts(kindergarten?.id, {month, year}))
+        }
     }
 
     const getDateServer = (year, month) => {
@@ -70,7 +75,7 @@ function MenuView() {
 
     const getKindergartenDays = (data) => {
         setKindergarten(data);
-        dispatch(checkCalendarByMtts(data.id, {date: Date.now()}));
+        dispatch(checkCalendarByMtts(data.id, {}));
     }
     const getMttsByDepartment = (data) => {
         dispatch(getMttFromRelations(data.departmentId, {date: currentDay?.date}));
@@ -109,9 +114,13 @@ function MenuView() {
                          style={{backgroundColor: '#FFFFFFCC', borderRadius: 16}}>
                         <div className={'w-100'}>
                             <div className={'w-100 d-flex justify-content-between align-items-center mb-1'}>
-                                <div><MdOutlineArrowBackIosNew size={30}/></div>
-                                <div className={'fs-3'}>Iyun 2022</div>
-                                <div><MdOutlineArrowForwardIos size={30}/></div>
+                                <div className={'my-Hover'}
+                                     onClick={() => changeDate(-1, calendar?.year, calendar?.month, 0)}>
+                                    <MdOutlineArrowBackIosNew size={30}/></div>
+                                <div className={'fs-3'}>{calendar?.name} - {calendar?.year}</div>
+                                <div className={'my-Hover'}
+                                     onClick={() => changeDate(1, calendar?.year, calendar?.month, 0)}>
+                                    <MdOutlineArrowForwardIos size={30}/></div>
                             </div>
                             <div className={main.tableCalendar}>
                                 <table>
@@ -275,9 +284,13 @@ function MenuView() {
                          style={{backgroundColor: '#FFFFFFCC', borderRadius: 16}}>
                         <div className={'w-100'}>
                             <div className={'w-100 d-flex justify-content-between align-items-center mb-1'}>
-                                <div><MdOutlineArrowBackIosNew size={30}/></div>
-                                <div className={'fs-3'}>Iyun 2022</div>
-                                <div><MdOutlineArrowForwardIos size={30}/></div>
+                                <div className={'my-Hover'}
+                                     onClick={() => changeDate(-1, calendar2?.year, calendar2?.month, 1)}>
+                                    <MdOutlineArrowBackIosNew size={30}/></div>
+                                <div className={'fs-3'}>{calendar2?.name} - {calendar2?.year}</div>
+                                <div className={'my-Hover'}
+                                     onClick={() => changeDate(1, calendar2?.year, calendar2?.month, 1)}>
+                                    <MdOutlineArrowForwardIos size={30}/></div>
                             </div>
                             <table className={main.table}>
                                 <thead>
@@ -300,14 +313,23 @@ function MenuView() {
                                                 <td key={index2}
                                                     onMouseEnter={() => setDays(day.day)}
                                                     onMouseLeave={() => setDays(null)}
-                                                    onClick={()=>handleShow(day)}
+                                                    onClick={() => handleShow(day)}
                                                     style={index2 === 5 || index2 === 6 ? {
                                                         color: 'red',
                                                         position: 'relative'
                                                     } : {position: 'relative'}}>{day.day !== 0 ? day.day : null}
                                                     {day?.attached ? <BsCheckAll color={'#48B1AB'}
-                                                                 style={{position: "absolute", right: 2, bottom: 1}}/> : null}
-                                                    <div className={days === day.day ? `shadow ${main.tooltipText}`:'d-none'}>{day.menuName !== null ? day.menuName : <span style={{fontSize:10,color:'red'}}>Menyu biriktirilmagan</span>}</div>
+                                                                                 style={{
+                                                                                     position: "absolute",
+                                                                                     right: 2,
+                                                                                     bottom: 1
+                                                                                 }}/> : null}
+                                                    <div
+                                                        className={days === day.day ? `shadow ${main.tooltipText}` : 'd-none'}>{day.menuName !== null ? day.menuName :
+                                                        <span style={{
+                                                            fontSize: 10,
+                                                            color: 'red'
+                                                        }}>Menyu biriktirilmagan</span>}</div>
                                                 </td>
                                             )}
                                         </tr>

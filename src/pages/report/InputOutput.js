@@ -7,7 +7,7 @@ import NavbarHeader from "../more/NavbarHeader";
 import {TimestampToInputDate} from "../funcs/Funcs";
 
 function InputOutput({data}) {
-    const [params, setParams] = useState({startDate: '', endDate: ''});
+    const [params, setParams] = useState({start: '', end: ''});
     const dispatch = useDispatch();
     const inputOutputs = useSelector(state => state.report.inputOutput);
     const firstUpdate = useRef(false);
@@ -17,9 +17,8 @@ function InputOutput({data}) {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
         } else {
-            console.log(inputOutputs,"inputOutputs");
-            var fileDownload = require('js-file-download');
-            fileDownload(data, 'Kirim-chiqim-hisoboti.xls');
+            var win = window.open(inputOutputs, '_blank');
+            win.focus();
         }
     }, [inputOutputs]);
 
@@ -41,16 +40,16 @@ function InputOutput({data}) {
 
                         <div>
                             <Form.Label>Boshlanish sana</Form.Label>
-                            <Form.Control name={'startDate'} type={'date'} onChange={onChangeDate}
+                            <Form.Control name={'start'} type={'date'} onChange={onChangeDate}
                                           required
-                                          value={TimestampToInputDate(params.startDate)}/>
+                                          value={TimestampToInputDate(params.start)}/>
                         </div>
                         <div>
                             <Form.Label>Tugash sana</Form.Label>
-                            <Form.Control name={'endDate'} type={'date'} onChange={onChangeDate}
-                                          value={TimestampToInputDate(params.endDate)}
+                            <Form.Control name={'end'} type={'date'} onChange={onChangeDate}
+                                          value={TimestampToInputDate(params.end)}
                                           required
-                                          min={TimestampToInputDate(params.startDate)}/>
+                                          min={TimestampToInputDate(params.start)}/>
                         </div>
                         <button className={'createButtons'} type={'submit'}>Tayyor</button>
                     </Form>

@@ -13,7 +13,6 @@ import {Button, Form, Modal, Row, Table} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
 import {useNavigate} from "react-router-dom";
 import {TimestampToInputDate} from "../funcs/Funcs";
-import {getMenuReport} from "../report/ReportReducer";
 
 
 function Contract() {
@@ -50,13 +49,8 @@ function Contract() {
         if (!firstUpdate.current) {
 
         } else {
-            console.log(menuOneDay, "menuOneDay");
-            var fileDownload = require('js-file-download');
-            if (fileType === 'pdf'){
-                fileDownload(contractFile, 'Kunlik-menyu-hisoboti.pdf');
-            }else {
-                fileDownload(contractFile, 'Kunlik-menyu-hisoboti.xls');
-            }
+            var win = window.open(menuOneDay, '_blank');
+            win.focus();
         }
     }, [contractFile]);
 
@@ -266,7 +260,6 @@ function Contract() {
                 <Modal.Footer>
 
                     <button className={'buttonPdf mx-1'} style={{width:100}} onClick={()=>getFiles("pdf")}>PDF</button>
-                    <button className={'buttonExcel mx-1'}  onClick={()=>getFiles("excel")}>Excel</button>
                     <Button variant="danger" onClick={handleClose2}>
                         Ortga
                     </Button>

@@ -17,6 +17,7 @@ import warehouse from "./pages/warehouse/WarehouseReducer";
 import report from "./pages/report/ReportReducer";
 import kidsNumber from "./pages/children-number/ChildrenNumberReducer";
 import sanpinCategory from "./pages/product/SanpinCategoryReducer";
+import getFiles from "./pages/getFiles/GetFilesReducer";
 import Api from "./Api"
 
 export default configureStore({
@@ -39,6 +40,7 @@ export default configureStore({
         kidsNumber,
         warehouse,
         report,
+        getFiles,
     },
     middleware: [Api],
 });

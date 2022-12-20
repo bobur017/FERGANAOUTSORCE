@@ -6,6 +6,7 @@ import {getRoleStorage, getToken, toastError} from "../more/Functions";
 const slice = createSlice({
     name: "user",
     initialState: {
+        userData: {},
         result: {},
         error: {},
         users: [],
@@ -14,6 +15,9 @@ const slice = createSlice({
     reducers: {
         users: (state, action) => {
             state.users = action.payload;
+        },
+        userData: (state, action) => {
+            state.userData = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -31,6 +35,16 @@ const slice = createSlice({
     }
 })
 
+export const getUserData = (params) => apiCall({
+    url: "/user/getMyData",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.userData.type,
+    error: slice.actions.errorReducer.type
+});
 export const getAllUser = (params) => apiCall({
     url: "/user",
     method: "GET",

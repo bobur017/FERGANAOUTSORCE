@@ -27,9 +27,8 @@ function InputOutputFromAdmin({data}) {
             firstUpdate.current = true;
             dispatch(getDepartment());
         } else {
-            console.log(inputOutputs, "inputOutputs");
-            var fileDownload = require('js-file-download');
-            fileDownload(data, 'Kirim-chiqim-hisoboti.xls');
+            var win = window.open(inputOutputs, '_blank');
+            win.focus();
         }
     }, [inputOutputs]);
 

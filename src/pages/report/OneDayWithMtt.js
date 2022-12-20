@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {oneDay} from "./ReportReducer";
 import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
 function GetOneDayWithMtt({id}) {
     const dispatch = useDispatch();
@@ -14,9 +15,11 @@ function GetOneDayWithMtt({id}) {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
             if (id) {
-                dispatch(oneDay());
-            } else {
+
                 dispatch(oneDay(id));
+            } else {
+                toast.error("Bu kunda menyu topilmadi!")
+                // dispatch(oneDay());
             }
         } else {
             console.log(stateSelector, "stateSelector");

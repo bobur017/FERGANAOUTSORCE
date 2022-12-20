@@ -7,6 +7,7 @@ import NavbarHeader from "../more/NavbarHeader";
 import {getGetFiles} from "../getFiles/GetFilesReducer";
 import {downloadFilesa} from "../DownLOader";
 import {getRoleStorage} from "../more/Functions";
+import FromPageSizeBottom from "../fromPage/FromPageSizeBottom";
 
 function Warehouse() {
     const [wareHouseState, setWareHouseState] = useState();
@@ -19,7 +20,7 @@ function Warehouse() {
     const result = useSelector(state => state.warehouse.result);
     const acceptedProduct = useSelector(state => state.warehouse.acceptedProduct)
     const acceptedProducts = useSelector(state => state.warehouse.acceptedProducts)
-    const getFiless = useSelector(state => state.getFiles?.getFiless)
+    const getFiless = useSelector(state => state.getFiles.getFiless)
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);
@@ -31,8 +32,8 @@ function Warehouse() {
         if (!firstUpdate.current) {
 
         } else {
-            var fileDownload = require('js-file-download');
-            fileDownload(getFiless, 'Qoldiq-hisoboti.pdf');
+            var win = window.open(getFiless, '_blank');
+            win.focus();
         }
     }, [getFiless]);
 
@@ -71,39 +72,54 @@ function Warehouse() {
     }
 
     const getPdf = (e) => {
-      dispatch(getGetFiles());
+        dispatch(getGetFiles());
+    }
+    const changePage1 = (page) => {
+        dispatch(getAcceptedProductAll({page, pageSize: 10}))
+    }
+    const changePage0 = (page) => {
+        dispatch(getWarehouse({page, pageSize: 10}))
+    }
+    const changePage2 = (page) => {
+        dispatch(getAcceptedProduct({page, pageSize: 10}))
     }
     return (
         <div>
             <NavbarHeader
-                navs={[{name: "Ombordagi mahsulotlar"},{name: "Qabul qilingan mahsulotlar"},getRoleStorage() ==="ROLE_OMBORCHI" ? {name: "Mahsulot qabul qilish"}: '' ]}
+                navs={[{name: "Ombordagi mahsulotlar"}, {name: "Qabul qilingan mahsulotlar"}, getRoleStorage() === "ROLE_OMBORCHI" ? {name: "Mahsulot qabul qilish"} : '']}
                 currentNavs={setCurrentNavs}/>
             <Container fluid={true} className={'mt-3'}>
                 {currentNavs === 0 ? <Row>
-                        <Col className={'figma-card'}>
-                            <div className={'w-100 d-flex justify-content-end'}><button className={'buttonPdf my-2'} onClick={getPdf}>PDF</button></div>
-                            <div className={'tableCalendar'}>
-                                <table>
-                                    <thead>
-                                    <tr>
-                                        <th>№</th>
-                                        <th>Mahsulot nomi</th>
-                                        <th>Miqdor</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {
-                                        warehouses?.list?.map((product, index) =>
-                                            <tr key={index} style={{cursor: 'pointer'}}>
-                                                <td>{index + 1}</td>
-                                                <td>{product.productName}</td>
-                                                <td>{product.weight}</td>
-                                            </tr>
-                                        )
-                                    }
-                                    </tbody>
-                                </table>
-                            </div>
+                    <Col className={'figma-card'}>
+                        <div className={'w-100 d-flex justify-content-end'}>
+                            <button className={'buttonPdf my-2'} onClick={getPdf}>PDF</button>
+                        </div>
+                        <div className={'tableCalendar'}>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Mahsulot nomi</th>
+                                    <th>Miqdor</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {
+                                    warehouses?.list?.map((product, index) =>
+                                        <tr key={index} style={{cursor: 'pointer'}}>
+                                            <td>{index + 1}</td>
+                                            <td>{product.productName}</td>
+                                            <td>{product.weight}</td>
+                                        </tr>
+                                    )
+                                }
+                                </tbody>
+                            </table>
+                            <br/>
+                            <FromPageSizeBottom currentPage={warehouses.getPageNumber}
+                                                pageSize={warehouses?.getPageSize} changesPage={changePage0}
+                                                allPageSize={warehouses?.allPageSize}/>
+                        </div>
                     </Col>
                 </Row> : null}
                 {currentNavs === 2 ? <Row>
@@ -146,6 +162,10 @@ function Warehouse() {
                                 }
                                 </tbody>
                             </table>
+                            <br/>
+                            <FromPageSizeBottom currentPage={acceptedProduct.getPageNumber}
+                                                pageSize={acceptedProduct?.getPageSize} changesPage={changePage2}
+                                                allPageSize={acceptedProduct?.allPageSize}/>
                         </div>
                     </Col>
                 </Row> : null}
@@ -165,13 +185,17 @@ function Warehouse() {
                                     acceptedProducts?.list?.map((product, index) =>
                                         <tr key={index} style={{cursor: 'pointer'}}>
                                             <td>{index + 1}</td>
-                                            <td>{product.productName}</td>
+                                            <td>{product?.productContract?.productName}</td>
                                             <td>{product.weight}</td>
                                         </tr>
                                     )
                                 }
                                 </tbody>
                             </table>
+                            <br/>
+                            <FromPageSizeBottom currentPage={acceptedProducts.getPageNumber}
+                                                pageSize={acceptedProducts?.getPageSize} changesPage={changePage1}
+                                                allPageSize={acceptedProducts?.allPageSize}/>
                         </div>
                     </Col>
                 </Row> : null}
@@ -188,7 +212,7 @@ function Warehouse() {
                         <br/>
                         <Form.Label>Miqdorini kiriting</Form.Label>
                         <Form.Control max={productReceived?.residualWeight} type={'number'} name={"receivedWeight"}
-                                      value={productReceived.receivedWeight} onChange={onChangeProductWeight}
+                                      value={productReceived.receivedWeight} step={'0.01'} onChange={onChangeProductWeight}
                                       onWheel={event => event.target.blur()} required/>
                     </Modal.Body>
                     <Modal.Footer>

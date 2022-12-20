@@ -212,30 +212,30 @@ function Users() {
                 </Row>
             </Container>
             <Modal show={show} onHide={handleClose}>
-                <Form onSubmit={submit}>
+                <Form onSubmit={submit} style={{fontSize:10}}>
                     <Modal.Header closeButton>
                         <Modal.Title>Xodim </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Label>Ismi</Form.Label>
-                        <Form.Control name={'name'} className={'mb-2'} value={userState.name} onChange={onChangeState}
+                        <Form.Control name={'name'} size={'sm'} className={'mb-2'} value={userState.name} onChange={onChangeState}
                                       required/>
-                        <Form.Label>Otasining ismi</Form.Label>
-                        <Form.Control name={'fatherName'} className={'mb-2'} value={userState.fatherName}
+                        <Form.Label>Familyasi</Form.Label>
+                        <Form.Control name={'surname'} className={'mb-2'} size={'sm'}  value={userState.surname}
                                       onChange={onChangeState} required/>
-                        <Form.Label>Sharifi</Form.Label>
-                        <Form.Control name={'surname'} className={'mb-2'} value={userState.surname}
+                        <Form.Label>Otasining ismi</Form.Label>
+                        <Form.Control name={'fatherName'} className={'mb-2'} size={'sm'}  value={userState.fatherName}
                                       onChange={onChangeState} required/>
                         <Form.Label>Login</Form.Label>
-                        <Form.Control name={'username'} className={'mb-2'} value={userState.username} minLength={5}
+                        <Form.Control name={'username'} className={'mb-2'} size={'sm'}  value={userState.username} minLength={5}
                                       onChange={onChangeState} required/>
                         <Form.Label>Tel:</Form.Label>
-                        <Form.Control name={'phoneNumber'} className={'mb-2'} value={userState.phoneNumber}
+                        <Form.Control name={'phoneNumber'} className={'mb-2'} size={'sm'}  value={userState.phoneNumber}
                                       maxLength={9}
                                       minLength={9}
                                       onChange={onChangeState} required placeholder={"+998"}/>
                         {userState.id === null ? <> <Form.Label>Parol</Form.Label>
-                            <Form.Control name={'password'} minLength={8} className={'mb-2'} value={userState.password}
+                            <Form.Control name={'password'} minLength={8} size={'sm'}  className={'mb-2'} value={userState.password}
                                           onChange={onChangeState} required/></> : null}
                         <Form.Label>Lavozimni tanlang</Form.Label>
                         <Role getRoleId={getRoleInRole} type={params}/>

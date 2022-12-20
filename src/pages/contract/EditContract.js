@@ -51,7 +51,6 @@ function EditContract() {
         if (!firstUpdate.current) {
 
         }else {
-            console.log(contract,"contract");
             setPostStateContract(contract);
         }
     }, [contract]);

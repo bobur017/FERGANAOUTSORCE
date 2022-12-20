@@ -36,9 +36,14 @@ import InputOutput from "../report/InputOutput";
 import InputOutputFromAdmin from "../report/InputOutputFromAdmin";
 import InputOutputKidsNumber from "../report/InputOutputKidsNumber";
 import InputOutputKidsNumberFromAdmin from "../report/InputOutputKidsNumberFromAdmin";
+import UserInfos from "../users/UserInfos";
+import {useSelector} from "react-redux";
 
 function Sidebars() {
 
+    const user = useSelector(state => state.user.userData)
+    const isBigScreen3= useMediaQuery({query: '(min-width: 1090px)'});
+    const isBigScreen2 = useMediaQuery({query: '(min-width: 576px)'});
     const isBigScreen = useMediaQuery({query: '(max-width: 576px)'});
     return (
         <div className={'h-100'}>
@@ -59,7 +64,7 @@ function Sidebars() {
                         </Navbar.Brand>
                         <Nav className="me-auto">
                             <Nav.Link>
-                            <span style={{fontSize: 30}} className={'fw-bolder'}>
+                            <span style={{fontSize:isBigScreen3? 30:!isBigScreen2?25:20}} className={'fw-bolder'}>
                             Farg`ona viloyat
                             maktabgacha
                             ta`lim boshqarmasi
@@ -71,7 +76,7 @@ function Sidebars() {
                             <div className={'p-2'} style={{backgroundColor:'#eeeeee',borderRadius:"50%",cursor:'pointer'}}><TbBell size={25}/></div>
                             <div className={'p-2'} style={{backgroundColor:'#eeeeee',borderRadius:"50%",cursor:'pointer'}}><BiMessageDetail size={25}/></div>
                             <div className={'d-flex justify-content-between align-items-center'}>
-                                <div className={'px-2'}>Hamidov . M</div>
+                                <div className={'px-2'}>{user?.name?.substring(0,1)}.{user?.surname}</div>
                                 <img src={userLogo} alt="" width={35}/>
                             </div>
                         </div>
@@ -105,7 +110,7 @@ function Sidebars() {
                                  style={{backgroundColor: '#eeeeee', borderRadius: "30%", cursor: 'pointer'}}>
                                 <BiMessageDetail size={15}/></div>
                             <div className={'d-flex justify-content-between align-items-center'}>
-                                <div className={'px-2'} style={{fontSize:10}}>Hamidov . M</div>
+                                <div className={'px-2'} style={{fontSize:10}}>{user?.name?.substring(0,1)}.{user?.surname}</div>
                                 <img src={userLogo} alt="" width={15}/>
                             </div>
                         </div>
@@ -116,7 +121,7 @@ function Sidebars() {
                 <Routes>
                     <Route path="/user" element={<Users/>}/>
                     <Route path="/users-department" element={<UsersDepartment/>}/>
-                    <Route path="/info" element={<About/>}/>
+                    <Route path="/info" element={<UserInfos/>}/>
                     <Route path="/mtt" element={<Mtt/>}/>
                     <Route path="/meal" element={<Meal/>}/>
                     <Route path="/product" element={<Product/>}/>

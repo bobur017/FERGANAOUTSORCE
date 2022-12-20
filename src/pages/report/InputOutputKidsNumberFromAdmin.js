@@ -12,7 +12,7 @@ import fileDownload from "js-file-download";
 import {getDepartment} from "../departments/RegionDepartmentReducer";
 
 function InputOutputKidsNumberFromAdmin({data}) {
-    const [params, setParams] = useState({start: '', end: ''});
+    const [params, setParams] = useState({startDate: '', endDate: ''});
     const dispatch = useDispatch();
     const inputOutputs = useSelector(state => state.report.kidsNumber);
     const firstUpdate = useRef(false);
@@ -27,9 +27,8 @@ function InputOutputKidsNumberFromAdmin({data}) {
             firstUpdate.current = true;
             dispatch(getDepartment());
         } else {
-            console.log(inputOutputs, "inputOutputs");
-            var fileDownload = require('js-file-download');
-            fileDownload(data, 'Bolalar-soni-hisoboti.pdf');
+            var win = window.open(inputOutputs, '_blank');
+            win.focus();
         }
     }, [inputOutputs]);
 

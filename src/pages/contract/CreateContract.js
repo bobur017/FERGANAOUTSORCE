@@ -49,7 +49,7 @@ function CreateContract() {
         if (!firstUpdate.current) {
 
         } else {
-            // history("/sidebar/contract");
+            history("/sidebar/contract");
         }
     }, [result]);
 

@@ -8,7 +8,7 @@ const slice = createSlice({
     initialState: {
         result: {},
         error: {},
-        getFiless:{},
+        getFiless:'',
     },
     reducers: {
         getFiless: (state, action) => {
