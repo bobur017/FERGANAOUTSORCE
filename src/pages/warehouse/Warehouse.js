@@ -6,6 +6,7 @@ import {addProductContract, getAcceptedProduct, getAcceptedProductAll, getWareho
 import NavbarHeader from "../more/NavbarHeader";
 import {getGetFiles} from "../getFiles/GetFilesReducer";
 import {downloadFilesa} from "../DownLOader";
+import {getRoleStorage} from "../more/Functions";
 // import {downloadFile} from "react-file-downloader";
 
 function Warehouse() {
@@ -76,7 +77,7 @@ function Warehouse() {
     return (
         <div>
             <NavbarHeader
-                navs={[{name: "Ombordagi mahsulotlar"}, {name: "Mahsulot qabul qilish"}, {name: "Qabul qilingan mahsulotlar"}]}
+                navs={[{name: "Ombordagi mahsulotlar"},{name: "Qabul qilingan mahsulotlar"},getRoleStorage() ==="ROLE_OMBORCHI" ? {name: "Mahsulot qabul qilish"}: '' ]}
                 currentNavs={setCurrentNavs}/>
             <Container fluid={true} className={'mt-3'}>
                 {currentNavs === 0 ? <Row>
@@ -106,7 +107,7 @@ function Warehouse() {
                             </div>
                     </Col>
                 </Row> : null}
-                {currentNavs === 1 ? <Row>
+                {currentNavs === 2 ? <Row>
                     <Col className={'figma-card'}>
                         <div className={'tableCalendar'}>
                             <table>
@@ -149,7 +150,7 @@ function Warehouse() {
                         </div>
                     </Col>
                 </Row> : null}
-                {currentNavs === 2 ? <Row>
+                {currentNavs === 1 ? <Row>
                     <Col className={'figma-card'}>
                         <div className={'tableCalendar'}>
                             <table>

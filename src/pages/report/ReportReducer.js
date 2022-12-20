@@ -9,9 +9,13 @@ const slice = createSlice({
         result: {},
         error: {},
         oneDay: {},
+        menuOneDay: [],
         reports: [],
     },
     reducers: {
+        menuOneDay: (state, action) => {
+            state.menuOneDay = action.payload;
+        },
         reports: (state, action) => {
             state.reports = action.payload;
         },
@@ -27,6 +31,17 @@ const slice = createSlice({
             toastError(action.payload)
         },
     }
+})
+
+export const getMenuReport = (params) => apiCall({
+    url: "/report/getMenuReport",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.reports.type,
+    error: slice.actions.errorReducer.type
 })
 
 export const getReport = () => apiCall({

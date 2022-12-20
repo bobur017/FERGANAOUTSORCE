@@ -1,7 +1,7 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {oneDay, oneDayFromAll} from "./ReportReducer";
+import {getMenuReport, oneDay, oneDayFromAll} from "./ReportReducer";
 import {TimestampToInputDate} from "../funcs/Funcs";
 import {useNavigate} from "react-router-dom";
 import {Form} from "react-bootstrap";
@@ -9,8 +9,18 @@ import {Form} from "react-bootstrap";
 function OneDayWithMttFromUsers({id}) {
     const dispatch = useDispatch();
     const history = useNavigate();
+    const menuOneDay = useSelector(state => state.report.menuOneDay);
     const stateSelector = useSelector(state => state.report.oneDay)
     const firstUpdate = useRef(false);
+
+    useEffect(() => {
+        if (!firstUpdate.current) {
+
+        } else {
+            console.log(menuOneDay, "menuOneDay");
+
+        }
+    }, [menuOneDay]);
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -24,6 +34,10 @@ function OneDayWithMttFromUsers({id}) {
     const getByDate = (e) => {
         dispatch(oneDayFromAll({date:new Date(e.target.value).getTime()}));
     }
+    const getFiles = (type) => {
+        dispatch(getMenuReport({type,reportId:stateSelector?.id}))
+        console.log(stateSelector,"stateSelector")
+    }
 
     return (
         <div>
@@ -33,8 +47,8 @@ function OneDayWithMttFromUsers({id}) {
                 <button className={'buttonInfo mx-1'}
                         onClick={() => history("/sidebar/one-day-menu/" + stateSelector?.menu?.id)}>Batafsil
                 </button>
-                <button className={'buttonPdf mx-1'} style={{width:100}}>PDF</button>
-                <button className={'buttonExcel mx-1'}>Excel</button>
+                <button className={'buttonPdf mx-1'} style={{width:100}} onClick={()=>getFiles("pdf")}>PDF</button>
+                <button className={'buttonExcel mx-1'}  onClick={()=>getFiles("excel")}>Excel</button>
                 </div>
                 <div>
                     <Form.Label>Sana</Form.Label>
