@@ -15,7 +15,7 @@ function OneDayWithMttFromUsers({id}) {
     const history = useNavigate();
     const menuOneDay = useSelector(state => state.report.menuOneDay);
     const stateSelector = useSelector(state => state.report.oneDay)
-    const menuOneDayReport = useSelector(state => state.report.menuOneDayReport2)
+    const menuOneDayReport = useSelector(state => state.report.menuOneDayReport)
     const firstUpdate = useRef(false);
     const FileDownload = require('js-file-download');
 
@@ -55,7 +55,7 @@ function OneDayWithMttFromUsers({id}) {
         console.log("ishlashi kerak")
         // var win = window.open(baseUrl2()+`/report/getMenuReport?reportId=${stateSelector?.id}&type=excel`, '_blank');
         // win.focus();
-        dispatch(getMenuReport2({type, reportId: stateSelector?.id}))
+        dispatch(getMenuReport({type, reportId: stateSelector?.id}))
     }
 
     return (

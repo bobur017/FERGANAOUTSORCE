@@ -54,7 +54,7 @@ export const getMenuReport = (params) => apiCall({
     method: "GET",
     headers: {
         Authorization: getToken(),
-        // "Content-Type": "application/octet-stream"
+        // "Content-Type": "application/pdf"
     },
     responseType:"blob",
     params,
@@ -63,7 +63,7 @@ export const getMenuReport = (params) => apiCall({
 })
 
 export const getMenuReport2 = () => apiCall({
-    url: "/attachment/file3?name=59eca636-c11f-4073-a74a-e5bf8c43c4d3.pdf",
+    url: "/attachment/file",
     method: "GET",
     headers: {
         Authorization: getToken(),
