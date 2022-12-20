@@ -56,7 +56,7 @@ export const getMenuReport = (params) => apiCall({
         Authorization: getToken(),
         // "Content-Type": "application/pdf"
     },
-    responseType:"blob",
+    // responseType:"blob",
     params,
     success: slice.actions.menuOneDayReport.type,
     error: slice.actions.errorReducer.type

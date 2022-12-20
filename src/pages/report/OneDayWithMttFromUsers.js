@@ -23,9 +23,10 @@ function OneDayWithMttFromUsers({id}) {
         if (!firstUpdate.current) {
 
         } else {
-            // var win = window.open(baseUrl2()+`/attachment/file?name=${menuOneDayReport}`, '_blank');
-            // win.focus();
-            window.open(menuOneDayReport, '_blank').focus();
+            var win = window.open(menuOneDayReport, '_blank');
+            // history(menuOneDayReport.substring(9))
+            win.focus();
+            // window.open(menuOneDayReport, '_blank').focus();
             //     var fileDownload = require('js-file-download');
             if (fileType === 'pdf') {
                 // console.log(menuOneDayReport, "menuOneDayReport");
