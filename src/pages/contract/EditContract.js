@@ -23,7 +23,7 @@ function EditContract() {
                         emptyy: "empty",
                         "price": '',
                         "productId": 'empty',
-                        "weight": ''
+                        "packWeight": ''
                     }
                 ]
             }
@@ -96,7 +96,7 @@ function EditContract() {
                         productContracts.push({
                             "price": 0,
                             "productId": data?.id,
-                            "weight": 0,
+                            "packWeight": 0,
                             pack: data?.pack,
                             productName: data?.name,
                             maxPrice: data?.price?.maxPrice
@@ -115,7 +115,7 @@ function EditContract() {
         } else {
             if (kindergartenContractList.length > 0) {
                 let productContracts = [...kindergartenContractList[0]?.productContracts].map((product) => {
-                        return {...product, price: 0, weight: 0};
+                        return {...product, price: 0, packWeight: 0};
                     }
                 );
                 if (kindergartenContractList[0].kindergartenId === "empty") {
@@ -151,7 +151,7 @@ function EditContract() {
         let productLisy = [...kindergartenContractList[index].productContracts];
         productLisy[index2] = {
             ...productLisy[index2],
-            weight: pack > 0 && pack ? parseInt(e.target.value) : e.target.value
+            packWeight: pack > 0 && pack ? parseInt(e.target.value) : e.target.value
         }
         kindergartenContractList[index] = {...kindergartenContractList[index], productContracts: productLisy};
         setPostStateContract({...postStateContract, kindergartenContractList});
@@ -183,7 +183,7 @@ function EditContract() {
     const totalByProduct = (index) => {
         let total = 0;
         postStateContract.kindergartenContractList.forEach((kin) =>
-            total += parseInt(kin?.productContracts[index]?.weight)
+            total += parseInt(kin?.productContracts[index]?.packWeight)
         );
         return total;
     }
@@ -306,8 +306,8 @@ function EditContract() {
                                                 kinder?.productContracts?.map((prod, index2) =>
                                                     <td key={index2} onClick={() => onClickProductWeight(kinder, prod)}>
                                                         <input className={"myTdInput"} type="number"
-                                                               name={'weight'}
-                                                               value={prod?.weight}
+                                                               name={'packWeight'}
+                                                               value={prod?.packWeight}
                                                                onWheel={e => e.target.blur()}
                                                                required
                                                                disabled={!(kinder?.kindergartenId === kindergartenState?.kindergartenId && prod?.productId === productState?.productId)}

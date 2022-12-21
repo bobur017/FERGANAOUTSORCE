@@ -8,6 +8,7 @@ import {getGetFiles} from "../getFiles/GetFilesReducer";
 import {downloadFilesa} from "../DownLOader";
 import {getRoleStorage} from "../more/Functions";
 import FromPageSizeBottom from "../fromPage/FromPageSizeBottom";
+import {TimestampToInputDate} from "../funcs/Funcs";
 
 function Warehouse() {
     const [wareHouseState, setWareHouseState] = useState();
@@ -58,7 +59,7 @@ function Warehouse() {
     }, [acceptedProduct]);
 
     const onClickProduct = (data) => {
-        setProductReceived({...data, receivedWeight: ''});
+        setProductReceived({...data, packWeight: '', date: Date.now()});
         handleShow();
     }
 
@@ -68,7 +69,13 @@ function Warehouse() {
     }
 
     const onChangeProductWeight = (e) => {
-        setProductReceived({...productReceived, receivedWeight: e.target.value})
+        if (e.target.name === "date") {
+            setProductReceived({...productReceived, [e.target.name]: new Date(e.target.value).getTime()})
+        } else {
+            let packWeight = productReceived?.pack > 0 ? parseInt(e.target.value) : e.target.value;
+            let receivedWeight = productReceived?.pack > 0 ? (parseInt(e.target.value) * productReceived?.pack) :e.target.value;
+            setProductReceived({...productReceived, receivedWeight,packWeight});
+        }
     }
 
     const getPdf = (e) => {
@@ -226,22 +233,16 @@ function Warehouse() {
                         <span className={'mb-3'} style={{color: '#fcb713'}}>Maximal kiritish miqdori:
                             <span style={{color: '#000'}}>{productReceived?.residualWeight}</span></span>
                         <br/>
-                        <Form.Label>Qadoq miqdori</Form.Label>
-                        <Form.Control max={productReceived?.residualWeight} type={'number'} name={"pack"}
-                                      value={productReceived.receivedWeight} step={'0.01'} onChange={onChangeProductWeight}
-                                      onWheel={event => event.target.blur()}/>
-                        <Form.Label>Qadoq miqdori</Form.Label>
-                        <Form.Control max={productReceived?.residualWeight} type={'number'} name={"pack"}
-                                      value={productReceived.receivedWeight} step={'0.01'} onChange={onChangeProductWeight}
-                                      onWheel={event => event.target.blur()} disabled={true}/>
-                        <Form.Label>Umumiy qadoq</Form.Label>
-                        <Form.Control max={productReceived?.residualWeight} type={'number'} name={"packWeight"}
-                                      value={productReceived.receivedWeight} step={'0.01'} onChange={onChangeProductWeight}
+                        <Form.Label>Sana</Form.Label>
+                        <Form.Control type={'date'} name={"date"}
+                                      value={TimestampToInputDate(productReceived.date)}
+                                      onChange={onChangeProductWeight}
+                                      onWheel={event => event.target.blur()} max={TimestampToInputDate(productReceived.date)}/>
+                        <Form.Label>Qabul qilinadigan miqdor</Form.Label>
+                        <Form.Control max={productReceived?.residualPackWeight} type={'number'} name={"packWeight"}
+                                      value={productReceived.packWeight} step={'0.01'}
+                                      onChange={onChangeProductWeight}
                                       onWheel={event => event.target.blur()} required/>
-                        <Form.Label>Umumiy miqdori</Form.Label>
-                        <Form.Control max={productReceived?.residualWeight} type={'number'} name={"receivedWeight"}
-                                      value={productReceived.receivedWeight} step={'0.01'} onChange={onChangeProductWeight}
-                                      onWheel={event => event.target.blur()} disabled/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
