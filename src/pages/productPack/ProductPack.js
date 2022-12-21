@@ -17,7 +17,7 @@ function ProductPack() {
     const [show, setShow] = useState(false);
     const [edit, setEdit] = useState(false);
     const [productState, setProductState] = useState();
-    const [packState, setProductPackState] = useState({id: '', name: ''});
+    const [packState, setProductPackState] = useState({id: '', name: 'Mahsulot tanlash'});
     const [packs, setProductPacks] = useState([]);
     const handleClose = () => {
         setShow(false);
@@ -122,7 +122,7 @@ function ProductPack() {
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitProductPack}>
                     <Modal.Header closeButton>
-                        {!edit ? <Modal.Title><DropdownCustom name={"Mahsulotni tanlash"} list={products}
+                        {!edit ? <Modal.Title><DropdownCustom name={productState?.name} list={products}
                                                              setData={getProductOnSelect}/></Modal.Title> :
                             <Modal.Title>{packState?.productName}</Modal.Title>}
                     </Modal.Header>

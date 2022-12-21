@@ -8,6 +8,7 @@ import {getGetFiles} from "../getFiles/GetFilesReducer";
 import {downloadFilesa} from "../DownLOader";
 import {getRoleStorage} from "../more/Functions";
 import FromPageSizeBottom from "../fromPage/FromPageSizeBottom";
+import {TimestampToInputDate} from "../funcs/Funcs";
 
 function Warehouse() {
     const [wareHouseState, setWareHouseState] = useState();
@@ -16,6 +17,7 @@ function Warehouse() {
         "receivedWeight": 0
     });
     const [currentNavs, setCurrentNavs] = useState(0);
+    const [inOutList, setInOutList] = useState([]);
     const warehouses = useSelector(state => state.warehouse.warehouses);
     const result = useSelector(state => state.warehouse.result);
     const acceptedProduct = useSelector(state => state.warehouse.acceptedProduct);
@@ -23,10 +25,16 @@ function Warehouse() {
     const getFiless = useSelector(state => state.getFiles.getFiless);
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
+    const [show2, setShow2] = useState(false);
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
+    const handleClose2 = () => setShow2(false);
     const handleShow = () => setShow(true);
+    const handleShow2 = (list) => {
+        setInOutList(list);
+        setShow2(true);
+    }
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -58,7 +66,7 @@ function Warehouse() {
     }, [acceptedProduct]);
 
     const onClickProduct = (data) => {
-        setProductReceived({...data, receivedWeight: ''});
+        setProductReceived({...data, packWeight: '', date: Date.now()});
         handleShow();
     }
 
@@ -68,7 +76,13 @@ function Warehouse() {
     }
 
     const onChangeProductWeight = (e) => {
-        setProductReceived({...productReceived, receivedWeight: e.target.value})
+        if (e.target.name === "date") {
+            setProductReceived({...productReceived, [e.target.name]: new Date(e.target.value).getTime()})
+        } else {
+            let packWeight = productReceived?.pack > 0 ? parseInt(e.target.value) : e.target.value;
+            let receivedWeight = productReceived?.pack > 0 ? (parseInt(e.target.value) * productReceived?.pack) :e.target.value;
+            setProductReceived({...productReceived, receivedWeight,packWeight});
+        }
     }
 
     const getPdf = (e) => {
@@ -106,7 +120,7 @@ function Warehouse() {
                                 <tbody>
                                 {
                                     warehouses?.list?.map((product, index) =>
-                                        <tr key={index} style={{cursor: 'pointer'}}>
+                                        <tr key={index} style={{cursor: 'pointer'}} onClick={()=>handleShow2(product?.inOutList)}>
                                             <td>{index + 1}</td>
                                             <td>{product.productName}</td>
                                             <td>{product.weight}</td>
@@ -226,9 +240,15 @@ function Warehouse() {
                         <span className={'mb-3'} style={{color: '#fcb713'}}>Maximal kiritish miqdori:
                             <span style={{color: '#000'}}>{productReceived?.residualWeight}</span></span>
                         <br/>
-                        <Form.Label>Miqdorini kiriting</Form.Label>
-                        <Form.Control max={productReceived?.residualWeight} type={'number'} name={"receivedWeight"}
-                                      value={productReceived.receivedWeight} step={'0.01'} onChange={onChangeProductWeight}
+                        <Form.Label>Sana</Form.Label>
+                        <Form.Control type={'date'} name={"date"}
+                                      value={TimestampToInputDate(productReceived.date)}
+                                      onChange={onChangeProductWeight}
+                                      onWheel={event => event.target.blur()} max={TimestampToInputDate(productReceived.date)}/>
+                        <Form.Label>Qabul qilinadigan miqdor</Form.Label>
+                        <Form.Control max={productReceived?.residualPackWeight} type={'number'} name={"packWeight"}
+                                      value={productReceived.packWeight} step={'0.01'}
+                                      onChange={onChangeProductWeight}
                                       onWheel={event => event.target.blur()} required/>
                     </Modal.Body>
                     <Modal.Footer>
@@ -237,6 +257,51 @@ function Warehouse() {
                         </Button>
                         <Button variant="primary" type={'submit'}>
                             Tayyor
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal>
+            <Modal show={show2} onHide={handleClose2} size={"xl"}>
+                <Form onSubmit={submit}>
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className={'tableCalendar'}>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Narxi</th>
+                                    <th>Umumiy miqdori</th>
+                                    <th>Qadoq miqdori</th>
+                                    <th>Qadoqlar soni</th>
+                                    <th>Qabul qilingan sana</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {
+                                    inOutList?.map((product, index) =>
+                                        <tr key={index} style={{cursor: 'pointer'}}>
+                                            <td>{index + 1}</td>
+                                            <td>{product.price}</td>
+                                            <td>{product.weight}</td>
+                                            <td>{product.packWeight}</td>
+                                            <td>{product.pack}</td>
+                                            <td>{product.date}</td>
+                                        </tr>
+                                    )
+                                }
+                                </tbody>
+                            </table>
+                            <br/>
+                            {/*<FromPageSizeBottom currentPage={acceptedProduct.getPageNumber}*/}
+                            {/*                    pageSize={acceptedProduct?.getPageSize} changesPage={changePage2}*/}
+                            {/*                    allPageSize={acceptedProduct?.allPageSize}/>*/}
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Bekor qilish
                         </Button>
                     </Modal.Footer>
                 </Form>
