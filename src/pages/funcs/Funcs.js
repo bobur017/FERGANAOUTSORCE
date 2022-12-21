@@ -27,8 +27,8 @@ export const colorTextStr = (num) => {
 
 export const TimestampToInputDate = (time, name) => {
     if (time) {
-        return new Date(time)?.getFullYear() + "-" + (new Date(time)?.getMonth() + 1) + "-" +( parseInt(new Date(time)?.getDate()) > 9 ? new Date(time)?.getDate() : ("0" + new Date(time)?.getDate()))
-    }else {
+        return new Date(time)?.getFullYear() + "-" + ((new Date(time)?.getMonth() + 1) < 9 ? "0" + (new Date(time)?.getMonth() + 1) : (new Date(time)?.getMonth() + 1)) + "-" + (parseInt(new Date(time)?.getDate()) > 9 ? new Date(time)?.getDate() : ("0" + new Date(time)?.getDate()))
+    } else {
         return '';
     }
 }
