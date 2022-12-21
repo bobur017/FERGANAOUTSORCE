@@ -91,7 +91,7 @@ function Supplier() {
                         <th>Tel:</th>
                         <th>Holati</th>
                         <th>STIR</th>
-                        <th>Jamg'arma</th>
+                        <th>Rahbari</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -102,7 +102,7 @@ function Supplier() {
                         <td>{item.phoneNumber}</td>
                         <td>{item.status}</td>
                         <td>{item?.stir}</td>
-                        <td>{item?.fond}</td>
+                        <td>{item?.director}</td>
                     </tr>)
 
                     }

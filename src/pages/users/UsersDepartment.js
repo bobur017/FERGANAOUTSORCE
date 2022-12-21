@@ -209,7 +209,7 @@ function UsersDepartment() {
                         <Form.Label>Otasining ismi</Form.Label>
                         <Form.Control name={'fatherName'} className={'mb-2'} size={'sm'}  value={userState.fatherName}
                                       onChange={onChangeState} required/>
-                        <Form.Label>Sharifi</Form.Label>
+                        <Form.Label>Familyasi</Form.Label>
                         <Form.Control name={'surname'} className={'mb-2'} size={'sm'}  value={userState.surname}
                                       onChange={onChangeState} required/>
                         <Form.Label>Login</Form.Label>

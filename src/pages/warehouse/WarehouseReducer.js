@@ -33,12 +33,13 @@ const slice = createSlice({
     }
 })
 
-export const getWarehouse = () => apiCall({
+export const getWarehouse = (params) => apiCall({
     url: "/warehouse",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
+    params,
     success: slice.actions.warehouses.type,
     error: slice.actions.errorReducer.type
 })

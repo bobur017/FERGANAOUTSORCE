@@ -571,6 +571,8 @@ function RelationMenu() {
                     )
                 )
             );
+            console.log(dayList,"dayList")
+            console.log(multiMenuState?.id,"menuId")
             dispatch(relationMultiMenu(dayList, multiMenuState?.id));
         } else {
             toast.error("Taomnoma tanlanmagan!")

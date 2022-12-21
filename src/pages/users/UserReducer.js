@@ -35,6 +35,26 @@ const slice = createSlice({
     }
 })
 
+export const editPassword = (data) => apiCall({
+    url: "/user/credentials/password",
+    method: "PUT",
+    headers: {
+        Authorization: getToken(),
+    },
+    data,
+    success: slice.actions.userData.type,
+    error: slice.actions.errorReducer.type
+});
+export const editLogin = (data) => apiCall({
+    url: "/user/credentials/login",
+    method: "PUT",
+    headers: {
+        Authorization: getToken(),
+    },
+    data,
+    success: slice.actions.userData.type,
+    error: slice.actions.errorReducer.type
+});
 export const getUserData = (params) => apiCall({
     url: "/user/getMyData",
     method: "GET",

@@ -13,6 +13,7 @@ import {BsCheckAll} from "react-icons/bs";
 import {getDepartment, getDepartmentFromRelation} from "../departments/RegionDepartmentReducer";
 import {getByDepartmentMtt, getMttFromRelations} from "../mtt/MttReducer";
 import OneDayWithMtt from "../report/OneDayWithMtt";
+import {getRoleStorage} from "../more/Functions";
 
 function MenuView() {
     const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function MenuView() {
     const [currentDay, setCurrentDay] = useState();
     const handleClose = () => setShow(false);
     const handleShow = (data) => {
-        console.log(data,"data");
+        console.log(data, "data");
         setCurrentDay(data);
         setShow(true);
     };
@@ -102,9 +103,10 @@ function MenuView() {
                     <TabsCustom listTabs={[{name: "Kun bo‘yicha"}, {name: "Bog‘cha kesimida"}]}
                                 currentTabs={setActiveNav}/>
                     <div>
-                        <button className={'createButtons'}><Link to={"/sidebar/relation-menu"}
-                                                                  style={{textDecoration: 'none', color: 'white'}}>Menyu
-                            biriktirish</Link></button>
+                        {getRoleStorage() === "ROLE_XODIMLAR_BO`LIMI" && getRoleStorage() === "ROLE_TEXNOLOG" ?
+                            <button className={'createButtons'}><Link to={"/sidebar/relation-menu"}
+                                                                      style={{textDecoration: 'none', color: 'white'}}>Menyu
+                                biriktirish</Link></button> : null}
                     </div>
                 </div>
             </Row>
