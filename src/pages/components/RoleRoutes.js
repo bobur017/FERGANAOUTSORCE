@@ -14,6 +14,8 @@ import {FaUserCog} from "react-icons/fa";
 import {HiOutlineDocumentText, HiOutlineTruck} from "react-icons/hi";
 import {MdOutlinePriceChange} from "react-icons/md";
 import {RiDeleteBin6Line} from "react-icons/ri";
+import {BiMailSend} from "react-icons/bi";
+import {FiPackage} from "react-icons/fi";
 
 export const rolesList = (role) => {
 
@@ -44,17 +46,6 @@ export const rolesList = (role) => {
                 name: "MTT",
                 icon: <GiGreenhouse size={25}/>
             },
-            {
-                path: "/sidebar/meal",
-                name: "Taom",
-                icon: <GiMeal size={25}/>
-            },
-            {
-                path: "/sidebar/department",
-                name: "Bo'linmalar",
-                icon: <FaNetworkWired size={25}/>
-            },
-
         ];
     } else if (role === "ROLE_SUPER_ADMIN") {
         return [
@@ -96,6 +87,21 @@ export const rolesList = (role) => {
                 name: "Bolalar soni",
                 icon: <FaChild size={25}/>
             },
+            {
+                path: "/sidebar/relation-view",
+                name: "Menyularni biriktirish",
+                icon: <BsFillMenuButtonFill size={25}/>
+            },
+            {
+                path: "/sidebar/remove-product",
+                name: "Chiqidlar",
+                icon: <RiDeleteBin6Line size={25}/>
+            },
+            {
+                path: "/sidebar/warehouse-admin",
+                name: "Omborxona",
+                icon: <TbBuildingWarehouse size={25}/>
+            },
         ];
     }else if(role === "ROLE_OMBORCHI"){
         return [
@@ -129,6 +135,11 @@ export const rolesList = (role) => {
                 icon: <TiInfoLargeOutline size={25}/>
             },
             {
+                path: "/sidebar/input-output-admin",
+                name: "Kirim chiqim",
+                icon: <BsArrowDownUp size={25}/>
+            },
+            {
                 path: "/sidebar/menu-mtt",
                 name: "Kunlik menu",
                 icon: <HiOutlineDocumentText size={25}/>
@@ -142,6 +153,11 @@ export const rolesList = (role) => {
                 path: "/sidebar/report-paramedic",
                 name: "Hisobot",
                 icon: <TbReportAnalytics size={25}/>
+            },
+            {
+                path: "/sidebar/warehouse",
+                name: "Omborxona",
+                icon: <TbBuildingWarehouse size={25}/>
             },
         ];
     }else  if(role === "ROLE_RAXBAR"){
@@ -210,10 +226,93 @@ export const rolesList = (role) => {
                 icon: <BsFillMenuButtonFill size={25}/>
             },
             {
+                path: "/sidebar/contract",
+                name: "Shartnomalar",
+                icon: <HiOutlineDocumentText size={25}/>
+            },
+            {
+                path: "/sidebar/warehouse-admin",
+                name: "Omborxona",
+                icon: <TbBuildingWarehouse size={25}/>
+            },
+            {
                 path: "/sidebar/remove-product",
                 name: "Chiqidlar",
                 icon: <RiDeleteBin6Line size={25}/>
             },
+        ];
+    }else  if(role === "ROLE_BUXGALTER"){
+        return [
+            {
+                path: "/sidebar/info",
+                name: "Ma'lumotlar",
+                icon: <TiInfoLargeOutline size={25}/>
+            },
+            {
+                path: "/sidebar/contract",
+                name: "Shartnomalar",
+                icon: <HiOutlineDocumentText size={25}/>
+            },
+            {
+                path: "/sidebar/supplier",
+                name: "Ta'minotchilar",
+                icon: <HiOutlineTruck size={25}/>
+            },
+            {
+                path: "/sidebar/input-output-admin",
+                name: "Kirim chiqim",
+                icon: <BsArrowDownUp size={25}/>
+            },
+            {
+                path: "/sidebar/report-kids-number",
+                name: "Bolalar soni",
+                icon: <FaChild size={25}/>
+            },
+            {
+                path: "/sidebar/relation-view",
+                name: "Menyularni biriktirish",
+                icon: <BsFillMenuButtonFill size={25}/>
+            },
+            {
+                path: "/sidebar/warehouse-admin",
+                name: "Omborxona",
+                icon: <TbBuildingWarehouse size={25}/>
+            },
+
+        ];
+    }else  if(role === "ROLE_TEXNOLOG"){
+        return [
+            {
+                path: "/sidebar/info",
+                name: "Ma'lumotlar",
+                icon: <TiInfoLargeOutline size={25}/>
+            },
+            {
+                path: "/sidebar/children-number",
+                name: "Bolalar soni",
+                icon: <FaChild size={25}/>
+            },
+            {
+                path: "/sidebar/reports",
+                name: "Hisobotlar",
+                icon: <TbReportAnalytics size={25}/>
+            },
+            {
+                path: "/sidebar/multiMenu",
+                name: "Taomnomalar",
+                icon: <CgMenuHotdog size={25}/>
+            },
+            {
+                path: "/sidebar/relation-view",
+                name: "Menyularni biriktirish",
+                icon: <BsFillMenuButtonFill size={25}/>
+            },
+            {
+                path: "/sidebar/meal",
+                name: "Taom",
+                icon: <GiMeal size={25}/>
+            },
+
         ];
     }else  if(role === "ROLE_XODIMLAR_BO`LIMI"){
         return [
@@ -231,6 +330,21 @@ export const rolesList = (role) => {
                 path: "/sidebar/relation-view",
                 name: "Menyularni biriktirish",
                 icon: <BsFillMenuButtonFill size={25}/>
+            },
+            {
+                path: "/sidebar/multiMenu",
+                name: "Taomnomalar",
+                icon: <CgMenuHotdog size={25}/>
+            },
+            {
+                path: "/sidebar/send-notification",
+                name: "Bildirish noma yuborish",
+                icon: <BiMailSend size={25}/>
+            },
+            {
+                path: "/sidebar/product-pack",
+                name: "Mahsulot qadoqlari",
+                icon: <FiPackage size={25}/>
             },
         ];
     }

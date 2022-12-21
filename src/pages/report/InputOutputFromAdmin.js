@@ -56,6 +56,7 @@ function InputOutputFromAdmin({data}) {
     const getKindergartenDays = (data) => {
         setKindergarten(data);
     }
+
     return (
         <Container fluid={true} className={`w-100 ${main.main}`}>
             <NavbarHeader name={"Kirim chiqim hisobotlari"}/>
@@ -86,8 +87,7 @@ function InputOutputFromAdmin({data}) {
 
                     </Form>
                 </Col>
-                <Col xs={5} sm={5} md={5} lg={5} xl={5}
-                     className={'figma-card-first d-flex justify-content-between p-1 mt-3'}>
+                <Col xs={5} sm={5} md={5} lg={5} xl={5} className={'figma-card-first d-flex justify-content-between p-1 mt-3'}>
                     <div className={'w-50'}>
                         <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
                             {

@@ -1,15 +1,27 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getUserData} from "./UserReducer";
-import {Col, Container, Row} from "react-bootstrap";
+import {editLogin, editPassword, getUserData} from "./UserReducer";
+import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
 
 function UserInfos() {
-    const [state, setState] = useState();
+    const def ={
+        "oldPassword": "",
+        "username": ""
+    }
+    const [state, setState] = useState(def);
+    const [number, setNumber] = useState();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.userData)
     const firstUpdate = useRef(false);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = (num) => {
+        setState(def);
+        setNumber(num);
+        setShow(true)
+    };
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -20,6 +32,77 @@ function UserInfos() {
         }
     }, [user]);
 
+    const fromModal = () => {
+        if (number === 1) {
+            return editLoginCurrent();
+        } else if (number === 2) {
+            return editPasswordCurrent();
+        }
+    }
+    const changeInputs = (e) => {
+        setState({...state, [e.target.name]: e.target.value})
+    }
+
+    const submitParol = (e) => {
+      e.preventDefault();
+      dispatch(editPassword(state));
+    }
+    const submitLogin = (e) => {
+        e.preventDefault();
+        dispatch(editLogin(state));
+    }
+    const editLoginCurrent = () => {
+        return (
+            <Form onSubmit={submitLogin}>
+                <Modal.Header className={'text-center fs-3'}  closeButton>Loginni o'zgartirish</Modal.Header>
+                <Modal.Body>
+                    <Form.Label>Yangi logingizni kiriting</Form.Label>
+                    <Form.Control required name={"username"} min={5} value={state.username} onChange={changeInputs}/>
+                    <Form.Label>Amaldagi parolingizni kiriting</Form.Label>
+                    <Form.Control required name={"oldPassword"} min={5} onChange={changeInputs}
+                                  value={state.oldPassword}/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Yopish
+                    </Button>
+                    <Button variant="primary" type={'submit'}>
+                        Tayyor
+                    </Button>
+                </Modal.Footer>
+            </Form>
+        )
+    }
+
+    const editPasswordCurrent = () => {
+        return (
+            <Form onSubmit={submitParol}>
+                <Modal.Header  closeButton className={"fs-4"}>Parolni o'zgartirish</Modal.Header>
+                <Modal.Body>
+                    <Form.Label>Yangi logingizni kiriting</Form.Label>
+                    <Form.Control required name={"username"} min={5} value={state.username} onChange={changeInputs}/>
+                    <Form.Label>Parolingizni kiriting</Form.Label>
+                    <Form.Control required name={"oldPassword"} min={5} onChange={changeInputs}
+                                  value={state.oldPassword}/>
+                    <Form.Label>Yangi parolingizni kiriting</Form.Label>
+                    <Form.Control required name={"newPassword1"} min={5} onChange={changeInputs}
+                                  value={state.newPassword1}/>
+                    <Form.Label>Yangi parolingizni takroran kiriting</Form.Label>
+                    <Form.Control required name={"newPassword2"} min={5} onChange={changeInputs}
+                                  value={state.newPassword2}/>
+                </Modal.Body>
+                <Modal.Footer>
+
+                    <Button variant="secondary" onClick={handleClose}>
+                        Yopish
+                    </Button>
+                    <Button variant="primary" type={'submit'}>
+                        Tayyor
+                    </Button>
+                </Modal.Footer>
+            </Form>
+        )
+    }
     return (
         <Container fluid>
             <NavbarHeader name={"Ma'lumotlar"}/>
@@ -55,12 +138,24 @@ function UserInfos() {
                             <div>Login</div>
                             <div>{user?.username}</div>
                         </div>
+                        <div className={'mt-3 d-flex justify-content-between'}>
+                            <button className={"createButtons"} onClick={() => handleShow(1)}>Loginni o'zgartirish
+                            </button>
+                            <button className={"createButtons"} onClick={() => handleShow(2)}>Parolni o'zgartirish
+                            </button>
+                        </div>
                     </div>
                 </Col>
                 <Col xs={12} sm={12} md={6} lg={6} xl={6} className={'figma-card-first d-flex justify-content-center'}>
-                    <img src="https://avatars.mds.yandex.net/i?id=0213782fa2f027aab3965b1d66e913c0195b45eb-5232391-images-thumbs&n=13&exp=1" alt="" width={"70%"}/>
+                    <img
+                        src="https://avatars.mds.yandex.net/i?id=0213782fa2f027aab3965b1d66e913c0195b45eb-5232391-images-thumbs&n=13&exp=1"
+                        alt="" width={"70%"}/>
                 </Col>
             </Row>
+            <Modal show={show} onHide={handleClose}>
+                {fromModal()}
+            </Modal>
+
         </Container>
     );
 }

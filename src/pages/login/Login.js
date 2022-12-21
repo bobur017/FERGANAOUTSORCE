@@ -29,16 +29,16 @@ function Login() {
             localStorage.setItem("Refresh", "Bearer " + token?.refresh_token);
             console.log("Authorization", token?.access_token);
             if (token?.user_role === "ROLE_ADMIN") {
-                history("/sidebar/admin");
+                history("/sidebar/info");
             } else if (token?.user_role === "ROLE_SUPER_ADMIN") {
-                history("/sidebar/super-admin");
+                history("/sidebar/info");
             }else if (token?.user_role === "ROLE_OMBORCHI") {
                 history("/sidebar/info");
             }else if (token?.user_role === "ROLE_HAMSHIRA") {
                 history("/sidebar/info");
             }else if (token?.user_role === "ROLE_BOSHQARMA_BUXGALTER") {
                 history("/sidebar/info");
-            }else if (token?.user_role === "ROLE_RAXBAR") {
+            }else if (token?.user_role === "ROLE_RAXBAR"||"ROLE_TEXNOLOG") {
                 history("/sidebar/info");
             }else if (token?.user_role === "ROLE_XODIMLAR_BO`LIMI" || token?.user_role === "ROLE_BO`LIM_BUXGALTER") {
                 history("/sidebar/info");

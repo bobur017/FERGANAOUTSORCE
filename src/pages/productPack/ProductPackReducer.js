@@ -4,15 +4,15 @@ import {apiCall} from "../../ApiCall";
 import {getToken, toastError} from "../more/Functions";
 
 const slice = createSlice({
-    name: "getFiles",
+    name: "pack",
     initialState: {
         result: {},
         error: {},
-        getFiless:'',
+        packs: [],
     },
     reducers: {
-        getFiless: (state, action) => {
-            state.getFiless = action.payload;
+        packs: (state, action) => {
+            state.packs = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -25,19 +25,18 @@ const slice = createSlice({
     }
 })
 
-export const getGetFiles = (params) => apiCall({
-    url: "/warehouse/getFile",
+export const getPack = () => apiCall({
+    url: "/pack",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
-    params,
-    success: slice.actions.getFiless.type,
+    success: slice.actions.packs.type,
     error: slice.actions.errorReducer.type
 })
 
-export const deleteGetFiles = (data) => apiCall({
-    url: "/getFiles/" + data.id,
+export const deletePack = (data) => apiCall({
+    url: "/pack/" + data.id,
     method: "DELETE",
     headers: {
         Authorization: getToken(),
@@ -47,8 +46,8 @@ export const deleteGetFiles = (data) => apiCall({
 })
 
 
-export const addGetFiles = (data) => apiCall({
-    url: "/getFiles",
+export const addPack = (id, data) => apiCall({
+    url: "/pack/" + id,
     method: "POST",
     headers: {
         Authorization: getToken(),
@@ -57,17 +56,17 @@ export const addGetFiles = (data) => apiCall({
     success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
 })
-
-export const editGetFiles = (data) => apiCall({
-    url: "/getFiles/" + data.id,
-    method: "PUT",
-    headers: {
-        Authorization: getToken(),
-    },
-    data,
-    success: slice.actions.resultReducer.type,
-    error: slice.actions.errorReducer.type
-})
+//
+// export const editPack = (id, data) => apiCall({
+//     url: "/pack/" + id,
+//     method: "PUT",
+//     headers: {
+//         Authorization: getToken(),
+//     },
+//     data,
+//     success: slice.actions.resultReducer.type,
+//     error: slice.actions.errorReducer.type
+// })
 
 
 export default slice.reducer;

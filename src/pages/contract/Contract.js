@@ -199,8 +199,8 @@ function Contract() {
                 <Modal.Header closeButton>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className={'miniTable'}>
-                    <table>
+                    <div className={'miniTable2'}>
+                    <table className={'w-100'}>
                         <thead>
                         <tr>
                             <th>№</th>

@@ -16,11 +16,11 @@ function Warehouse() {
         "receivedWeight": 0
     });
     const [currentNavs, setCurrentNavs] = useState(0);
-    const warehouses = useSelector(state => state.warehouse.warehouses)
+    const warehouses = useSelector(state => state.warehouse.warehouses);
     const result = useSelector(state => state.warehouse.result);
-    const acceptedProduct = useSelector(state => state.warehouse.acceptedProduct)
-    const acceptedProducts = useSelector(state => state.warehouse.acceptedProducts)
-    const getFiless = useSelector(state => state.getFiles.getFiless)
+    const acceptedProduct = useSelector(state => state.warehouse.acceptedProduct);
+    const acceptedProducts = useSelector(state => state.warehouse.acceptedProducts);
+    const getFiless = useSelector(state => state.getFiles.getFiless);
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);
@@ -75,13 +75,13 @@ function Warehouse() {
         dispatch(getGetFiles());
     }
     const changePage1 = (page) => {
-        dispatch(getAcceptedProductAll({page, pageSize: 10}))
+        dispatch(getAcceptedProductAll({page, pageSize: 10}));
     }
     const changePage0 = (page) => {
-        dispatch(getWarehouse({page, pageSize: 10}))
+        dispatch(getWarehouse({page, pageSize: 10}));
     }
     const changePage2 = (page) => {
-        dispatch(getAcceptedProduct({page, pageSize: 10}))
+        dispatch(getAcceptedProduct({page, pageSize: 10}));
     }
     return (
         <div>
@@ -177,7 +177,15 @@ function Warehouse() {
                                 <tr>
                                     <th>№</th>
                                     <th>Mahsulot nomi</th>
-                                    <th>Miqdor</th>
+                                    <th>Narxi</th>
+                                    <th>Shartnoma</th>
+                                    <th>Yaetqazuvchi</th>
+                                    <th>Ummumiy miqdor</th>
+                                    <th>Umumiy summa</th>
+                                    <th>Qolgan miqdori</th>
+                                    <th>Qolgan summa</th>
+                                    <th>Qabul qilingan miqdori</th>
+                                    <th>Qabul qilingan summa</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -186,7 +194,15 @@ function Warehouse() {
                                         <tr key={index} style={{cursor: 'pointer'}}>
                                             <td>{index + 1}</td>
                                             <td>{product?.productContract?.productName}</td>
-                                            <td>{product.weight}</td>
+                                            <td>{product?.productContract?.price}</td>
+                                            <td>{product?.productContract?.shartnomaRaqami}</td>
+                                            <td>{product?.productContract?.yetkazibBeruvchi}</td>
+                                            <td>{product?.productContract?.weight}</td>
+                                            <td>{product?.productContract?.totalSum}</td>
+                                            <td>{product?.productContract?.residualWeight}</td>
+                                            <td>{product?.productContract?.residualTotalSum}</td>
+                                            <td>{product?.productContract?.successWeight}</td>
+                                            <td>{product?.productContract?.successTotalSum}</td>
                                         </tr>
                                     )
                                 }
