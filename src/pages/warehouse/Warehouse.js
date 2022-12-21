@@ -226,10 +226,22 @@ function Warehouse() {
                         <span className={'mb-3'} style={{color: '#fcb713'}}>Maximal kiritish miqdori:
                             <span style={{color: '#000'}}>{productReceived?.residualWeight}</span></span>
                         <br/>
-                        <Form.Label>Miqdorini kiriting</Form.Label>
-                        <Form.Control max={productReceived?.residualWeight} type={'number'} name={"receivedWeight"}
+                        <Form.Label>Qadoq miqdori</Form.Label>
+                        <Form.Control max={productReceived?.residualWeight} type={'number'} name={"pack"}
+                                      value={productReceived.receivedWeight} step={'0.01'} onChange={onChangeProductWeight}
+                                      onWheel={event => event.target.blur()}/>
+                        <Form.Label>Qadoq miqdori</Form.Label>
+                        <Form.Control max={productReceived?.residualWeight} type={'number'} name={"pack"}
+                                      value={productReceived.receivedWeight} step={'0.01'} onChange={onChangeProductWeight}
+                                      onWheel={event => event.target.blur()} disabled={true}/>
+                        <Form.Label>Umumiy qadoq</Form.Label>
+                        <Form.Control max={productReceived?.residualWeight} type={'number'} name={"packWeight"}
                                       value={productReceived.receivedWeight} step={'0.01'} onChange={onChangeProductWeight}
                                       onWheel={event => event.target.blur()} required/>
+                        <Form.Label>Umumiy miqdori</Form.Label>
+                        <Form.Control max={productReceived?.residualWeight} type={'number'} name={"receivedWeight"}
+                                      value={productReceived.receivedWeight} step={'0.01'} onChange={onChangeProductWeight}
+                                      onWheel={event => event.target.blur()} disabled/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
