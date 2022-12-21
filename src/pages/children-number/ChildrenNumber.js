@@ -1,7 +1,7 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addKidsNumber, getKidsNumber, getKidsNumberOne, verifide} from "./ChildrenNumberReducer";
+import {addKidsNumber, editKidsNumber, getKidsNumber, getKidsNumberOne, verifide} from "./ChildrenNumberReducer";
 import {Col, Container, Form, Row} from "react-bootstrap";
 import {TimestampToInputDate} from "../funcs/Funcs";
 import {getAge} from "../age/AgeReducer";
@@ -40,6 +40,7 @@ function ChildrenNumber() {
     const getKinderWithDate = (e) => {
         dispatch(getKidsNumberOne({date: new Date(e.target.value).getTime()}))
         setParams({...params, date: new Date(e.target.value).getTime()});
+        setChildrenState({...childrenState, date: new Date(e.target.value).getTime()})
     }
     const makeAgeGroup = () => {
         let subDTO = ages.map((age, index) => {
@@ -57,7 +58,12 @@ function ChildrenNumber() {
 
     const submit = (e) => {
         e.preventDefault();
-        dispatch(addKidsNumber(childrenState));
+        console.log({...childrenState, date: params.date},"kidsNumber");
+        if (childrenState?.id) {
+            dispatch(editKidsNumber({...childrenState, date: params.date}));
+        } else {
+            dispatch(addKidsNumber({...childrenState, date: params.date}));
+        }
     }
     const thisverifide = () => {
         dispatch(verifide(childrenState));
@@ -91,18 +97,21 @@ function ChildrenNumber() {
                                         fontSize: 25
                                     }}>
                                         Bu kunga bolalar soni kiritilmagan</span>
-                                    {getRoleStorage() !== 'ROLE_RAXBAR' ?<button className={'createButtons'} onClick={() => makeAgeGroup()}>
-                                        Bolalar sonini
-                                        kiritish
-                                    </button>:null}
+                                    {getRoleStorage() !== 'ROLE_RAXBAR' ?
+                                        <button className={'createButtons'} onClick={() => makeAgeGroup()}>
+                                            Bolalar sonini
+                                            kiritish
+                                        </button> : null}
                                 </div>
                             }
-                            {childrenState?.status === "KIRITILDI" && getRoleStorage() !== 'ROLE_RAXBAR' ?
-                                <button className={'createButtons mt-3'} type={'submit'}>O'zgartirish</button> : null}
-                            {childrenState?.status === "KIRITISH" && getRoleStorage() !== 'ROLE_RAXBAR' ?
+                            {childrenState?.status === "YANGI" && getRoleStorage() !== 'ROLE_RAXBAR' && editState ?
+                                <button className={'createButtons mt-3'}
+                                        onClick={() => setEditState(false)}>O'zgartirish</button> : null}
+                            {getRoleStorage() !== 'ROLE_RAXBAR' && !editState ?
                                 <button type={'submit'} className={'createButtons mt-3'}>Tayyor</button> : null}
-                            {childrenState && getRoleStorage() === 'ROLE_RAXBAR' && childrenState?.status !== "TASDIQLANDI"? <button onClick={() => thisverifide()}
-                                                                          className={'createButtons mt-3'}>Tasdiqlash</button> : null}
+                            {childrenState && getRoleStorage() === 'ROLE_RAXBAR' && childrenState?.status !== "TASDIQLANDI" ?
+                                <button onClick={() => thisverifide()}
+                                        className={'createButtons mt-3'}>Tasdiqlash</button> : null}
                         </Form>
                     </Col>
 

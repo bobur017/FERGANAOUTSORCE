@@ -57,8 +57,8 @@ function UserInfos() {
                         </div>
                     </div>
                 </Col>
-                <Col xs={12} sm={12} md={6} lg={6} xl={6} className={'figma-card-first'}>
-                    <img src="https://avatars.mds.yandex.net/i?id=0213782fa2f027aab3965b1d66e913c0195b45eb-5232391-images-thumbs&n=13&exp=1" alt="" width={"100%"}/>
+                <Col xs={12} sm={12} md={6} lg={6} xl={6} className={'figma-card-first d-flex justify-content-center'}>
+                    <img src="https://avatars.mds.yandex.net/i?id=0213782fa2f027aab3965b1d66e913c0195b45eb-5232391-images-thumbs&n=13&exp=1" alt="" width={"70%"}/>
                 </Col>
             </Row>
         </Container>
