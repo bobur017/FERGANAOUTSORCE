@@ -50,7 +50,7 @@ function EditContract() {
     useEffect(() => {
         if (!firstUpdate.current) {
 
-        }else {
+        } else {
             setPostStateContract(contract);
         }
     }, [contract]);
@@ -58,7 +58,7 @@ function EditContract() {
     useEffect(() => {
         if (!firstUpdate.current) {
 
-        }else {
+        } else {
             history("/sidebar/contract");
         }
     }, [result]);
@@ -97,6 +97,7 @@ function EditContract() {
                             "price": 0,
                             "productId": data?.id,
                             "weight": 0,
+                            pack: data?.pack,
                             productName: data?.name,
                             maxPrice: data?.price?.maxPrice
                         });
@@ -114,7 +115,7 @@ function EditContract() {
         } else {
             if (kindergartenContractList.length > 0) {
                 let productContracts = [...kindergartenContractList[0]?.productContracts].map((product) => {
-                    return {...product, price: 0, weight: 0};
+                        return {...product, price: 0, weight: 0};
                     }
                 );
                 if (kindergartenContractList[0].kindergartenId === "empty") {
@@ -145,11 +146,14 @@ function EditContract() {
             setPostStateContract({...postStateContract, kindergartenContractList});
         }
     }
-    const changeProductWeight = (index, index2) => (e) => {
+    const changeProductWeight = (index, index2, pack) => (e) => {
         let kindergartenContractList = [...postStateContract?.kindergartenContractList];
         let productLisy = [...kindergartenContractList[index].productContracts];
-        productLisy[index2] = {...productLisy[index2],weight: e.target.value}
-        kindergartenContractList[index] = {...kindergartenContractList[index],productContracts:productLisy};
+        productLisy[index2] = {
+            ...productLisy[index2],
+            weight: pack > 0 && pack ? parseInt(e.target.value) : e.target.value
+        }
+        kindergartenContractList[index] = {...kindergartenContractList[index], productContracts: productLisy};
         setPostStateContract({...postStateContract, kindergartenContractList});
     }
     const onClickProductWeight = (kinder, product) => {
@@ -159,10 +163,10 @@ function EditContract() {
     const changePrice = (index2) => (e) => {
         let kindergartenContractList = [...postStateContract.kindergartenContractList];
         postStateContract.kindergartenContractList.forEach((kin, index) => {
-            let productLisy = [...kindergartenContractList[index].productContracts];
-            productLisy[index2] = {...productLisy[index2],price: e.target.value}
-            kindergartenContractList[index] = {...kindergartenContractList[index],productContracts:productLisy};
-            setPostStateContract({...postStateContract, kindergartenContractList});
+                let productLisy = [...kindergartenContractList[index].productContracts];
+                productLisy[index2] = {...productLisy[index2], price: e.target.value}
+                kindergartenContractList[index] = {...kindergartenContractList[index], productContracts: productLisy};
+                setPostStateContract({...postStateContract, kindergartenContractList});
             }
         );
         setPostStateContract({...postStateContract, kindergartenContractList});
@@ -253,86 +257,86 @@ function EditContract() {
                 </div>
                 <div className={'figma-card mt-3'}>
                     <div className={' d-flex'}>
-                    <div className={'miniTable2'}  style={{overflowX:'auto'}}>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>№</th>
-                                <th colSpan={2}>MTT</th>
-                                {
-                                    postStateContract?.kindergartenContractList[0]?.productContracts?.map((product, index) =>
-                                        <th key={index}>
-                                            <div>{product?.productName}</div>
-                                            <MdDeleteForever size={20} color={'red'}
-                                                             onClick={() => removeProduct(product?.productId)}
-                                                             style={{cursor: 'pointer'}}/>
-                                        </th>
-                                    )
-                                }
+                        <div className={'miniTable2'} style={{overflowX: 'auto'}}>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th colSpan={2}>MTT</th>
+                                    {
+                                        postStateContract?.kindergartenContractList[0]?.productContracts?.map((product, index) =>
+                                            <th key={index}>
+                                                <div>{product?.productName}</div>
+                                                <MdDeleteForever size={20} color={'red'}
+                                                                 onClick={() => removeProduct(product?.productId)}
+                                                                 style={{cursor: 'pointer'}}/>
+                                            </th>
+                                        )
+                                    }
 
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td colSpan={2}>Narx</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td colSpan={2}>Narx</td>
+                                    {
+                                        postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
+                                            <td key={index}>
+                                                <input className={"myTdInput"} type="number"
+                                                       name={'price'}
+                                                       value={prod?.price}
+                                                       onWheel={e => e.target.blur()}
+                                                       required
+                                                       onChange={changePrice(index)}/>
+                                                <span>{prod?.maxPrice}</span>
+                                            </td>
+                                        )
+                                    }
+                                </tr>
                                 {
-                                    postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
-                                        <td key={index}>
-                                            <input className={"myTdInput"} type="number"
-                                                   name={'price'}
-                                                   value={prod?.price}
-                                                   onWheel={e => e.target.blur()}
-                                                   required
-                                                   onChange={changePrice(index)}/>
-                                            <span>{prod?.maxPrice}</span>
-                                        </td>
+                                    postStateContract?.kindergartenContractList?.map((kinder, index) =>
+                                        <tr key={index}>
+                                            <td>{index + 2}</td>
+                                            <td>{kinder?.number}{kinder?.kindergartenName}</td>
+                                            <td><MdDeleteForever size={20} color={'red'}
+                                                                 onClick={() => removeKinder(kinder?.kindergartenId)}
+                                                                 style={{cursor: 'pointer'}}/></td>
+                                            {
+                                                kinder?.productContracts?.map((prod, index2) =>
+                                                    <td key={index2} onClick={() => onClickProductWeight(kinder, prod)}>
+                                                        <input className={"myTdInput"} type="number"
+                                                               name={'weight'}
+                                                               value={prod?.weight}
+                                                               onWheel={e => e.target.blur()}
+                                                               required
+                                                               disabled={!(kinder?.kindergartenId === kindergartenState?.kindergartenId && prod?.productId === productState?.productId)}
+                                                               onChange={changeProductWeight(index, index2, prod?.pack)}/>
+                                                    </td>
+                                                )
+                                            }
+                                        </tr>
                                     )
                                 }
-                            </tr>
-                            {
-                                postStateContract?.kindergartenContractList?.map((kinder, index) =>
-                                    <tr key={index}>
-                                        <td>{index + 2}</td>
-                                        <td>{kinder?.number}{kinder?.kindergartenName}</td>
-                                        <td><MdDeleteForever size={20} color={'red'}
-                                                             onClick={() => removeKinder(kinder?.kindergartenId)}
-                                                             style={{cursor: 'pointer'}}/></td>
-                                        {
-                                            kinder?.productContracts?.map((prod, index2) =>
-                                                <td key={index2} onClick={() => onClickProductWeight(kinder, prod)}>
-                                                    <input className={"myTdInput"} type="number"
-                                                           name={'weight'}
-                                                           value={prod?.weight}
-                                                           onWheel={e => e.target.blur()}
-                                                           required
-                                                           disabled={!(kinder?.kindergartenId === kindergartenState?.kindergartenId && prod?.productId === productState?.productId)}
-                                                           onChange={changeProductWeight(index, index2)}/>
-                                                </td>
-                                            )
-                                        }
-                                    </tr>
-                                )
-                            }
-                            <tr>
-                                <th colSpan={3} >Umumiy</th>
-                                {
-                                    postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
-                                        <td key={index}>
-                                            {totalByProduct(index)}
-                                        </td>
-                                    )
-                                }
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                <tr>
+                                    <th colSpan={3}>Umumiy</th>
+                                    {
+                                        postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
+                                            <td key={index}>
+                                                {totalByProduct(index)}
+                                            </td>
+                                        )
+                                    }
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <DropdownCustom name={"Masulot +"} list={products}
-                                            setData={addProductInKinder}/>
+                                        setData={addProductInKinder}/>
 
                     </div>
                     <DropdownCustom name={"MTT +"} list={mttsByDepartment}
-                                                    setData={addToKindergarten}/>
+                                    setData={addToKindergarten}/>
                     <button className={'createButtons mt-3'} type={'submit'}>TAYYOR</button>
                 </div>
             </Form>

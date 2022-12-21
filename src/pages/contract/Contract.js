@@ -235,7 +235,7 @@ function Contract() {
                                         kinder?.productContracts?.map((prod, index2) =>
                                             <td key={index2} >
 
-                                                   {prod?.weight}
+                                                   {prod?.packWeight}
 
                                             </td>
                                         )

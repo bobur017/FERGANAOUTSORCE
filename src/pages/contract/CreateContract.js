@@ -86,6 +86,7 @@ function CreateContract() {
                             "price": 0,
                             "productId": data?.id,
                             "weight": 0,
+                            pack:data?.pack,
                             productName: data?.name,
                             maxPrice: data?.price?.maxPrice
                         });
@@ -134,11 +135,12 @@ function CreateContract() {
             setPostStateContract({...postStateContract, kindergartenContractList});
         }
     }
-    const changeProductWeight = (index, index2) => (e) => {
+    const changeProductWeight = (index, index2, pack) => (e) => {
+        console.log(e.target.value);
         let kindergartenContractList = [...postStateContract?.kindergartenContractList];
         kindergartenContractList[index].productContracts[index2] = {
             ...kindergartenContractList[index].productContracts[index2],
-            [e.target.name]: e.target.value
+            [e.target.name]: pack > 0 && pack ? parseInt(e.target.value) : e.target.value
         };
         setPostStateContract({...postStateContract, kindergartenContractList});
     }
@@ -244,7 +246,7 @@ function CreateContract() {
                 </div>
                 <div className={'figma-card mt-3'}>
                     <div className={' d-flex'}>
-                        <div className={'miniTable2'}  style={{overflowX:'auto'}}>
+                        <div className={'miniTable2'} style={{overflowX: 'auto'}}>
                             <table>
                                 <thead>
                                 <tr>
@@ -253,7 +255,7 @@ function CreateContract() {
                                     {
                                         postStateContract?.kindergartenContractList[0]?.productContracts?.map((product, index) =>
                                             <th key={index}>
-                                                <div style={{maxWidth:100,minWidth:50}}>{product?.productName}</div>
+                                                <div style={{maxWidth: 100, minWidth: 50}}>{product?.productName}</div>
                                                 <MdDeleteForever size={20} color={'red'}
                                                                  onClick={() => removeProduct(product?.productId)}
                                                                  style={{cursor: 'pointer'}}/>
@@ -285,7 +287,7 @@ function CreateContract() {
                                     postStateContract?.kindergartenContractList?.map((kinder, index) =>
                                         <tr key={index}>
                                             <td>{index + 2}</td>
-                                            <td style={{width:100}}>{kinder?.number}{kinder?.kindergartenName}</td>
+                                            <td style={{width: 100}}>{kinder?.number}{kinder?.kindergartenName}</td>
                                             <td><MdDeleteForever size={20} color={'red'}
                                                                  onClick={() => removeKinder(kinder?.kindergartenId)}
                                                                  style={{cursor: 'pointer'}}/></td>
@@ -298,7 +300,7 @@ function CreateContract() {
                                                                onWheel={e => e.target.blur()}
                                                                required
                                                                disabled={!(kinder?.kindergartenId === kindergartenState?.kindergartenId && prod?.productId === productState?.productId)}
-                                                               onChange={changeProductWeight(index, index2)}/>
+                                                               onChange={changeProductWeight(index, index2,prod?.pack)}/>
                                                     </td>
                                                 )
                                             }
@@ -321,11 +323,11 @@ function CreateContract() {
                         </div>
                         <div>
                             <DropdownCustom name={"Masulot +"} list={products}
-                                                setData={addProductInKinder}/>
+                                            setData={addProductInKinder}/>
                         </div>
                     </div>
                     <DropdownCustom name={"MTT +"} list={mttsByDepartment}
-                                                    setData={addToKindergarten}/>
+                                    setData={addToKindergarten}/>
                     <button className={'createButtons mt-3'} type={'submit'}>TAYYOR</button>
                 </div>
             </Form>
