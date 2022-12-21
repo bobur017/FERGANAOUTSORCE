@@ -17,6 +17,7 @@ function Warehouse() {
         "receivedWeight": 0
     });
     const [currentNavs, setCurrentNavs] = useState(0);
+    const [inOutList, setInOutList] = useState([]);
     const warehouses = useSelector(state => state.warehouse.warehouses);
     const result = useSelector(state => state.warehouse.result);
     const acceptedProduct = useSelector(state => state.warehouse.acceptedProduct);
@@ -24,10 +25,16 @@ function Warehouse() {
     const getFiless = useSelector(state => state.getFiles.getFiless);
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
+    const [show2, setShow2] = useState(false);
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
+    const handleClose2 = () => setShow2(false);
     const handleShow = () => setShow(true);
+    const handleShow2 = (list) => {
+        setInOutList(list);
+        setShow2(true);
+    }
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -113,7 +120,7 @@ function Warehouse() {
                                 <tbody>
                                 {
                                     warehouses?.list?.map((product, index) =>
-                                        <tr key={index} style={{cursor: 'pointer'}}>
+                                        <tr key={index} style={{cursor: 'pointer'}} onClick={()=>handleShow2(product?.inOutList)}>
                                             <td>{index + 1}</td>
                                             <td>{product.productName}</td>
                                             <td>{product.weight}</td>
@@ -250,6 +257,51 @@ function Warehouse() {
                         </Button>
                         <Button variant="primary" type={'submit'}>
                             Tayyor
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal>
+            <Modal show={show2} onHide={handleClose2} size={"xl"}>
+                <Form onSubmit={submit}>
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className={'tableCalendar'}>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Narxi</th>
+                                    <th>Umumiy miqdori</th>
+                                    <th>Qadoq miqdori</th>
+                                    <th>Qadoqlar soni</th>
+                                    <th>Qabul qilingan sana</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {
+                                    inOutList?.map((product, index) =>
+                                        <tr key={index} style={{cursor: 'pointer'}}>
+                                            <td>{index + 1}</td>
+                                            <td>{product.price}</td>
+                                            <td>{product.weight}</td>
+                                            <td>{product.packWeight}</td>
+                                            <td>{product.pack}</td>
+                                            <td>{product.date}</td>
+                                        </tr>
+                                    )
+                                }
+                                </tbody>
+                            </table>
+                            <br/>
+                            {/*<FromPageSizeBottom currentPage={acceptedProduct.getPageNumber}*/}
+                            {/*                    pageSize={acceptedProduct?.getPageSize} changesPage={changePage2}*/}
+                            {/*                    allPageSize={acceptedProduct?.allPageSize}/>*/}
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Bekor qilish
                         </Button>
                     </Modal.Footer>
                 </Form>
