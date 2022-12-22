@@ -183,7 +183,7 @@ function EditContract() {
     const totalByProduct = (index) => {
         let total = 0;
         postStateContract.kindergartenContractList.forEach((kin) =>
-            total += parseInt(kin?.productContracts[index]?.packWeight)
+            total += parseFloat(kin?.productContracts[index]?.packWeight).toFixed(2)
         );
         return total;
     }
@@ -319,7 +319,7 @@ function EditContract() {
                                     )
                                 }
                                 <tr>
-                                    <th colSpan={3}>Umumiy</th>
+                                    <td colSpan={3}>Umumiy</td>
                                     {
                                         postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
                                             <td key={index}>

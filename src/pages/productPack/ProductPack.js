@@ -16,8 +16,8 @@ import DropdownCustom from "../more/DropdownCustom";
 function ProductPack() {
     const [show, setShow] = useState(false);
     const [edit, setEdit] = useState(false);
-    const [productState, setProductState] = useState();
-    const [packState, setProductPackState] = useState({id: '', name: 'Mahsulot tanlash'});
+    const [productState, setProductState] = useState({id: '', name: 'Mahsulot tanlash'});
+    const [packState, setProductPackState] = useState();
     const [packs, setProductPacks] = useState([]);
     const handleClose = () => {
         setShow(false);

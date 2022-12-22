@@ -23,7 +23,7 @@ function CreateContract() {
                         emptyy: "empty",
                         "price": '',
                         "productId": 'empty',
-                        "weight": ''
+                        "packWeight": ''
                     }
                 ]
             }
@@ -85,7 +85,7 @@ function CreateContract() {
                         productContracts.push({
                             "price": 0,
                             "productId": data?.id,
-                            "weight": 0,
+                            "packWeight": 0,
                             pack:data?.pack,
                             productName: data?.name,
                             maxPrice: data?.price?.maxPrice
@@ -104,7 +104,7 @@ function CreateContract() {
         } else {
             if (kindergartenContractList.length > 0) {
                 let productContracts = [...kindergartenContractList[0]?.productContracts].map((product) => {
-                        return {...product, price: 0, weight: 0};
+                        return {...product, price: 0, packWeight: 0};
                     }
                 );
                 if (kindergartenContractList[0].kindergartenId === "empty") {
@@ -172,7 +172,7 @@ function CreateContract() {
     const totalByProduct = (index) => {
         let total = 0;
         postStateContract.kindergartenContractList.forEach((kin) =>
-            total += parseInt(kin?.productContracts[index]?.weight)
+            total += parseFloat(kin?.productContracts[index]?.packWeight).toFixed(2)
         );
         return total;
     }
@@ -295,8 +295,8 @@ function CreateContract() {
                                                 kinder?.productContracts?.map((prod, index2) =>
                                                     <td key={index2} onClick={() => onClickProductWeight(kinder, prod)}>
                                                         <input className={"myTdInput"} type="number"
-                                                               name={'weight'}
-                                                               value={prod?.weight}
+                                                               name={'packWeight'}
+                                                               value={prod?.packWeight}
                                                                onWheel={e => e.target.blur()}
                                                                required
                                                                disabled={!(kinder?.kindergartenId === kindergartenState?.kindergartenId && prod?.productId === productState?.productId)}
