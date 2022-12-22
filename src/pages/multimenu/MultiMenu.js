@@ -5,13 +5,14 @@ import {Button, Col, Form, InputGroup, Modal, Table} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
 import {getMealTime} from "../meal/MealTimeReducer";
 import {addAge, editAge} from "../age/AgeReducer";
-import {addMultiMenu, deleteMultiMenu, editMultiMenu, getMultiMenu} from "./MultiMenuReducer";
+import {addMultiMenu, deleteMultiMenu, editMultiMenu, getFileMultiMenu, getMultiMenu} from "./MultiMenuReducer";
 import {useNavigate} from "react-router-dom";
 import main from "../relationMultiMenu/relationStyle.module.scss";
 import ReactApexChart from "react-apexcharts";
 import {colorTextStr} from "../funcs/Funcs";
 import {RiDeleteBin2Fill} from "react-icons/ri";
 import {BsPencilSquare} from "react-icons/bs";
+import {AiOutlineFilePdf} from "react-icons/ai";
 
 function MultiMenu() {
     const defaultData = {
@@ -96,6 +97,14 @@ function MultiMenu() {
             handleClose();
         }
     }, [multiMenu.result]);
+
+    useEffect(() => {
+        if (firstUpdate.current) {
+            var win = window.open(multiMenu.multiMenuFile, '_blank');
+            win.focus();
+        }
+    }, [multiMenu.multiMenuFile]);
+
     useEffect(() => {
         setMultiList(multiMenu.multiMenuList)
     }, [multiMenu.multiMenuList]);
@@ -131,6 +140,9 @@ function MultiMenu() {
     }
     const pushUrl = (data) => {
         history("/sidebar/multi-menu-one/" + data.id);
+    }
+    const getFile = (data) => {
+        dispatch(getFileMultiMenu(data));
     }
 
     return (
@@ -230,6 +242,7 @@ function MultiMenu() {
                                     </div>
                                 </div>
                             </div>
+                                        <div style={{position:'absolute',left:0,top:-25,cursor:'pointer'}}  onClick={() => getFile( item)}><AiOutlineFilePdf color={'#E9573F'} size={25} /></div>
                                         <div style={{position:'absolute',right:0,bottom:0,cursor:'pointer'}}  onClick={() => handleShow2(3, item)}><RiDeleteBin2Fill color={'#E9573F'} size={20} /></div>
                                         <div style={{position:'absolute',right:0,top:0,cursor:'pointer'}} onClick={() => handleShow(2, item)}><BsPencilSquare color={'orange'} size={20}/></div>
                         </Col>)}

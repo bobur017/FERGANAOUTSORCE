@@ -8,19 +8,11 @@ export const baseUrl = () => {
 }
 
 export const baseUrl2 = () => {
-<<<<<<< HEAD
-    // return "https://feednet.uz/out/api"
-    // return "http://185.237.15.42:8888/out/api"
-    // return "https://32f4-188-113-207-71.in.ngrok.io/out/api"
-    // return "http://192.168.8.100:8888/out/api"
-    return "http://localhost:8888/out/api"
-=======
     return "https://feednet.uz/out/api"
     // return "http://localhost:8888/out/api"
     // return "http://185.237.15.42:8888/out/api"
     // return "https://32f4-188-113-207-71.in.ngrok.io/out/api"
     // return "http://192.168.8.100:8888/out/api"
->>>>>>> 830fd09983bc20ab5e7ded1ad530f43569c7d528
 }
 
 function Default(props) {
