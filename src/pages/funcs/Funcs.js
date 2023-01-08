@@ -32,3 +32,7 @@ export const TimestampToInputDate = (time, name) => {
         return '';
     }
 }
+
+export const parseLocalDate = (list) => {
+ return list.join("-");
+}

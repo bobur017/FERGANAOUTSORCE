@@ -193,13 +193,11 @@ function Warehouse() {
                                     <th>Mahsulot nomi</th>
                                     <th>Narxi</th>
                                     <th>Shartnoma</th>
-                                    <th>Yaetqazuvchi</th>
-                                    <th>Ummumiy miqdor</th>
-                                    <th>Umumiy summa</th>
-                                    <th>Qolgan miqdori</th>
-                                    <th>Qolgan summa</th>
-                                    <th>Qabul qilingan miqdori</th>
-                                    <th>Qabul qilingan summa</th>
+                                    <th>Shartnomachi</th>
+                                    <th>Vazni</th>
+                                    <th>Qadoqlar soni</th>
+                                    <th>Qadoq miqdori</th>
+                                    <th>Vaqti</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -207,16 +205,14 @@ function Warehouse() {
                                     acceptedProducts?.list?.map((product, index) =>
                                         <tr key={index} style={{cursor: 'pointer'}}>
                                             <td>{index + 1}</td>
-                                            <td>{product?.productContract?.productName}</td>
-                                            <td>{product?.productContract?.price}</td>
-                                            <td>{product?.productContract?.shartnomaRaqami}</td>
-                                            <td>{product?.productContract?.yetkazibBeruvchi}</td>
-                                            <td>{product?.productContract?.weight}</td>
-                                            <td>{product?.productContract?.totalSum}</td>
-                                            <td>{product?.productContract?.residualWeight}</td>
-                                            <td>{product?.productContract?.residualTotalSum}</td>
-                                            <td>{product?.productContract?.successWeight}</td>
-                                            <td>{product?.productContract?.successTotalSum}</td>
+                                            <td>{product?.producyName}</td>
+                                            <td>{product?.price}</td>
+                                            <td>{product?.shartnomaRaqami}</td>
+                                            <td>{product?.yetkazibBeruvchi}</td>
+                                            <td>{product?.weight}</td>
+                                            <td>{product?.packWeight}</td>
+                                            <td>{product?.pack}</td>
+                                            <td>{TimestampToInputDate(product?.date)}</td>
                                         </tr>
                                     )
                                 }

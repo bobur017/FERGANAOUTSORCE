@@ -20,7 +20,7 @@ import '../allStyle2.scss';
 import Users from "../users/Users";
 import MenuView from "../relationMultiMenu/MenuView";
 import UsersDepartment from "../users/UsersDepartment";
-import RelationMenu from "../relationMultiMenu/RelationMenu";
+import RelationMenu from "../permission/RelationMenu";
 import Supplier from "../supplier/Supplier";
 import Price from "../price/Price";
 import Contract from "../contract/Contract";
@@ -42,6 +42,8 @@ import WareHousProductByKinderGarten from "../warehouse/WareHousProductByKinderG
 import Notification from "../notification/Notification";
 import SendNotifications from "../notification/SendNotifications";
 import ProductPack from "../productPack/ProductPack";
+import PermissionsFromRelation from "../relationMultiMenu/PermissionsFromRelation";
+import MultiMenuOneFromOther from "../multimenu/MultiMenuOneFromOther";
 
 function Sidebars() {
 
@@ -116,7 +118,8 @@ function Sidebars() {
                             </div>
                             <div className={"d-flex align-items-center justify-content-around w-75"}>
                                 <div className={'px-1'}
-                                     style={{backgroundColor: '#eeeeee', borderRadius: "30%", cursor: 'pointer'}}><Link
+                                     style={{backgroundColor: '#eeeeee', borderRadius: "30%", cursor: 'pointer'}}>
+                                    <Link
                                     to={"/sidebar/notification"} className={"link-none"}>
                                     <TbBell
                                         size={15}/></Link></div>
@@ -167,10 +170,12 @@ function Sidebars() {
                     <Route path="/notification" element={<Notification/>}/>
                     <Route path="/send-notification" element={<SendNotifications/>}/>
                     <Route path="/product-pack" element={<ProductPack/>}/>
+                    <Route path="/permission" element={<PermissionsFromRelation/>}/>
+                    <Route path="/one-multi-menu-other/:id" element={<MultiMenuOneFromOther/>}/>
                 </Routes>
+                <br/><br/>
             </Sidebar>
         </div>
     );
 }
-
 export default Sidebars;

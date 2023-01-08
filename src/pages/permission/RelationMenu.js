@@ -3,7 +3,7 @@ import {Button, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {checkCalendar, getMultiMenu, relationMultiMenu} from "../multimenu/MultiMenuReducer";
-import main from './relationStyle.module.scss'
+import main from '../relationMultiMenu/relationStyle.module.scss'
 import SearchSelect from "../more/SearchSelect";
 import ReactApexChart from 'react-apexcharts'
 import {AiOutlineCheck, AiOutlineClose} from "react-icons/ai";

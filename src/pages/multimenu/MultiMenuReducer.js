@@ -21,7 +21,9 @@ const slice = createSlice({
             state.multiMenuList = action.payload;
         },
         multiMenuFile: (state, action) => {
-            state.multiMenuFile = action.payload;
+            // state.multiMenuFile = action.payload;
+            var win = window.open(action.payload, '_blank');
+            win.focus();
         },
         checkCalendar: (state, action) => {
             state.checkCalendar = action.payload;
@@ -113,7 +115,7 @@ export const addMultiMenu = (data) => apiCall({
 })
 
 export const getFileMultiMenu = (data) => apiCall({
-    url: "/out/api/multiMenu/getFile/" + data.id,
+    url: "/multiMenu/getFile/" + data.id,
     method: "GET",
     headers: {
         Authorization: getToken(),

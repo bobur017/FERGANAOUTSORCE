@@ -219,16 +219,27 @@ function Users() {
                     <Modal.Body>
                         <Form.Label>Ismi</Form.Label>
                         <Form.Control name={'name'} size={'sm'} className={'mb-2'} value={userState.name} onChange={onChangeState}
+                                      minLength={3}
+                                      maxLength={25}
                                       required/>
                         <Form.Label>Familyasi</Form.Label>
                         <Form.Control name={'surname'} className={'mb-2'} size={'sm'}  value={userState.surname}
-                                      onChange={onChangeState} required/>
+                                      onChange={onChangeState} required
+                                      minLength={3}
+                                      maxLength={25}
+                        />
                         <Form.Label>Otasining ismi</Form.Label>
                         <Form.Control name={'fatherName'} className={'mb-2'} size={'sm'}  value={userState.fatherName}
-                                      onChange={onChangeState} required/>
+                                      onChange={onChangeState}
+                                      minLength={3}
+                                      maxLength={25}
+                                      required/>
                         <Form.Label>Login</Form.Label>
-                        <Form.Control name={'username'} className={'mb-2'} size={'sm'}  value={userState.username} minLength={5}
-                                      onChange={onChangeState} required/>
+                        <Form.Control name={'username'} className={'mb-2'} size={'sm'}  value={userState.username}
+                                      onChange={onChangeState}
+                                      minLength={4}
+                                      maxLength={25}
+                                      required/>
                         <Form.Label>Tel:</Form.Label>
                         <Form.Control name={'phoneNumber'} className={'mb-2'} size={'sm'}  value={userState.phoneNumber}
                                       maxLength={9}

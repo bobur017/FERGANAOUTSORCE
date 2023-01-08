@@ -401,7 +401,7 @@ function MenuView() {
             </Row> : null}
             <Modal show={show} onHide={handleClose}>
                 <Modal.Body>
-                    <OneDayWithMtt id={currentDay?.reportId}/>
+                    {currentDay?.reportId ? <OneDayWithMtt id={currentDay?.reportId}/> : null}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

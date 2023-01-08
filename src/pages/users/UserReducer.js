@@ -11,6 +11,8 @@ const slice = createSlice({
         error: {},
         users: [],
         roles: [],
+        departmentRoles: [],
+        kindergartenRoles: [],
     },
     reducers: {
         users: (state, action) => {
@@ -24,9 +26,14 @@ const slice = createSlice({
             toast.success(action.payload?.text);
 
         },
+        getKindergartenRoles: (state, action) => {
+            state.kindergartenRoles = action.payload;
+        },
+        getDepartmentRoles: (state, action) => {
+            state.departmentRoles = action.payload;
+        },
         getRoles: (state, action) => {
             state.roles = action.payload;
-            toast.success(action.payload?.text);
         },
         errorReducer: (state, action) => {
             state.error = action.payload;
@@ -141,6 +148,26 @@ export const editUser = (data) => apiCall({
     },
     data,
     success: slice.actions.resultReducer.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getKindergartenRoles = () => apiCall({
+    url: "/role/kindergarten",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.getKindergartenRoles.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getDepartmentRoles = () => apiCall({
+    url: "/role/department",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.getDepartmentRoles.type,
     error: slice.actions.errorReducer.type
 })
 

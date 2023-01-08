@@ -3,15 +3,18 @@ import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addMealCategory, deleteMealCategory, editMealCategory, getMealCategory} from "./MealCategoryReducer";
 import {Button, Col, Form, Modal, Row, Table} from "react-bootstrap";
-import {GrAdd} from "react-icons/gr";
-import mealCategory from "./MealCategory";
 import NavbarHeader from "../more/NavbarHeader";
+import MoreButtons from "../more/MoreButtons";
+import {BiEdit} from "react-icons/bi";
+import {MdOutlineDeleteForever} from "react-icons/md";
+import {getRoleStorage} from "../more/Functions";
 
 
 function MealCategory() {
     const [show, setShow] = useState(false);
     const [mealCategoryState, setMealCategoryState] = useState({id: '', name: ''});
     const [mealCategories, setMealCategories] = useState([]);
+    const [mealActive, setMealActive] = useState();
     const handleClose = () => {
         setShow(false);
         setMealCategoryState({id: '', name: ''});
@@ -53,23 +56,24 @@ function MealCategory() {
             dispatch(addMealCategory(mealCategoryState))
         }
     }
-    const onClickDepartment = (data, number) => {
-        if (number === 1) {
-            setMealCategoryState(data);
-            handleShow();
-        } else if (number === 2) {
-            dispatch(deleteMealCategory(data));
-        }
-    }
-
 
     const onChanges = (param) => (e) => {
         setMealCategoryState({...mealCategoryState, [param]: e.target.value});
     }
+    const getDate = (index, data) => {
+        if (index === 0) {
+            setMealCategoryState(data);
+            handleShow();
+        } else {
+            dispatch(deleteMealCategory(data));
+        }
+        setMealActive(null);
+    }
 
     return (
         <div className={'allMain'}>
-            <NavbarHeader name={"Taom turilari"} handleShow={handleShow} buttonName={"Taom turini qo'shish"}/>
+            <NavbarHeader name={"Taom turilari"} handleShow={handleShow}
+                          buttonName={getRoleStorage() === "ROLE_ADMIN" ? "Taom turini qo'shish" : ""}/>
             <br/>
             <div className={'figma-card'}>
 
@@ -79,8 +83,7 @@ function MealCategory() {
                         <tr>
                             <th>#</th>
                             <th>Nomi</th>
-                            <th>O'zgartirish</th>
-                            <th>O'chirish</th>
+                            {getRoleStorage() === "ROLE_ADMIN" ? <th>Yana</th> : null}
                         </tr>
                         </thead>
                         <tbody>
@@ -90,18 +93,19 @@ function MealCategory() {
                                     <td>{index + 1}</td>
                                     <td>{item.name}</td>
 
-                                    <td>
-                                        <Button variant='outline-info' size='sm'
-                                                onClick={() => onClickDepartment(item, 1)}>
-                                            O'zgartirish
-                                        </Button>
-                                    </td>
-                                    <td>
-                                        <Button variant='outline-danger' size='sm'
-                                                onClick={() => onClickDepartment(item, 2)}>
-                                            O'chirish
-                                        </Button>
-                                    </td>
+                                    {getRoleStorage() === "ROLE_ADMIN" ? <td>
+                                        <MoreButtons list={[{
+                                            name: "O'zgartirish",
+                                            data: item,
+                                            icon: <BiEdit size={20}/>
+                                        }, {
+                                            name: "O'chirish",
+                                            data: item,
+                                            icon: <MdOutlineDeleteForever color={'red'} size={20}/>
+                                        }]} getDate={getDate} setActive={setMealActive}
+                                                     active={mealActive?.id === item.id} data={item}/>
+                                    </td> : null}
+
                                 </tr>
                             )
                         }

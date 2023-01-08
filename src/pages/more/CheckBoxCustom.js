@@ -52,9 +52,6 @@ function CheckBoxCustom({list, getChecked,editList,edited}) {
 
     return (
         <div>
-            {/*<Button variant={'outline-info'} size={'sm'} type={''}>*/}
-            {/*    Hammasini beldilash*/}
-            {/*</Button>*/}
             <br/>
             <ToggleButton
                 className="mb-2"

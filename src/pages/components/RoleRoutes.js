@@ -6,14 +6,14 @@ import {
 } from "react-icons/fa";
 import React from "react";
 import { GiGreenhouse, GiMeal, GiShoppingCart } from "react-icons/gi";
-import {TbBuildingWarehouse, TbNumbers, TbReportAnalytics} from "react-icons/tb";
+import {TbBuildingWarehouse, TbLockAccess, TbNumbers, TbReportAnalytics} from "react-icons/tb";
 import {CgMenuHotdog} from "react-icons/cg";
 import {BsArrowDownUp, BsFillMenuButtonFill} from "react-icons/bs";
 import {TiInfoLargeOutline} from "react-icons/ti";
 import {FaUserCog} from "react-icons/fa";
 import {HiOutlineDocumentText, HiOutlineTruck} from "react-icons/hi";
 import {MdOutlinePriceChange} from "react-icons/md";
-import {RiDeleteBin6Line} from "react-icons/ri";
+import {RiDeleteBin6Line, RiNotification2Line} from "react-icons/ri";
 import {BiMailSend} from "react-icons/bi";
 import {FiPackage} from "react-icons/fi";
 
@@ -45,6 +45,16 @@ export const rolesList = (role) => {
                 path: "/sidebar/mtt",
                 name: "MTT",
                 icon: <GiGreenhouse size={25}/>
+            },
+            {
+                path: "/sidebar/meal",
+                name: "Taom",
+                icon: <GiMeal size={25}/>
+            },
+            {
+                path: "/sidebar/permission",
+                name: "Ruxsat-taqiq",
+                icon: <TbLockAccess size={25}/>
             },
         ];
     } else if (role === "ROLE_SUPER_ADMIN") {
@@ -101,6 +111,11 @@ export const rolesList = (role) => {
                 path: "/sidebar/warehouse-admin",
                 name: "Omborxona",
                 icon: <TbBuildingWarehouse size={25}/>
+            },
+            {
+                path: "/sidebar/permission",
+                name: "Ruxsat-taqiq",
+                icon: <TbLockAccess size={25}/>
             },
         ];
     }else if(role === "ROLE_OMBORCHI"){
@@ -196,7 +211,7 @@ export const rolesList = (role) => {
                 icon: <TiInfoLargeOutline size={25}/>
             },
             {
-                path: "/sidebar/children-number",
+                path: "/sidebar/report-kids-number",
                 name: "Bolalar soni",
                 icon: <FaChild size={25}/>
             },
@@ -288,7 +303,7 @@ export const rolesList = (role) => {
                 icon: <TiInfoLargeOutline size={25}/>
             },
             {
-                path: "/sidebar/children-number",
+                path: "/sidebar/report-kids-number",
                 name: "Bolalar soni",
                 icon: <FaChild size={25}/>
             },
@@ -312,6 +327,16 @@ export const rolesList = (role) => {
                 name: "Taom",
                 icon: <GiMeal size={25}/>
             },
+            {
+                path: "/sidebar/input-output-admin",
+                name: "Kirim chiqim",
+                icon: <BsArrowDownUp size={25}/>
+            },
+            {
+                path: "/sidebar/warehouse-admin",
+                name: "Omborxona",
+                icon: <TbBuildingWarehouse size={25}/>
+            },
 
         ];
     }else  if(role === "ROLE_XODIMLAR_BO`LIMI"){
@@ -320,6 +345,11 @@ export const rolesList = (role) => {
                 path: "/sidebar/info",
                 name: "Ma'lumotlar",
                 icon: <TiInfoLargeOutline size={25}/>
+            },
+            {
+                path: "/sidebar/send-notification",
+                name: "Bildirishnoma yuborish",
+                icon: <RiNotification2Line size={25}/>
             },
             {
                 path: "/sidebar/users-department",
@@ -335,11 +365,6 @@ export const rolesList = (role) => {
                 path: "/sidebar/multiMenu",
                 name: "Taomnomalar",
                 icon: <CgMenuHotdog size={25}/>
-            },
-            {
-                path: "/sidebar/send-notification",
-                name: "Bildirish noma yuborish",
-                icon: <BiMailSend size={25}/>
             },
             {
                 path: "/sidebar/product-pack",

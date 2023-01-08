@@ -44,6 +44,7 @@ function Age() {
 
     const submitAge = (e) => {
         e.preventDefault();
+        console.log(ageState,"ageState")
         if (ageState.id !== '') {
             dispatch(editAge(ageState));
         } else {

@@ -88,7 +88,7 @@ function Sanpin() {
     const onClickSanpinCategory = (data, number) => {
         if (number === 1) {
             setsanpinCategoryState(data);
-            handleShow();
+            setShow(true);
         } else if (number === 2) {
             dispatch(deleteSanpinCategory(data));
         }

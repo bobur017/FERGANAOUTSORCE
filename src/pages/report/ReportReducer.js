@@ -19,6 +19,18 @@ const slice = createSlice({
     reducers: {
         kidsNumber: (state, action) => {
             state.kidsNumber = action.payload;
+            var win = window.open(action.payload, '_blank');
+            win.focus();
+        },
+        getInputOutputKidsNumberPdf: (state, action) => {
+            // state.kidsNumber = action.payload;
+            var win = window.open(action.payload, '_blank');
+            win.focus();
+        },
+        getAllByDate: (state, action) => {
+            // state.kidsNumber = action.payload;
+            var win = window.open(action.payload, '_blank');
+            win.focus();
         },
         menuOneDay: (state, action) => {
             state.menuOneDay = action.payload;
@@ -94,6 +106,28 @@ export const getInputOutputKidsNumber = (params) => apiCall({
     },
     params,
     success: slice.actions.kidsNumber.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getInputOutputKidsNumberPdf = (data,params) => apiCall({
+    url: "/report/getAllByDepartmentId/"+data.id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.getInputOutputKidsNumberPdf.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getInputOutputKidsNumberPdfDay = (data,params) => apiCall({
+    url: "/out/api/report/getAllByDate/{id}"+data.id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.getAllByDate.type,
     error: slice.actions.errorReducer.type
 })
 
