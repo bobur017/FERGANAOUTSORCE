@@ -43,7 +43,7 @@ function WareHousProductByKinderGarten(props) {
                     <div className={'w-100 d-flex justify-content-end'}>
                         <button className={'buttonPdf my-2'} onClick={getPdf}>PDF</button>
                     </div>
-                    <div className={'tableCalendar'}>
+                    {warehouses?.list?.length > 0 ? <div className={'tableCalendar'}>
                         <table>
                             <thead>
                             <tr>
@@ -68,7 +68,7 @@ function WareHousProductByKinderGarten(props) {
                         <FromPageSizeBottom currentPage={warehouses?.getPageNumber}
                                             pageSize={warehouses?.getPageSize} changesPage={changePage0}
                                             allPageSize={warehouses?.allPageSize}/>
-                    </div>
+                    </div>: <div className={"text-center"}>Ma'lumotlar mavjud emas</div>}
                 </Col>
 
             </Row>

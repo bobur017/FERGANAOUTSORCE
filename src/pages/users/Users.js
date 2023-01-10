@@ -145,7 +145,7 @@ function Users() {
                     </Col>
                     <Col xs={12} sm={12} md={9} lg={9} xl={9}>
                         <div className={'figma-card mt-3'}>
-                            <div className={'tableCalendar'}>
+                            <div className={'tableCalendar'} style={{overflowY:'hidden',maxHeight:'100%'}}>
                                 <table>
                                     <thead>
                                     <tr>
@@ -179,7 +179,7 @@ function Users() {
                                                     >
                                                         <BiDotsVerticalRounded size={25}/>
                                                         {
-                                                            more === item.id ? <div className={'more shadow'}>
+                                                            more === item.id ? <div className={'more shadow'} style={{zIndex:1000}}>
                                                                 {item.status ? <div className={'sub-more'}  onClick={()=>dispatch(statusUser(item,{status: !item.status}))}>
                                                                     <BiUserX size={20} color={'#E9573F'}/>
                                                                     <span className={'mx-1'}>Xodimni cheklash</span>

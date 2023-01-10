@@ -131,7 +131,7 @@ function MultiMenu() {
 
     const onChangeItem = (index) => (e) => {
         if (e.target.name !== "mealTimeIdList") {
-            setMultiMenuState({...multiMenuState, [e.target.name]: e.target.value})
+            setMultiMenuState({...multiMenuState, [e.target.name]:e.target.type ==="number"?parseInt( e.target.value) : e.target.value})
         } else {
             let list = [...multiMenuState.mealTimeIdList];
             list[index] = {...list[index], checked: e.target.checked}
@@ -270,7 +270,10 @@ function MultiMenu() {
                             <br/>
                             <Form.Label>Kunlar soni</Form.Label>
                             <Form.Control name={'daily'} type={'number'} onWheel={(e) => e.target.blur()} required
-                                          onChange={onChangeItem(null)}/>
+                                          onChange={onChangeItem(null)}
+                                          max={31}
+                                          min={1}
+                            />
                             <br/>
 
                             <Form.Label>Ovqatlanish vaqtlari</Form.Label>

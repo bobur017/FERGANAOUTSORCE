@@ -111,7 +111,7 @@ function ChildrenNumber() {
                                         onClick={() => setEditState(false)}>O'zgartirish</button> : null}
                             {getRoleStorage() !== 'ROLE_RAXBAR' && !editState ?
                                 <button type={'submit'} className={'createButtons mt-3'}>Tayyor</button> : null}
-                            {childrenState && getRoleStorage() === 'ROLE_RAXBAR' && childrenState?.status !== "TASDIQLANDI" ?
+                            {childrenState?.id !== null && getRoleStorage() === 'ROLE_RAXBAR' && childrenState?.status !== "TASDIQLANDI" ?
                                 <button onClick={() => thisverifide()}
                                         className={'createButtons mt-3'}>Tasdiqlash</button> : null}
                         </Form>

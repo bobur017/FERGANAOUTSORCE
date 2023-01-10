@@ -36,7 +36,9 @@ const slice = createSlice({
             state.menuOneDay = action.payload;
         },
         menuOneDayReport: (state, action) => {
-            state.menuOneDayReport = action.payload;
+            var win = window.open(action.payload, '_blank');
+            win.focus();
+
         },
         menuOneDayReport2: (state, action) => {
             state.menuOneDayReport2 = action.payload;

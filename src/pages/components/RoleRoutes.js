@@ -112,11 +112,6 @@ export const rolesList = (role) => {
                 name: "Omborxona",
                 icon: <TbBuildingWarehouse size={25}/>
             },
-            {
-                path: "/sidebar/permission",
-                name: "Ruxsat-taqiq",
-                icon: <TbLockAccess size={25}/>
-            },
         ];
     }else if(role === "ROLE_OMBORCHI"){
         return [
@@ -173,6 +168,11 @@ export const rolesList = (role) => {
                 path: "/sidebar/warehouse",
                 name: "Omborxona",
                 icon: <TbBuildingWarehouse size={25}/>
+            },
+            {
+                path: "/sidebar/relation-view",
+                name: "Menyularni biriktirish",
+                icon: <BsFillMenuButtonFill size={25}/>
             },
         ];
     }else  if(role === "ROLE_RAXBAR"){
@@ -370,6 +370,11 @@ export const rolesList = (role) => {
                 path: "/sidebar/product-pack",
                 name: "Mahsulot qadoqlari",
                 icon: <FiPackage size={25}/>
+            },
+            {
+                path: "/sidebar/permission",
+                name: "Ruxsat-taqiq",
+                icon: <TbLockAccess size={25}/>
             },
         ];
     }

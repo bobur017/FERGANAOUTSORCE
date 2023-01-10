@@ -1,7 +1,7 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {changePermission, getPermission} from "../permission/PermissionReducer";
+import {changePermission, getPermission} from "./PermissionReducer";
 import CheckBoxCustom2 from "../more/CheckBoxCustom2";
 
 function PermissionsFromRelation(props) {
@@ -15,7 +15,7 @@ function PermissionsFromRelation(props) {
         } else {
             dispatch(getPermission());
         }
-    }, [  result]);
+    }, [result]);
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
@@ -32,14 +32,14 @@ function PermissionsFromRelation(props) {
     const colorText = (name) => {
         if (name === "RUXSAT ETILGAN") {
             return '#56c44b'
-        }else {
+        } else {
             return '#ff8c8c'
         }
     }
 
     return (
         <div className={'figma-card-first allMain'}>
-            <div className={'tableCalendar'}>
+            {state.length > 0 ? <div className={'tableCalendar'}>
                 <table>
                     <thead>
                     <tr>
@@ -59,14 +59,19 @@ function PermissionsFromRelation(props) {
                                     <div className={item.state ? 'userStatusActive' : 'userStatusInActive'}></div>
                                 </td>
                                 <td>{item.name}</td>
-                                <td style={{color:colorText(item.status)}}>{item.status}</td>
-                                <td><button className={"buttonSuccess"} onClick={()=>getCheckedItem(item)}>O'zgartirish</button></td>
+                                <td style={{color: colorText(item.status)}}>{item.status}</td>
+                                <td>
+                                    <button className={"buttonExcel"}
+                                            onClick={() => getCheckedItem(item)}>O'zgartirish
+                                    </button>
+                                </td>
                             </tr>
                         )
                     }
                     </tbody>
                 </table>
-            </div>
+            </div>:
+            <div className={"fs-3 text-center"} style={{color:"red"}}>Sizga ushbu amalni bajarish uchun ruxsat berilmagan</div>}
         </div>
     );
 }

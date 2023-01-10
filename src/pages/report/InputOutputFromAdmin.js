@@ -21,7 +21,6 @@ function InputOutputFromAdmin({data}) {
     const [departmentId, setDepartmentId] = useState();
     const [kindergarten, setKindergarten] = useState();
 
-
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
@@ -49,11 +48,11 @@ function InputOutputFromAdmin({data}) {
 
     const getMttsByDepartment2 = (data) => {
         setDepartmentId(data);
-        setParams({...params,kindergartenId:data.id})
         dispatch(getByDepartmentMtt(data.id))
     }
 
     const getKindergartenDays = (data) => {
+        setParams({...params,kindergartenId:data.id})
         setKindergarten(data);
     }
 

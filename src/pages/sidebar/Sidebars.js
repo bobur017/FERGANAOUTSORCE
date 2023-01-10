@@ -20,7 +20,7 @@ import '../allStyle2.scss';
 import Users from "../users/Users";
 import MenuView from "../relationMultiMenu/MenuView";
 import UsersDepartment from "../users/UsersDepartment";
-import RelationMenu from "../permission/RelationMenu";
+import RelationMenu from "../relationMultiMenu/RelationMenu";
 import Supplier from "../supplier/Supplier";
 import Price from "../price/Price";
 import Contract from "../contract/Contract";
@@ -37,20 +37,30 @@ import InputOutputFromAdmin from "../report/InputOutputFromAdmin";
 import InputOutputKidsNumber from "../report/InputOutputKidsNumber";
 import InputOutputKidsNumberFromAdmin from "../report/InputOutputKidsNumberFromAdmin";
 import UserInfos from "../users/UserInfos";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import WareHousProductByKinderGarten from "../warehouse/WareHousProductByKinderGarten";
 import Notification from "../notification/Notification";
 import SendNotifications from "../notification/SendNotifications";
 import ProductPack from "../productPack/ProductPack";
-import PermissionsFromRelation from "../relationMultiMenu/PermissionsFromRelation";
+import PermissionsFromRelation from "../permission/PermissionsFromRelation";
 import MultiMenuOneFromOther from "../multimenu/MultiMenuOneFromOther";
+import {getUserData} from "../users/UserReducer";
+import {useEffect, useRef} from "react";
 
 function Sidebars() {
-
     const user = useSelector(state => state.user.userData)
     const isBigScreen3 = useMediaQuery({query: '(min-width: 1090px)'});
     const isBigScreen2 = useMediaQuery({query: '(min-width: 576px)'});
     const isBigScreen = useMediaQuery({query: '(max-width: 576px)'});
+    const dispatch = useDispatch();
+    const firstUpdate = useRef(false);
+    useEffect(() => {
+        if (!firstUpdate.current) {
+            firstUpdate.current = true;
+            dispatch(getUserData());
+        }
+    }, []);
+
     return (
         <div className={'h-100'}>
             <Navbar bg="light" style={{height: '10%'}}>
@@ -120,9 +130,9 @@ function Sidebars() {
                                 <div className={'px-1'}
                                      style={{backgroundColor: '#eeeeee', borderRadius: "30%", cursor: 'pointer'}}>
                                     <Link
-                                    to={"/sidebar/notification"} className={"link-none"}>
-                                    <TbBell
-                                        size={15}/></Link></div>
+                                        to={"/sidebar/notification"} className={"link-none"}>
+                                        <TbBell
+                                            size={15}/></Link></div>
                                 <div className={'px-1'}
                                      style={{backgroundColor: '#eeeeee', borderRadius: "30%", cursor: 'pointer'}}>
                                     <BiMessageDetail size={15}/></div>
@@ -178,4 +188,5 @@ function Sidebars() {
         </div>
     );
 }
+
 export default Sidebars;

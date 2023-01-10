@@ -26,7 +26,7 @@ function UserInfos() {
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
-            dispatch(getUserData());
+
         } else {
             console.log(user, "user");
         }

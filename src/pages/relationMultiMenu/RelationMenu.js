@@ -3,14 +3,14 @@ import {Button, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {checkCalendar, getMultiMenu, relationMultiMenu} from "../multimenu/MultiMenuReducer";
-import main from '../relationMultiMenu/relationStyle.module.scss'
+import main from './relationStyle.module.scss'
 import SearchSelect from "../more/SearchSelect";
 import ReactApexChart from 'react-apexcharts'
 import {AiOutlineCheck, AiOutlineClose} from "react-icons/ai";
 import {MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos} from "react-icons/md";
 import {AiOutlineEnvironment} from "react-icons/ai";
 import {colorTextStr} from "../funcs/Funcs";
-import {getDepartmentFromRelation} from "../departments/RegionDepartmentReducer";
+import {getDepartmentFromRelation, getDepartmentFromRelationAdd} from "../departments/RegionDepartmentReducer";
 import {getMttFromRelations} from "../mtt/MttReducer";
 import {GoCheck, GoPrimitiveDot} from "react-icons/go";
 import {toast} from "react-toastify";
@@ -150,8 +150,8 @@ function RelationMenu() {
     const dispatch = useDispatch();
     const multiMenuList = useSelector(state => state.multiMenu.multiMenuList);
     const calendar = useSelector(state => state.multiMenu.checkCalendar);
-    const departmentsRel = useSelector(state => state.department.departmentsRel);
-    const mttsRelations = useSelector(state => state.mtt.mttsRelations);
+    const departmentsRel = useSelector(state => state.department.departmentsRelAdd);
+    const mttsRelations = useSelector(state => state.mtt.mttsRelationsAdd);
     const relationsResult = useSelector(state => state.multiMenu.relationsResult);
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);
@@ -300,7 +300,7 @@ function RelationMenu() {
                 if (departments.some(item => item.date === day.date)) {
                     setDepartment(departments.filter(item => item.date === day.date));
                 } else {
-                    dispatch(getDepartmentFromRelation({date: parseInt(day?.date)}));
+                    dispatch(getDepartmentFromRelationAdd({date: parseInt(day?.date)}));
                     setLoad(true);
                 }
                 setMtts([]);
@@ -571,8 +571,6 @@ function RelationMenu() {
                     )
                 )
             );
-            console.log(dayList,"dayList")
-            console.log(multiMenuState?.id,"menuId")
             dispatch(relationMultiMenu(dayList, multiMenuState?.id));
         } else {
             toast.error("Taomnoma tanlanmagan!")

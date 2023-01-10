@@ -81,7 +81,7 @@ function ProductPack() {
                           buttonName={"Mahsulot qadoq'ini qo'shish"}/>
             <br/>
             <div className={'figma-card'}>
-                <div className={'tableCalendar'}>
+                {packs?.list > 0 ? <div className={'tableCalendar'}>
                     <table style={{color: 'black'}}>
                         <thead>
                         <tr>
@@ -117,7 +117,7 @@ function ProductPack() {
                         }
                         </tbody>
                     </table>
-                </div>
+                </div>:<div className={"text-center"}>Ma'lumot mavjud emas</div> }
             </div>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitProductPack}>
@@ -130,6 +130,8 @@ function ProductPack() {
                         <Form.Label>Qadoq miqdori</Form.Label>
                         <Form.Control name='pack' required value={packState?.pack} onChange={onChanges("pack")}
                                       placeholder="Qadoq miqdorini kiriting " type={'number'} step={"0.01"}
+                                      min={3}
+                                      max={500}
                                       onWheel={e => e.target.blur()}/>
                         <br/>
                     </Modal.Body>

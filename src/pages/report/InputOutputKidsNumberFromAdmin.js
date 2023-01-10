@@ -15,6 +15,7 @@ import {AiOutlineEnvironment} from "react-icons/ai";
 import {getByDepartmentMtt} from "../mtt/MttReducer";
 import {getDepartment} from "../departments/RegionDepartmentReducer";
 import {getKidsNumbersByDate, getKidsNumbersByDepartment} from "../children-number/ChildrenNumberReducer";
+import {toast} from "react-toastify";
 
 function InputOutputKidsNumberFromAdmin({data}) {
     const [params, setParams] = useState({startDate: '', endDate: ''});
@@ -51,22 +52,30 @@ function InputOutputKidsNumberFromAdmin({data}) {
 
     const getData = (e) => {
         e.preventDefault();
-        dispatch(getKidsNumbersByDate(kindergarten, params));
+        if (kindergarten) {
+            dispatch(getKidsNumbersByDate(kindergarten, params));
+        } else {
+            toast.error("MTT ni tanlang");
+        }
     }
 
     const getData2 = (e) => {
         e.preventDefault();
-        dispatch(getKidsNumbersByDepartment(departmentId, {date}));
+        if (departmentId) {
+            dispatch(getKidsNumbersByDepartment(departmentId, {date}));
+        } else {
+            toast.error("Tumanni tanlang");
+        }
     }
 
     const getReportPdf = (e) => {
         e.preventDefault();
-        dispatch(getInputOutputKidsNumberPdf(departmentId,params));
+        dispatch(getInputOutputKidsNumberPdf(departmentId, params));
     }
 
     const getReportPdf2 = (e) => {
         e.preventDefault();
-        dispatch(getInputOutputKidsNumberPdfDay(departmentId,params));
+        dispatch(getInputOutputKidsNumberPdfDay(departmentId, params));
     }
 
     const getMttsByDepartment2 = (data) => {
@@ -79,6 +88,13 @@ function InputOutputKidsNumberFromAdmin({data}) {
     }
     const getKindergartenDays = (data) => {
         setKindergarten(data);
+    }
+    const colors = (name) => {
+        if (name === "TASDIQLANDI") {
+            return "#029605";
+        } else {
+            return "#e16107";
+        }
     }
     return (
         <div className={`${main.main}`}>
@@ -97,7 +113,8 @@ function InputOutputKidsNumberFromAdmin({data}) {
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridZip" className={"d-flex"}>
                                 <button className={'createButtons mt-4'} type={'submit'}>Tayyor</button>
-                                <button className={'buttonPdf mt-4 mx-3'} type={'submit'} onClick={getReportPdf}>PDF</button>
+                                <button className={'buttonPdf mt-4 mx-3'} type={'submit'} onClick={getReportPdf}>PDF
+                                </button>
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridZip">
                             </Form.Group>
@@ -136,38 +153,40 @@ function InputOutputKidsNumberFromAdmin({data}) {
 
                 </Col>
                 <Col xs={7} sm={7} md={7} lg={7} xl={7} className={'figma-card-first mt-3'}>
-                    <div className={"tableCalendar"}>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>№</th>
-                                <th>MTT nomi</th>
+                    {kidsNumbersByDepartment.length > 0 ? <div className={"tableCalendar"}>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>MTT nomi</th>
+                                    {
+                                        kidsNumbersByDepartment.length > 0 ? kidsNumbersByDepartment[0]?.subDTO.map((item, index) =>
+                                            <th key={index}>{item.ageGroupName}</th>
+                                        ) : null
+                                    }
+                                    <th>Holati</th>
+                                </tr>
+                                </thead>
+                                <tbody>
                                 {
-                                    kidsNumbersByDepartment.length > 0 ? kidsNumbersByDepartment[0]?.subDTO.map((item, index) =>
-                                        <th key={index}>{item.ageGroupName}</th>
-                                    ) : null
+                                    kidsNumbersByDepartment.map((item, index) =>
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>{item.kindergartenName}</td>
+                                            {
+                                                item.subDTO.map((item2, index2) =>
+                                                    <td key={index2}>{item2.number}</td>
+                                                )
+                                            }
+                                            <td style={{color: colors(item.status), fontWeight: 600}}>{item.status}</td>
+                                        </tr>
+                                    )
                                 }
-                                <th>Holati</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                kidsNumbersByDepartment.map((item, index) =>
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{item.kindergartenName}</td>
-                                        {
-                                            item.subDTO.map((item2, index2) =>
-                                                <td key={index2}>{item2.number}</td>
-                                            )
-                                        }
-                                        <td>{item.status}</td>
-                                    </tr>
-                                )
-                            }
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div> :
+                        <div className={"text-center"}>Bu kunda ma'lumotlar mavjud emas!</div>
+                    }
                 </Col>
             </Row> : null}
             {currentNavs === 1 ? <Row>
@@ -191,7 +210,8 @@ function InputOutputKidsNumberFromAdmin({data}) {
 
                             <Form.Group as={Col} controlId="formGridZip" className={'d-flex'}>
                                 <button className={'createButtons mt-4 mx-3'} type={'submit'}>Tayyor</button>
-                                <button className={'buttonPdf mt-4'} type={'submit'} onClick={getReportPdf2}>PDF</button>
+                                <button className={'buttonPdf mt-4'} type={'submit'} onClick={getReportPdf2}>PDF
+                                </button>
                             </Form.Group>
                         </Row>
 
@@ -259,7 +279,7 @@ function InputOutputKidsNumberFromAdmin({data}) {
                     </div>
                 </Col>
                 <Col xs={7} sm={7} md={7} lg={7} xl={7} className={'figma-card-first mt-3'}>
-                    <div className={"tableCalendar"}>
+                    {kidsNumbersByDate.length > 0 ? <div className={"tableCalendar"}>
                         <table>
                             <thead>
                             <tr>
@@ -284,13 +304,13 @@ function InputOutputKidsNumberFromAdmin({data}) {
                                                 <td key={index2}>{item2.number}</td>
                                             )
                                         }
-                                        <td>{item.status}</td>
+                                        <td style={{color: colors(item.status), fontWeight: 600}}>{item.status}</td>
                                     </tr>
                                 )
                             }
                             </tbody>
                         </table>
-                    </div>
+                    </div> : <div className={"text-center"}>Bu kunda ma'lumot mavjud emas</div>}
                 </Col>
             </Row> : null}
         </div>
