@@ -14,10 +14,16 @@ const slice = createSlice({
         menu: {},
         checkCalendar: {},
         checkCalendar2: {},
+        multiMenuFile: "",
     },
     reducers: {
         multiMenuList: (state, action) => {
             state.multiMenuList = action.payload;
+        },
+        multiMenuFile: (state, action) => {
+            // state.multiMenuFile = action.payload;
+            var win = window.open(action.payload, '_blank');
+            win.focus();
         },
         checkCalendar: (state, action) => {
             state.checkCalendar = action.payload;
@@ -56,7 +62,7 @@ export const getMultiMenu = () => apiCall({
     error: slice.actions.errorReducer.type
 })
 export const getMultiMenuOne = (id) => apiCall({
-    url: "/multiMenu/"+id,
+    url: "/multiMenu/" + id,
     method: "GET",
     headers: {
         Authorization: getToken(),
@@ -66,7 +72,7 @@ export const getMultiMenuOne = (id) => apiCall({
 })
 
 export const getMenuOne = (id) => apiCall({
-    url: "/menu/"+id,
+    url: "/menu/" + id,
     method: "GET",
     headers: {
         Authorization: getToken(),
@@ -107,8 +113,18 @@ export const addMultiMenu = (data) => apiCall({
     success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
 })
-export const relationMultiMenu = (data,id) => apiCall({
-    url: "/menu/"+id,
+
+export const getFileMultiMenu = (data) => apiCall({
+    url: "/multiMenu/getFile/" + data.id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.multiMenuFile.type,
+    error: slice.actions.errorReducer.type
+})
+export const relationMultiMenu = (data, id) => apiCall({
+    url: "/menu/" + id,
     method: "POST",
     headers: {
         Authorization: getToken(),
@@ -118,7 +134,7 @@ export const relationMultiMenu = (data,id) => apiCall({
     error: slice.actions.errorReducer.type
 })
 export const addMultiMenuMeal = (data) => apiCall({
-    url: "/multiMenu/addMeal/"+data.id,
+    url: "/multiMenu/addMeal/" + data.id,
     method: "POST",
     headers: {
         Authorization: getToken(),
@@ -128,7 +144,7 @@ export const addMultiMenuMeal = (data) => apiCall({
     error: slice.actions.errorReducer.type,
 })
 
-export const editMultiMenu = (params,data) => apiCall({
+export const editMultiMenu = (params, data) => apiCall({
     url: "/multiMenu/" + data.id,
     method: "PUT",
     headers: {
@@ -151,8 +167,8 @@ export const checkCalendar = (params) => apiCall({
     error: slice.actions.errorReducer.type
 });
 
-export const checkCalendarByMtts = (id,params) => apiCall({
-    url: "/byCalendarKindergarten/"+id,
+export const checkCalendarByMtts = (id, params) => apiCall({
+    url: "/byCalendarKindergarten/" + id,
     method: "GET",
     headers: {
         Authorization: getToken(),
@@ -161,9 +177,6 @@ export const checkCalendarByMtts = (id,params) => apiCall({
     success: slice.actions.checkCalendar2.type,
     error: slice.actions.errorReducer.type
 });
-
-
-
 
 
 export default slice.reducer;

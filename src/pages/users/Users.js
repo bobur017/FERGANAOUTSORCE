@@ -145,7 +145,7 @@ function Users() {
                     </Col>
                     <Col xs={12} sm={12} md={9} lg={9} xl={9}>
                         <div className={'figma-card mt-3'}>
-                            <div className={'tableCalendar'}>
+                            <div className={'tableCalendar'} style={{overflowY:'hidden',maxHeight:'100%'}}>
                                 <table>
                                     <thead>
                                     <tr>
@@ -179,7 +179,7 @@ function Users() {
                                                     >
                                                         <BiDotsVerticalRounded size={25}/>
                                                         {
-                                                            more === item.id ? <div className={'more shadow'}>
+                                                            more === item.id ? <div className={'more shadow'} style={{zIndex:1000}}>
                                                                 {item.status ? <div className={'sub-more'}  onClick={()=>dispatch(statusUser(item,{status: !item.status}))}>
                                                                     <BiUserX size={20} color={'#E9573F'}/>
                                                                     <span className={'mx-1'}>Xodimni cheklash</span>
@@ -206,6 +206,10 @@ function Users() {
                                     }
                                     </tbody>
                                 </table>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
                             </div>
                         </div>
                     </Col>
@@ -219,16 +223,27 @@ function Users() {
                     <Modal.Body>
                         <Form.Label>Ismi</Form.Label>
                         <Form.Control name={'name'} size={'sm'} className={'mb-2'} value={userState.name} onChange={onChangeState}
+                                      minLength={3}
+                                      maxLength={25}
                                       required/>
                         <Form.Label>Familyasi</Form.Label>
                         <Form.Control name={'surname'} className={'mb-2'} size={'sm'}  value={userState.surname}
-                                      onChange={onChangeState} required/>
+                                      onChange={onChangeState} required
+                                      minLength={3}
+                                      maxLength={25}
+                        />
                         <Form.Label>Otasining ismi</Form.Label>
                         <Form.Control name={'fatherName'} className={'mb-2'} size={'sm'}  value={userState.fatherName}
-                                      onChange={onChangeState} required/>
+                                      onChange={onChangeState}
+                                      minLength={3}
+                                      maxLength={25}
+                                      required/>
                         <Form.Label>Login</Form.Label>
-                        <Form.Control name={'username'} className={'mb-2'} size={'sm'}  value={userState.username} minLength={5}
-                                      onChange={onChangeState} required/>
+                        <Form.Control name={'username'} className={'mb-2'} size={'sm'}  value={userState.username}
+                                      onChange={onChangeState}
+                                      minLength={4}
+                                      maxLength={25}
+                                      required/>
                         <Form.Label>Tel:</Form.Label>
                         <Form.Control name={'phoneNumber'} className={'mb-2'} size={'sm'}  value={userState.phoneNumber}
                                       maxLength={9}

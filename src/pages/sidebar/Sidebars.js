@@ -37,18 +37,31 @@ import InputOutputFromAdmin from "../report/InputOutputFromAdmin";
 import InputOutputKidsNumber from "../report/InputOutputKidsNumber";
 import InputOutputKidsNumberFromAdmin from "../report/InputOutputKidsNumberFromAdmin";
 import UserInfos from "../users/UserInfos";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import WareHousProductByKinderGarten from "../warehouse/WareHousProductByKinderGarten";
 import Notification from "../notification/Notification";
 import SendNotifications from "../notification/SendNotifications";
 import ProductPack from "../productPack/ProductPack";
+import PermissionsFromRelation from "../permission/PermissionsFromRelation";
+import MultiMenuOneFromOther from "../multimenu/MultiMenuOneFromOther";
+import {getUserData} from "../users/UserReducer";
+import {useEffect, useRef} from "react";
+import DefaultKidsNumber from "../children-number/DefaultKidsNumber";
 
 function Sidebars() {
-
     const user = useSelector(state => state.user.userData)
     const isBigScreen3 = useMediaQuery({query: '(min-width: 1090px)'});
     const isBigScreen2 = useMediaQuery({query: '(min-width: 576px)'});
     const isBigScreen = useMediaQuery({query: '(max-width: 576px)'});
+    const dispatch = useDispatch();
+    const firstUpdate = useRef(false);
+    useEffect(() => {
+        if (!firstUpdate.current) {
+            firstUpdate.current = true;
+            dispatch(getUserData());
+        }
+    }, []);
+
     return (
         <div className={'h-100'}>
             <Navbar bg="light" style={{height: '10%'}}>
@@ -116,10 +129,11 @@ function Sidebars() {
                             </div>
                             <div className={"d-flex align-items-center justify-content-around w-75"}>
                                 <div className={'px-1'}
-                                     style={{backgroundColor: '#eeeeee', borderRadius: "30%", cursor: 'pointer'}}><Link
-                                    to={"/sidebar/notification"} className={"link-none"}>
-                                    <TbBell
-                                        size={15}/></Link></div>
+                                     style={{backgroundColor: '#eeeeee', borderRadius: "30%", cursor: 'pointer'}}>
+                                    <Link
+                                        to={"/sidebar/notification"} className={"link-none"}>
+                                        <TbBell
+                                            size={15}/></Link></div>
                                 <div className={'px-1'}
                                      style={{backgroundColor: '#eeeeee', borderRadius: "30%", cursor: 'pointer'}}>
                                     <BiMessageDetail size={15}/></div>
@@ -167,7 +181,11 @@ function Sidebars() {
                     <Route path="/notification" element={<Notification/>}/>
                     <Route path="/send-notification" element={<SendNotifications/>}/>
                     <Route path="/product-pack" element={<ProductPack/>}/>
+                    <Route path="/permission" element={<PermissionsFromRelation/>}/>
+                    <Route path="/default-kids-number" element={<DefaultKidsNumber/>}/>
+                    <Route path="/one-multi-menu-other/:id" element={<MultiMenuOneFromOther/>}/>
                 </Routes>
+                <br/><br/>
             </Sidebar>
         </div>
     );

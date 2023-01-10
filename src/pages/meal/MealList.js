@@ -9,6 +9,7 @@ import DropdownCustomChackList from "../more/DropdownCustomChackList";
 import {baseUrl} from "../../Default";
 import {map} from "react-bootstrap/ElementChildren";
 import {getMealCategory} from "./MealCategoryReducer";
+import {getRoleStorage} from "../more/Functions";
 
 function MealList() {
     const [show, setShow] = useState(false);
@@ -251,7 +252,7 @@ function MealList() {
     return (
         <div className={'allMain'}>
             <NavbarHeader name={"Taomlar "} handleShow={() => onClickDepartment(null, 0)}
-                          buttonName={"Taom qo'shish"}/>
+                          buttonName={getRoleStorage() === "ROLE_ADMIN" ? "Taom qo'shish" : ""}/>
             <br/>
             <div className={'figma-card'}>
 
@@ -261,9 +262,9 @@ function MealList() {
                         <tr>
                             <th>#</th>
                             <th>Nomi</th>
-                            <th>O'zgartirish</th>
+                            {getRoleStorage() === "ROLE_ADMIN" ? <th>O'zgartirish</th> : null}
                             <th>Ko'rish</th>
-                            <th>O'chirish</th>
+                            {getRoleStorage() === "ROLE_ADMIN" ? <th>O'chirish</th> : null}
                         </tr>
                         </thead>
                         <tbody>
@@ -272,24 +273,27 @@ function MealList() {
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{item.name}</td>
-                                    <td>
-                                        <Button variant='outline-info' size='sm'
-                                                onClick={() => onClickDepartment(item, 1)}>
-                                            O'zgartirish
-                                        </Button>
-                                    </td>
+                                    {getRoleStorage() === "ROLE_ADMIN" ? <td>
+                                            <Button variant='outline-info' size='sm'
+                                                    onClick={() => onClickDepartment(item, 1)}>
+                                                O'zgartirish
+                                            </Button>
+                                        </td>
+                                        : null}
                                     <td>
                                         <Button variant='outline-info' size='sm'
                                                 onClick={() => onClickDepartment(item, 3)}>
                                             Ko'rish
                                         </Button>
                                     </td>
-                                    <td>
-                                        <Button variant='outline-danger' size='sm'
-                                                onClick={() => onClickDepartment(item, 2)}>
-                                            O'chirish
-                                        </Button>
-                                    </td>
+                                    {getRoleStorage() === "ROLE_ADMIN" ?
+                                        <td>
+                                            <Button variant='outline-danger' size='sm'
+                                                    onClick={() => onClickDepartment(item, 2)}>
+                                                O'chirish
+                                            </Button>
+                                        </td>
+                                        : null}
                                 </tr>
                             )
                         }

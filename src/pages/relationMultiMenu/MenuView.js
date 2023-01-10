@@ -24,10 +24,12 @@ function MenuView() {
     const [show, setShow] = useState(false);
     const [currentDay, setCurrentDay] = useState();
     const handleClose = () => setShow(false);
+    const user = useSelector(state => state.user.userData)
     const handleShow = (data) => {
-        console.log(data, "data");
-        setCurrentDay(data);
-        setShow(true);
+        if (data.attached) {
+            setCurrentDay(data);
+            setShow(true);
+        }
     };
     const departmentsRel = useSelector(state => state.department.departmentsRel);
     const mttsRelations = useSelector(state => state.mtt.mttsRelations);
@@ -103,10 +105,10 @@ function MenuView() {
                     <TabsCustom listTabs={[{name: "Kun bo‘yicha"}, {name: "Bog‘cha kesimida"}]}
                                 currentTabs={setActiveNav}/>
                     <div>
-                        {getRoleStorage() === "ROLE_XODIMLAR_BO`LIMI" && getRoleStorage() === "ROLE_TEXNOLOG" ?
+                        {user?.permissionState || getRoleStorage() === "ROLE_TEXNOLOG" ?
                             <button className={'createButtons'}><Link to={"/sidebar/relation-menu"}
-                                                                      style={{textDecoration: 'none', color: 'white'}}>Menyu
-                                biriktirish</Link></button> : null}
+                                                                      style={{textDecoration: 'none', color: 'white'}}>
+                                Menyu biriktirish</Link></button> : null}
                     </div>
                 </div>
             </Row>
@@ -327,7 +329,7 @@ function MenuView() {
                                                                                      bottom: 1
                                                                                  }}/> : null}
                                                     <div
-                                                        className={days === day.day ? `shadow ${main.tooltipText}` : 'd-none'}>{day.menuName !== null ? day.menuName :
+                                                        className={days === day.day && days ? `shadow ${main.tooltipText}` : 'd-none'}>{day.menuName !== null ? day.menuName :
                                                         <span style={{
                                                             fontSize: 10,
                                                             color: 'red'
@@ -401,7 +403,7 @@ function MenuView() {
             </Row> : null}
             <Modal show={show} onHide={handleClose}>
                 <Modal.Body>
-                    <OneDayWithMtt id={currentDay?.reportId}/>
+                    {currentDay?.reportId ? <OneDayWithMtt id={currentDay?.reportId}/> : null}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

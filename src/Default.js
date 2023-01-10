@@ -1,10 +1,10 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 export const baseUrl = () => {
-    return "http://185.217.131.74:8888/out/api/attachment/"
-    // return "http://192.168.21.204:8888/out/api/attachment/"
+    return "https://feednet.uz/out/api/attachment/"
 }
 
 export const baseUrl2 = () => {
@@ -13,8 +13,8 @@ export const baseUrl2 = () => {
     // return "http://185.237.15.42:8888/out/api"
     // return "https://32f4-188-113-207-71.in.ngrok.io/out/api"
     return "http://localhost:8888/out/api"
-}
 
+}
 function Default(props) {
     const [state, setState] = useState();
     const dispatch = useDispatch();

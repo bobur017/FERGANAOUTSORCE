@@ -4,16 +4,15 @@ import {apiCall} from "../../ApiCall";
 import {getToken, toastError} from "../more/Functions";
 
 const slice = createSlice({
-    name: "getFiles",
+    name: "permission",
     initialState: {
         result: {},
         error: {},
-        getFiless:'',
+        permissionsMenu: [],
     },
     reducers: {
-        getFiless: (state, action) => {
-            var win = window.open(action.payload, '_blank');
-            win.focus();
+        permissions: (state, action) => {
+            state.permissionsMenu = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -26,20 +25,19 @@ const slice = createSlice({
     }
 })
 
-export const getGetFiles = (params) => apiCall({
-    url: "/warehouse/getFile",
+export const getPermission = () => apiCall({
+    url: "/permission",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
-    params,
-    success: slice.actions.getFiless.type,
+    success: slice.actions.permissions.type,
     error: slice.actions.errorReducer.type
 })
 
-export const deleteGetFiles = (data) => apiCall({
-    url: "/getFiles/" + data.id,
-    method: "DELETE",
+export const changePermission = (data) => apiCall({
+    url: "/permission/" + data.id,
+    method: "POST",
     headers: {
         Authorization: getToken(),
     },
@@ -48,8 +46,8 @@ export const deleteGetFiles = (data) => apiCall({
 })
 
 
-export const addGetFiles = (data) => apiCall({
-    url: "/getFiles",
+export const addPermission = (data) => apiCall({
+    url: "/permission",
     method: "POST",
     headers: {
         Authorization: getToken(),
@@ -59,8 +57,8 @@ export const addGetFiles = (data) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const editGetFiles = (data) => apiCall({
-    url: "/getFiles/" + data.id,
+export const editPermission = (data) => apiCall({
+    url: "/permission/" + data.id,
     method: "PUT",
     headers: {
         Authorization: getToken(),

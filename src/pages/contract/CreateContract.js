@@ -79,6 +79,16 @@ function CreateContract() {
             let kindergartenContractList = [...postStateContract?.kindergartenContractList];
             if (kindergartenContractList.length < 1) {
                 kindergartenContractList = [...def.kindergartenContractList];
+                kindergartenContractList[0] = {
+                    ...kindergartenContractList[0], productContracts: [{
+                        "price": 0,
+                        "productId": data?.id,
+                        "packWeight": 0,
+                        pack: data?.pack,
+                        productName: data?.name,
+                        maxPrice: data?.price?.maxPrice
+                    }]
+                }
             } else {
                 kindergartenContractList?.forEach((kinder, index) => {
                         let productContracts = [...kinder.productContracts].filter(item => item?.emptyy !== "empty");
@@ -86,7 +96,7 @@ function CreateContract() {
                             "price": 0,
                             "productId": data?.id,
                             "packWeight": 0,
-                            pack:data?.pack,
+                            pack: data?.pack,
                             productName: data?.name,
                             maxPrice: data?.price?.maxPrice
                         });
@@ -150,18 +160,26 @@ function CreateContract() {
     }
     const changePrice = (index2) => (e) => {
         let kindergartenContractList = [...postStateContract.kindergartenContractList];
+        if (kindergartenContractList[0].productContracts[index2]?.maxPrice >= parseFloat(e.target.value).toFixed(2) ) {
         postStateContract.kindergartenContractList.forEach((kin, index) => {
-                kindergartenContractList[index].productContracts[index2] = {
-                    ...kindergartenContractList[index].productContracts[index2],
-                    price: e.target.value
-                };
-            }
+                    kindergartenContractList[index].productContracts[index2] = {
+                        ...kindergartenContractList[index].productContracts[index2],
+                        price: e.target.value
+                    };
+                }
+
         );
         setPostStateContract({...postStateContract, kindergartenContractList});
+        }else {
+            toast.error("Max narxdan oshmasligi kerak!");
+        }
+    }
+    const changePrice2 = (index) => {
+        let kindergartenContractList = [...postStateContract.kindergartenContractList];
+        setProductState(kindergartenContractList[0].productContracts[index]);
     }
     const submit = (e) => {
         e.preventDefault();
-        console.log(postStateContract, "Tayyor");
         if (postStateContract.supplierId === '' || postStateContract.kindergartenContractList.some(item => item.id === "empty")) {
             toast.error("Barcha joylar to'ldirilishi shart");
         } else {
@@ -172,9 +190,9 @@ function CreateContract() {
     const totalByProduct = (index) => {
         let total = 0;
         postStateContract.kindergartenContractList.forEach((kin) =>
-            total += parseFloat(kin?.productContracts[index]?.packWeight).toFixed(2)
+            total += parseFloat(kin?.productContracts[index]?.packWeight)
         );
-        return total;
+        return total.toFixed(2);
     }
     const removeProduct = (id) => {
         let kindergartenContractList = [...postStateContract?.kindergartenContractList];
@@ -250,35 +268,51 @@ function CreateContract() {
                             <table>
                                 <thead>
                                 <tr>
-                                    <th>№</th>
-                                    <th colSpan={2}>MTT</th>
+                                    <th style={{width: 10}}>№</th>
+                                    <th>MTT</th>
                                     {
                                         postStateContract?.kindergartenContractList[0]?.productContracts?.map((product, index) =>
-                                            <th key={index}>
-                                                <div style={{maxWidth: 100, minWidth: 50}}>{product?.productName}</div>
-                                                <MdDeleteForever size={20} color={'red'}
-                                                                 onClick={() => removeProduct(product?.productId)}
-                                                                 style={{cursor: 'pointer'}}/>
+                                            <th key={index} style={{maxWidth: 100}}>
+                                                <div>
+                                                    <div style={{
+                                                        minWidth: 50,
+                                                        textAlign: 'center'
+                                                    }}>{product?.productName}</div>
+                                                    <MdDeleteForever size={20} color={'red'}
+                                                                     onClick={() => removeProduct(product?.productId)}
+                                                                     style={{cursor: 'pointer'}}/>
+                                                </div>
                                             </th>
                                         )
                                     }
-
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>1</td>
+                                <tr style={{backgroundColor: '#dad9d9'}}>
                                     <td colSpan={2}>Narx</td>
                                     {
                                         postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
-                                            <td key={index}>
+                                            <td key={index} onClick={() => changePrice2(index)}
+                                                style={{position: 'relative'}}>
+                                                {(prod?.productId === productState?.productId) ?
+                                                    <div style={{
+                                                        position: 'absolute',
+                                                        bottom: 30,
+                                                        color: '#f38538',
+                                                        backgroundColor: 'white',
+                                                        padding: 3
+                                                    }}
+                                                         className={"tooltipText shadow"}>
+                                                        Max narx:{prod?.maxPrice}
+                                                    </div> : null}
                                                 <input className={"myTdInput"} type="number"
                                                        name={'price'}
                                                        value={prod?.price}
                                                        onWheel={e => e.target.blur()}
                                                        required
+                                                       disabled={!(prod?.productId === productState?.productId)}
                                                        onChange={changePrice(index)}/>
-                                                <span>{prod?.maxPrice}</span>
+
                                             </td>
                                         )
                                     }
@@ -286,11 +320,13 @@ function CreateContract() {
                                 {
                                     postStateContract?.kindergartenContractList?.map((kinder, index) =>
                                         <tr key={index}>
-                                            <td>{index + 2}</td>
-                                            <td style={{width: 100}}>{kinder?.number}{kinder?.kindergartenName}</td>
-                                            <td><MdDeleteForever size={20} color={'red'}
-                                                                 onClick={() => removeKinder(kinder?.kindergartenId)}
-                                                                 style={{cursor: 'pointer'}}/></td>
+                                            <td style={{width: 10}}>{index + 1}</td>
+                                            <td style={{width: 100}} className={"d-flex justify-content-between"}>
+                                                <span>{kinder?.number}{kinder?.kindergartenName}</span><MdDeleteForever
+                                                size={20} color={'red'}
+                                                onClick={() => removeKinder(kinder?.kindergartenId)}
+                                                style={{cursor: 'pointer'}}/></td>
+
                                             {
                                                 kinder?.productContracts?.map((prod, index2) =>
                                                     <td key={index2} onClick={() => onClickProductWeight(kinder, prod)}>
@@ -300,7 +336,8 @@ function CreateContract() {
                                                                onWheel={e => e.target.blur()}
                                                                required
                                                                disabled={!(kinder?.kindergartenId === kindergartenState?.kindergartenId && prod?.productId === productState?.productId)}
-                                                               onChange={changeProductWeight(index, index2,prod?.pack)}/>
+                                                               onChange={changeProductWeight(index, index2, prod?.pack)}/>
+
                                                     </td>
                                                 )
                                             }
@@ -308,7 +345,7 @@ function CreateContract() {
                                     )
                                 }
                                 <tr>
-                                    <td colSpan={3}>Umumiy</td>
+                                    <td colSpan={2}>Umumiy</td>
 
                                     {
                                         postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>

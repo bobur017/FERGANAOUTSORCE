@@ -6,26 +6,30 @@ import {Button, Col, Form, Modal, Row, Table} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
 import CheckBoxCustom from "../more/CheckBoxCustom";
 import {getAge} from "../age/AgeReducer";
+import CheckBoxCustom2 from "../more/CheckBoxCustom2";
+import {getRoleStorage} from "../more/Functions";
 
 
 function MealTime() {
     const [show, setShow] = useState(false);
     const [edited, setEdited] = useState(false);
-    const [mealTimeState, setMealTimeState] = useState({id: '', name: ''});
     const [mealTimes, setMealTimes] = useState([]);
-    const handleClose = () => {
-        setShow(false);
-        setMealTimeState({id: '', name: '', ageGroupIdList: []});
-    };
-    const handleShow = () => {
-        setShow(true)
-    };
-
-
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     const mealTime = useSelector(state => state.mealTime)
     const ages = useSelector(state => state.age.ages)
+    const handleClose = () => {
+        setShow(false);
+        setMealTimeState({id: '', name: '', ageGroupList: ages});
+    };
+    const [mealTimeState, setMealTimeState] = useState({id: '', name: '', ageGroupList: ages});
+    const handleShow = (data) => {
+        if (data === null) {
+            setMealTimeState({...mealTimeState, ageGroupList: ages})
+        }
+        setShow(true)
+    };
+
 
     useEffect(() => {
         if (firstUpdate.current) {
@@ -49,23 +53,35 @@ function MealTime() {
 
     const submitMealTime = (e) => {
         e.preventDefault();
+        let ageGroupIdList = mealTimeState?.ageGroupList.filter(item => item.checked).map(item => item.id);
+        console.log(ageGroupIdList, mealTimeState);
         if (mealTimeState.id !== '') {
             dispatch(editMealTime({
                 ...mealTimeState,
-                ageGroupIdList: mealTimeState.ageGroupIdList.map(item => item.id)
+                ageGroupIdList
             }));
         } else {
             dispatch(addMealTime({
                 ...mealTimeState,
-                ageGroupIdList: mealTimeState.ageGroupIdList.map(item => item.id)
+                ageGroupIdList
             }));
         }
     }
     const onClickDepartment = (data, number) => {
         if (number === 1) {
-            setMealTimeState(data);
+            let ageGroupList = ages.map((item) => {
+                if (data?.ageGroupList?.some(item2 => item2.id === item.id)) {
+                    return {...item, checked: true};
+                } else {
+                    return {...item, checked: false};
+                }
+            })
+            setMealTimeState({
+                ...data, ageGroupList
+            });
+            console.log(ageGroupList);
             setEdited(true);
-            handleShow();
+            setShow(true);
         } else if (number === 2) {
             dispatch(deleteMealTime(data));
         }
@@ -76,13 +92,23 @@ function MealTime() {
         setMealTimeState({...mealTimeState, [param]: e.target.value});
     }
 
-    const getChecked = (list) => {
-        setMealTimeState({...mealTimeState, ageGroupIdList: list});
+    const getChecked = (data, checked, index) => {
+        let ageGroupList = [...mealTimeState?.ageGroupList];
+        ageGroupList[index] = {...ageGroupList[index], checked};
+        setMealTimeState({...mealTimeState, ageGroupList});
+    }
+    const allChecked = (checked) => {
+        setMealTimeState({
+            ...mealTimeState, ageGroupList: mealTimeState?.ageGroupList.map((item) => {
+                return {...item, checked}
+            })
+        });
     }
 
     return (
         <div className={'allMain'}>
-            <NavbarHeader name={"Taomlanish vaqtlari"} handleShow={handleShow} buttonName={"Taom vaqtini qo'shish"}/>
+            <NavbarHeader name={"Taomlanish vaqtlari"} handleShow={handleShow}
+                          buttonName={getRoleStorage() === "ROLE_ADMIN" ? "Taom vaqtini qo'shish" : ""}/>
             <br/>
             <div className={'figma-card'}>
 
@@ -92,8 +118,8 @@ function MealTime() {
                         <tr>
                             <th>#</th>
                             <th>Nomi</th>
-                            <th>O'zgartirish</th>
-                            <th>O'chirish</th>
+                            {getRoleStorage() === "ROLE_ADMIN" ? <th>O'zgartirish</th> : null}
+                            {getRoleStorage() === "ROLE_ADMIN" ? <th>O'chirish</th> : null}
                         </tr>
                         </thead>
                         <tbody>
@@ -102,18 +128,18 @@ function MealTime() {
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{item.name}</td>
-                                    <td>
+                                    {getRoleStorage() === "ROLE_ADMIN" ? <td>
                                         <Button variant='outline-info' size='sm'
                                                 onClick={() => onClickDepartment(item, 1)}>
                                             O'zgartirish
                                         </Button>
-                                    </td>
-                                    <td>
+                                    </td> : null}
+                                    {getRoleStorage() === "ROLE_ADMIN" ? <td>
                                         <Button variant='outline-danger' size='sm'
                                                 onClick={() => onClickDepartment(item, 2)}>
                                             O'chirish
                                         </Button>
-                                    </td>
+                                    </td> : null}
                                 </tr>
                             )
                         }
@@ -131,8 +157,9 @@ function MealTime() {
                         <Form.Control name='name' required value={mealTimeState.name} onChange={onChanges("name")}
                                       placeholder="Nomi "/>
                         <br/>
-                        <CheckBoxCustom edited={edited} editList={mealTimeState?.ageGroupList} list={ages}
-                                        getChecked={getChecked}/>
+                        <CheckBoxCustom2 name={"name"}
+                                         list={mealTimeState?.ageGroupList}
+                                         getChecked={getChecked} allChecked={allChecked}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" onClick={handleClose}>

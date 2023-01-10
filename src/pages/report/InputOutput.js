@@ -17,8 +17,7 @@ function InputOutput({data}) {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
         } else {
-            var win = window.open(inputOutputs, '_blank');
-            win.focus();
+
         }
     }, [inputOutputs]);
 
@@ -28,7 +27,8 @@ function InputOutput({data}) {
         }
     }
 
-    const getData = () => {
+    const getData = (e) => {
+        e.preventDefault();
         dispatch(inputOutput(params));
     }
     return (
@@ -36,7 +36,6 @@ function InputOutput({data}) {
             <NavbarHeader name={"Kirim chiqim hisobotlari"}/>
             <div className={'figma-card mt-3'}>
                     <Form onSubmit={getData}>
-
                         <Row className="mb-3 align-items-center">
                             <Form.Group as={Col}>
                                 <Form.Label>Boshlanish sana</Form.Label>

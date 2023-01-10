@@ -21,6 +21,7 @@ function Contract() {
     const [id, setId] = useState();
     const [contractState, setContractState] = useState({id: '', name: ''});
     const [contracts, setContracts] = useState([]);
+    const [renderNumber, setRenderNumber] = useState();
     const handleClose = () => {
         setShow(false);
         setContractState({id: '', name: ''});
@@ -43,7 +44,7 @@ function Contract() {
     const contract = useSelector(state => state.contract)
     const contractFile = useSelector(state => state.contract.contractFile)
     const menuOneDay = useSelector(state => state.report.menuOneDay);
-    const [fileType,setFileType]=useState();
+    const [fileType, setFileType] = useState();
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -84,10 +85,12 @@ function Contract() {
     const onClickDepartment = (data, number) => {
         if (number === 1) {
             setContractState(data);
-            handleShow();
+            setRenderNumber(number);
         } else if (number === 2) {
-            dispatch(deleteContract(data));
+            setContractState(data);
+            setRenderNumber(number);
         }
+        handleShow();
     }
 
 
@@ -110,6 +113,54 @@ function Contract() {
     const getFiles = (type) => {
         setFileType(type);
         dispatch(getContractFile(id));
+    }
+    const modalEdit = () => {
+        return (
+            <Form onSubmit={submitContract}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{contractState.name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form.Control name='name' required value={contractState.name} onChange={onChanges("name")}
+                                  placeholder="Nomi "/>
+                    <br/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleClose}>
+                        Ortga
+                    </Button>
+                    <Button variant="primary" type='submit'>
+                        Tayyor
+                    </Button>
+                </Modal.Footer>
+            </Form>
+        )
+    }
+    const modalDelete = () => {
+        return (
+            <>
+                <Modal.Header closeButton>
+                    <Modal.Title>{contractState.name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    O'chirilgan ma'lumotni qayta tiklab bo'lmaydi, rostdan ham o'chirasizmi?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleClose}>
+                        YO'Q
+                    </Button>
+                    <Button variant="primary" onClick={()=>dispatch(deleteContract(contractState?.id))}>
+                        HA
+                    </Button>
+                </Modal.Footer></>
+        )
+    }
+    const renderFunc = () => {
+        if (renderNumber === 1) {
+            return modalEdit();
+        } else if (renderNumber === 2) {
+            return modalDelete();
+        }
     }
 
     return (
@@ -176,90 +227,73 @@ function Contract() {
                 </div>
             </div>
             <Modal show={show} onHide={handleClose}>
-                <Form onSubmit={submitContract}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>{contractState.name}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form.Control name='name' required value={contractState.name} onChange={onChanges("name")}
-                                      placeholder="Nomi "/>
-                        <br/>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="danger" onClick={handleClose}>
-                            Ortga
-                        </Button>
-                        <Button variant="primary" type='submit'>
-                            Tayyor
-                        </Button>
-                    </Modal.Footer>
-                </Form>
+                {renderFunc()}
             </Modal>
             <Modal show={show2} onHide={handleClose2} size={'xl'}>
                 <Modal.Header closeButton>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className={'miniTable2'}>
-                    <table className={'w-100'}>
-                        <thead>
-                        <tr>
-                            <th>№</th>
-                            <th>MTT</th>
-                            {
-                                contract?.contract?.kindergartenContractList?.length > 0 ?
-                                    contract.contract.kindergartenContractList[0].productContracts?.map((item,index)=>
-                                    <th key={index}>{item?.productName}</th>
-                                    )
-                                    : null
-                            }
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Narx</td>
-                            {
-                                contract?.contract?.kindergartenContractList?.length > 0 ? contract?.contract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
-                                    <td key={index}>
-                                        {prod?.price}
-                                    </td>
-                                ):null
-                            }
-                        </tr>
-                        {
-                            contract.contract?.kindergartenContractList?.map((kinder, index) =>
-                                <tr key={index}>
-                                    <td>{index + 2}</td>
-                                    <td>{kinder?.number}{kinder?.kindergartenName}</td>
-                                    {
-                                        kinder?.productContracts?.map((prod, index2) =>
-                                            <td key={index2} >
-
-                                                   {prod?.packWeight}
-
-                                            </td>
+                    <div className={'miniTable2'} style={{height:'80vh'}}>
+                        <table className={'w-100'}>
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>MTT</th>
+                                {
+                                    contract?.contract?.kindergartenContractList?.length > 0 ?
+                                        contract.contract.kindergartenContractList[0].productContracts?.map((item, index) =>
+                                            <th key={index}>{item?.productName}</th>
                                         )
-                                    }
-                                </tr>
-                            )
-                        }
-                        <tr>
-                            <td colSpan={2}>UMUMIY</td>
+                                        : null
+                                }
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+
+                                <td colSpan={2}>Narx</td>
+                                {
+                                    contract?.contract?.kindergartenContractList?.length > 0 ? contract?.contract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
+                                        <td key={index}>
+                                            {prod?.price}
+                                        </td>
+                                    ) : null
+                                }
+                            </tr>
                             {
-                                contract?.contract?.kindergartenContractList?.length > 0 ? contract.contract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
-                                    <td key={index}>
-                                        {totalByProduct(index)}
-                                    </td>
-                                ):null
+                                contract.contract?.kindergartenContractList?.map((kinder, index) =>
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{kinder?.number}{kinder?.kindergartenName}</td>
+                                        {
+                                            kinder?.productContracts?.map((prod, index2) =>
+                                                <td key={index2}>
+
+                                                    {prod?.packWeight}
+
+                                                </td>
+                                            )
+                                        }
+                                    </tr>
+                                )
                             }
-                        </tr>
-                        </tbody>
-                    </table>
+                            <tr>
+                                <td colSpan={2}>UMUMIY</td>
+                                {
+                                    contract?.contract?.kindergartenContractList?.length > 0 ? contract.contract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
+                                        <td key={index}>
+                                            {totalByProduct(index)}
+                                        </td>
+                                    ) : null
+                                }
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-
-                    <button className={'buttonPdf mx-1'} style={{width:100}} onClick={()=>getFiles("pdf")}>PDF</button>
+                    <button className={'buttonPdf mx-1'} style={{width: 100}} onClick={() => getFiles("pdf")}>PDF
+                    </button>
                     <Button variant="danger" onClick={handleClose2}>
                         Ortga
                     </Button>

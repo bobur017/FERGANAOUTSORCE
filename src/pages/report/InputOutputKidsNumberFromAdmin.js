@@ -1,34 +1,41 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getInputOutputKidsNumber, inputOutput, InputOutputKidsNumber} from "./ReportReducer";
+import {
+    getInputOutputKidsNumber,
+    getInputOutputKidsNumberPdf, getInputOutputKidsNumberPdfDay,
+    inputOutput,
+    InputOutputKidsNumber
+} from "./ReportReducer";
 import {Col, Form, Row} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
 import {TimestampToInputDate} from "../funcs/Funcs";
 import main from "../relationMultiMenu/relationStyle.module.scss";
 import {AiOutlineEnvironment} from "react-icons/ai";
 import {getByDepartmentMtt} from "../mtt/MttReducer";
-import fileDownload from "js-file-download";
 import {getDepartment} from "../departments/RegionDepartmentReducer";
+import {getKidsNumbersByDate, getKidsNumbersByDepartment} from "../children-number/ChildrenNumberReducer";
+import {toast} from "react-toastify";
 
 function InputOutputKidsNumberFromAdmin({data}) {
     const [params, setParams] = useState({startDate: '', endDate: ''});
+    const [currentNavs, setCurrentNavs] = useState(0);
     const dispatch = useDispatch();
     const inputOutputs = useSelector(state => state.report.kidsNumber);
+    const kidsNumbersByDate = useSelector(state => state.kidsNumber.kidsNumbersByDate);
+    const kidsNumbersByDepartment = useSelector(state => state.kidsNumber.kidsNumbersByDepartment);
     const firstUpdate = useRef(false);
     const departments = useSelector(state => state.department.departments);
     const mtts = useSelector(state => state.mtt.mtts);
+    const [date, setDate] = useState();
     const [departmentId, setDepartmentId] = useState();
     const [kindergarten, setKindergarten] = useState();
-
-
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
             dispatch(getDepartment());
         } else {
-            var win = window.open(inputOutputs, '_blank');
-            win.focus();
+
         }
     }, [inputOutputs]);
 
@@ -38,9 +45,37 @@ function InputOutputKidsNumberFromAdmin({data}) {
         }
     }
 
+    const onChangeDate2 = (e) => {
+        let dateHis = new Date(e.target.value).getTime();
+        setDate(dateHis);
+    }
+
     const getData = (e) => {
         e.preventDefault();
-        dispatch(getInputOutputKidsNumber(params));
+        if (kindergarten) {
+            dispatch(getKidsNumbersByDate(kindergarten, params));
+        } else {
+            toast.error("MTT ni tanlang");
+        }
+    }
+
+    const getData2 = (e) => {
+        e.preventDefault();
+        if (departmentId) {
+            dispatch(getKidsNumbersByDepartment(departmentId, {date}));
+        } else {
+            toast.error("Tumanni tanlang");
+        }
+    }
+
+    const getReportPdf = (e) => {
+        e.preventDefault();
+        dispatch(getInputOutputKidsNumberPdf(departmentId, params));
+    }
+
+    const getReportPdf2 = (e) => {
+        e.preventDefault();
+        dispatch(getInputOutputKidsNumberPdfDay(departmentId, params));
     }
 
     const getMttsByDepartment2 = (data) => {
@@ -48,16 +83,114 @@ function InputOutputKidsNumberFromAdmin({data}) {
         dispatch(getByDepartmentMtt(data.id))
     }
 
+    const getMttsByDepartment3 = (data) => {
+        setDepartmentId(data);
+    }
     const getKindergartenDays = (data) => {
         setKindergarten(data);
     }
+    const colors = (name) => {
+        if (name === "TASDIQLANDI") {
+            return "#029605";
+        } else {
+            return "#e16107";
+        }
+    }
     return (
         <div className={`${main.main}`}>
-            <NavbarHeader name={"Kirim chiqim hisobotlari"}/>
-            <Row>
+            <NavbarHeader name={"Bolalar soni"} navs={[{name: "MTT kesimida"}, {name: "Kun kesimida"},{name:"O'rtacha bola soni"},{name:"Muddat kiritish"}]}
+                          currentNavs={setCurrentNavs}/>
+            {currentNavs === 0 ? <Row>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} className={'figma-card-first mt-3 justify-content-around'}>
+                    <Form onSubmit={getData2}>
+                        <Row className="mb-3 align-items-center">
+                            <Form.Group as={Col}>
+                                <Form.Label>Sanani tanlang</Form.Label>
+                                <Form.Control name={'date'} type={'date'} onChange={onChangeDate2}
+                                              required
+                                              value={TimestampToInputDate(date)}/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridZip" className={"d-flex"}>
+                                <button className={'createButtons mt-4'} type={'submit'}>Tayyor</button>
+                                <button className={'buttonPdf mt-4 mx-3'} type={'submit'} onClick={getReportPdf}>PDF
+                                </button>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridZip">
+                            </Form.Group>
+                        </Row>
+
+                    </Form>
+                </Col>
+                <Col xs={5} sm={5} md={5} lg={5} xl={5}
+                     className={'figma-card-first d-flex justify-content-between p-1 mt-3'}>
+                    <div className={'w-100'}>
+                        <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
+                            {
+                                departments?.map((item, index) =>
+                                    <div key={index}
+                                         className={`d-flex justify-content-between align-items-center  p-2 mt-1 my-Hover ${main.district}`}
+                                         style={{backgroundColor: departmentId?.id !== item?.id ? 'white' : '#48B1AB'}}>
+                                        <div className={`d-flex`}
+                                             onClick={() => getMttsByDepartment3(item)}>
+                                            <div style={{
+                                                color: departmentId?.id !== item.id ? '#48B1AB' : 'white',
+                                                paddingLeft: 10,
+                                                borderColor: departmentId?.id !== item.id ? '#48B1AB' : 'white'
+                                            }}
+                                                 className={main.leftLine}>
+                                                <AiOutlineEnvironment
+                                                    size={30}/>
+                                            </div>
+                                            <div className={'mx-2'}
+                                                 style={{color: departmentId?.id === item.id ? 'white' : '#000'}}>{item?.name?.substring(0, 15)}{item?.name?.length > 10 ? "..." : ""}</div>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>
+
+                </Col>
+                <Col xs={7} sm={7} md={7} lg={7} xl={7} className={'figma-card-first mt-3'}>
+                    {kidsNumbersByDepartment.length > 0 ? <div className={"tableCalendar"}>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>MTT nomi</th>
+                                    {
+                                        kidsNumbersByDepartment.length > 0 ? kidsNumbersByDepartment[0]?.subDTO.map((item, index) =>
+                                            <th key={index}>{item.ageGroupName}</th>
+                                        ) : null
+                                    }
+                                    <th>Holati</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {
+                                    kidsNumbersByDepartment.map((item, index) =>
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>{item.kindergartenName}</td>
+                                            {
+                                                item.subDTO.map((item2, index2) =>
+                                                    <td key={index2}>{item2.number}</td>
+                                                )
+                                            }
+                                            <td style={{color: colors(item.status), fontWeight: 600}}>{item.status}</td>
+                                        </tr>
+                                    )
+                                }
+                                </tbody>
+                            </table>
+                        </div> :
+                        <div className={"text-center"}>Bu kunda ma'lumotlar mavjud emas!</div>
+                    }
+                </Col>
+            </Row> : null}
+            {currentNavs === 1 ? <Row>
                 <Col xs={12} sm={12} md={12} lg={12} xl={12} className={'figma-card-first mt-3 justify-content-around'}>
                     <Form onSubmit={getData}>
-
                         <Row className="mb-3 align-items-center">
                             <Form.Group as={Col}>
                                 <Form.Label>Boshlanish sana</Form.Label>
@@ -74,8 +207,10 @@ function InputOutputKidsNumberFromAdmin({data}) {
                                               min={TimestampToInputDate(params.startDate)}/>
                             </Form.Group>
 
-                            <Form.Group as={Col} controlId="formGridZip">
-                                <button className={'createButtons mt-4'} type={'submit'}>Tayyor</button>
+                            <Form.Group as={Col} controlId="formGridZip" className={'d-flex'}>
+                                <button className={'createButtons mt-4 mx-3'} type={'submit'}>Tayyor</button>
+                                <button className={'buttonPdf mt-4'} type={'submit'} onClick={getReportPdf2}>PDF
+                                </button>
                             </Form.Group>
                         </Row>
 
@@ -142,7 +277,43 @@ function InputOutputKidsNumberFromAdmin({data}) {
                         </div>
                     </div>
                 </Col>
-            </Row>
+                <Col xs={7} sm={7} md={7} lg={7} xl={7} className={'figma-card-first mt-3'}>
+                    {kidsNumbersByDate.length > 0 ? <div className={"tableCalendar"}>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>MTT nomi</th>
+                                {
+                                    kidsNumbersByDate.length > 0 ? kidsNumbersByDate[0].subDTO.map((item, index) =>
+                                        <th key={index}>{item.ageGroupName}</th>
+                                    ) : null
+                                }
+                                <th>Holati</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                kidsNumbersByDate.map((item, index) =>
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{item.date?.join("-")}</td>
+                                        {
+                                            item.subDTO.map((item2, index2) =>
+                                                <td key={index2}>{item2.number}</td>
+                                            )
+                                        }
+                                        <td style={{color: colors(item.status), fontWeight: 600}}>{item.status}</td>
+                                    </tr>
+                                )
+                            }
+                            </tbody>
+                        </table>
+                    </div> : <div className={"text-center"}>Bu kunda ma'lumot mavjud emas</div>}
+                </Col>
+            </Row> : null}
+            {currentNavs === 2}
+            {currentNavs === 3}
         </div>
     );
 }

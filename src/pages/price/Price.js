@@ -129,62 +129,65 @@ function Price() {
                 </Col>
                 <Col xs={12} sm={12} md={12} lg={6} xl={6}>
                     <div className={'figma-card'}>
-                        <div className={'w-100 d-flex justify-content-between px-1 py-2 align-items-center'}>
-                            <div className={"fs-5 fw-bolder"}>{oneProduct?.name}</div>
-                            <button className={'createButtons'} onClick={() => handleShow(1, null)}>Narx biriktirish
-                            </button>
-                        </div>
-                        <div className={'tableCalendar'}>
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>№</th>
-                                    <th>Bosh. sanasi</th>
-                                    <th>Tug. sanasi</th>
-                                    <th>Min narx</th>
-                                    <th>Max narx</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {
-                                    pricesByProduct?.list?.map((product, index) =>
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{TimestampToInputDate(product.startDay)}</td>
-                                            <td>{TimestampToInputDate(product.endDay)}</td>
-                                            <td>{product.minPrice} so'm</td>
-                                            <td>{product.maxPrice} so'm</td>
-                                            <td>
-                                                <button className={"myDots"}
-                                                        style={{position: 'relative'}}
-                                                        onBlur={() => setActiveMore(null)}
-                                                        onClick={() => setActiveMore(product.id)}
-                                                >
-                                                    <BsThreeDotsVertical size={20}/>
-                                                    {activeMore === product?.id ? <div className={'shadow'} style={{
-                                                        position: 'absolute',
-                                                        zIndex: 100
-                                                    }}>
-                                                        <div className={"more"} style={{right: 2}}>
-                                                            <div className={"sub-more"}
-                                                                 onClick={() => handleShow(2, product)}>o'zgartirish
+                        {pricesByProduct?.list?.length > 0 ? <>
+                            <div className={'w-100 d-flex justify-content-between px-1 py-2 align-items-center'}>
+                                <div className={"fs-5 fw-bolder"}>{oneProduct?.name}</div>
+                                <button className={'createButtons'} onClick={() => handleShow(1, null)}>Narx biriktirish
+                                </button>
+                            </div>
+                            <div className={'tableCalendar'}>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Bosh. sanasi</th>
+                                        <th>Tug. sanasi</th>
+                                        <th>Min narx</th>
+                                        <th>Max narx</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        pricesByProduct?.list?.map((product, index) =>
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>{TimestampToInputDate(product.startDay)}</td>
+                                                <td>{TimestampToInputDate(product.endDay)}</td>
+                                                <td>{product.minPrice} so'm</td>
+                                                <td>{product.maxPrice} so'm</td>
+                                                <td>
+                                                    <button className={"myDots"}
+                                                            style={{position: 'relative'}}
+                                                            onBlur={() => setActiveMore(null)}
+                                                            onClick={() => setActiveMore(product.id)}
+                                                    >
+                                                        <BsThreeDotsVertical size={20}/>
+                                                        {activeMore === product?.id ? <div className={'shadow'} style={{
+                                                            position: 'absolute',
+                                                            zIndex: 100
+                                                        }}>
+                                                            <div className={"more"} style={{right: 2}}>
+                                                                <div className={"sub-more"}
+                                                                     onClick={() => handleShow(2, product)}>o'zgartirish
+                                                                </div>
+                                                                <div className={"sub-more"}>O'chirish</div>
                                                             </div>
-                                                            <div className={"sub-more"}>O'chirish</div>
-                                                        </div>
-                                                    </div> : null}
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
-                                }
-                                </tbody>
-                            </table>
-                            <br/>
-                            <FromPageSizeBottom allPageSize={pricesByProduct?.allPageSize}
-                                                pageSize={pricesByProduct?.pageSize}
-                                                currentPage={pricesByProduct?.getPageNumber} changesPage={getPrices}/>
-                        </div>
+                                                        </div> : null}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
+                                    </tbody>
+                                </table>
+                                <br/>
+                                <FromPageSizeBottom allPageSize={pricesByProduct?.allPageSize}
+                                                    pageSize={pricesByProduct?.pageSize}
+                                                    currentPage={pricesByProduct?.getPageNumber}
+                                                    changesPage={getPrices}/>
+                            </div>
+                        </> : pricesByProduct?.list ? <div className={"fs-3 text-center"} style={{color:'red'}}>Ushbu mahsulotga eng yuqori sotib olish narxi kiritilmagan</div> :<div className={"fs-3 text-center"}>Mahsulotni tanlang</div>}
                     </div>
                 </Col>
             </Row>

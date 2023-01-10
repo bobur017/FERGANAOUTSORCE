@@ -88,7 +88,7 @@ function Sanpin() {
     const onClickSanpinCategory = (data, number) => {
         if (number === 1) {
             setsanpinCategoryState(data);
-            handleShow();
+            setShow(true);
         } else if (number === 2) {
             dispatch(deleteSanpinCategory(data));
         }
@@ -109,7 +109,7 @@ function Sanpin() {
     return (
         <div className={'allMain'}>
             <NavbarHeader name={"Sanpin turlari bo'limi"} handleShow={handleShow}
-                          buttonName={"Sanpin_turini qo'shish"}/>
+                          buttonName={"Sanpin turini qo'shish"}/>
             <div className={'figma-card'}>
 
                 <div className={'tableCalendar'}>
@@ -160,7 +160,7 @@ function Sanpin() {
                         <br/>
                         {sanpinCategoryState?.dailyNormDTOList?.map((item, index) =>
                             <InputGroup className="mb-3" key={index} size={'sm'}>
-                                <InputGroup.Text style={{width: '50%'}}><span style={{color: 'green'}}>Yosh toifasi nomi:</span> {item.name}
+                                <InputGroup.Text style={{width: '50%'}}><span style={{color: 'green'}}>Yosh toifasi nomi : </span> <span> {item.ageGroupName}</span>
                                 </InputGroup.Text>
                                 <Form.Control name={'weight'} type={'number'} step={'0.01'}
                                               onWheel={(e) => e.target.blur()} value={item.weight}

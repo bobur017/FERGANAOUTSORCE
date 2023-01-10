@@ -20,6 +20,7 @@ import sanpinCategory from "./pages/product/SanpinCategoryReducer";
 import getFiles from "./pages/getFiles/GetFilesReducer";
 import notification from "./pages/notification/NotificationReducer";
 import pack from "./pages/productPack/ProductPackReducer";
+import permission from "./pages/permission/PermissionReducer";
 import Api from "./Api"
 
 export default configureStore({
@@ -45,6 +46,7 @@ export default configureStore({
         getFiles,
         notification,
         pack,
+        permission,
     },
     middleware: [Api],
 });
