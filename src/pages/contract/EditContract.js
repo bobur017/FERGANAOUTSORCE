@@ -177,14 +177,19 @@ function EditContract() {
     }
     const changePrice = (index2) => (e) => {
         let kindergartenContractList = [...postStateContract.kindergartenContractList];
-        postStateContract.kindergartenContractList.forEach((kin, index) => {
-                let productLisy = [...kindergartenContractList[index].productContracts];
-                productLisy[index2] = {...productLisy[index2], price: e.target.value}
-                kindergartenContractList[index] = {...kindergartenContractList[index], productContracts: productLisy};
-                setPostStateContract({...postStateContract, kindergartenContractList});
-            }
-        );
-        setPostStateContract({...postStateContract, kindergartenContractList});
+        console.log(e.target.value);
+        if (kindergartenContractList[0].productContracts[index2]?.maxPrice >= parseFloat(e.target.value).toFixed(2) || e.target.value === '') {
+            postStateContract.kindergartenContractList.forEach((kin, index) => {
+                    let productLisy = [...kindergartenContractList[index].productContracts];
+                    productLisy[index2] = {...productLisy[index2], price: e.target.value}
+                    kindergartenContractList[index] = {...kindergartenContractList[index], productContracts: productLisy};
+                    setPostStateContract({...postStateContract, kindergartenContractList});
+                }
+            );
+            setPostStateContract({...postStateContract, kindergartenContractList});
+        }else {
+            toast.error("Max narxdan oshmasligi kerak!");
+        }
     }
     const submit = (e) => {
         e.preventDefault();
@@ -193,7 +198,6 @@ function EditContract() {
         } else {
             dispatch(editContract(postStateContract));
         }
-
     }
     const totalByProduct = (index) => {
         let total = 0;
@@ -324,10 +328,11 @@ function EditContract() {
                                     postStateContract?.kindergartenContractList?.map((kinder, index) =>
                                         <tr key={index}>
                                             <td>{index + 1}</td>
-                                            <td>{kinder?.number}{kinder?.kindergartenName}</td>
-                                            <td><MdDeleteForever size={20} color={'red'}
-                                                                 onClick={() => removeKinder(kinder?.kindergartenId)}
-                                                                 style={{cursor: 'pointer'}}/></td>
+                                            <td style={{width: 100}} className={"d-flex justify-content-between"}>
+                                                <span>{kinder?.number}{kinder?.kindergartenName}</span><MdDeleteForever
+                                                size={20} color={'red'}
+                                                onClick={() => removeKinder(kinder?.kindergartenId)}
+                                                style={{cursor: 'pointer'}}/></td>
                                             {
                                                 kinder?.productContracts?.map((prod, index2) =>
                                                     <td key={index2} onClick={() => onClickProductWeight(kinder, prod)}>

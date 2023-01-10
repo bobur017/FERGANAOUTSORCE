@@ -132,8 +132,8 @@ export const rolesList = (role) => {
             },
             {
                 path: "/sidebar/report-warehouse",
-                name: "Hisobot",
-                icon: <TbReportAnalytics size={25}/>
+                name: "Kirim chiqim",
+                icon: <BsArrowDownUp size={25}/>
             },
 
         ];
@@ -145,7 +145,7 @@ export const rolesList = (role) => {
                 icon: <TiInfoLargeOutline size={25}/>
             },
             {
-                path: "/sidebar/input-output-admin",
+                path: "/sidebar/report-warehouse",
                 name: "Kirim chiqim",
                 icon: <BsArrowDownUp size={25}/>
             },
@@ -193,9 +193,9 @@ export const rolesList = (role) => {
                 icon: <FaChild size={25}/>
             },
             {
-                path: "/sidebar/report-paramedic",
-                name: "Hisobot",
-                icon: <TbReportAnalytics size={25}/>
+                path: "/sidebar/report-warehouse",
+                name: "Kirim chiqim",
+                icon: <BsArrowDownUp size={25}/>
             },
             {
                 path: "/sidebar/warehouse",
@@ -221,24 +221,9 @@ export const rolesList = (role) => {
                 icon: <TbReportAnalytics size={25}/>
             },
             {
-                path: "/sidebar/warehouse",
-                name: "MTT Omborxonalari",
-                icon: <TbBuildingWarehouse size={25}/>
-            },
-            {
                 path: "/sidebar/price",
                 name: "Narx-navo",
                 icon: <MdOutlinePriceChange size={25}/>
-            },
-            {
-                path: "/sidebar/multiMenu",
-                name: "Taomnomalar",
-                icon: <CgMenuHotdog size={25}/>
-            },
-            {
-                path: "/sidebar/relation-view",
-                name: "Menyularni biriktirish",
-                icon: <BsFillMenuButtonFill size={25}/>
             },
             {
                 path: "/sidebar/contract",
@@ -250,11 +235,11 @@ export const rolesList = (role) => {
                 name: "Omborxona",
                 icon: <TbBuildingWarehouse size={25}/>
             },
-            {
-                path: "/sidebar/remove-product",
-                name: "Chiqidlar",
-                icon: <RiDeleteBin6Line size={25}/>
-            },
+            // {
+            //     path: "/sidebar/remove-product",
+            //     name: "Chiqidlar",
+            //     icon: <RiDeleteBin6Line size={25}/>
+            // },
         ];
     }else  if(role === "ROLE_BUXGALTER"){
         return [
@@ -375,6 +360,11 @@ export const rolesList = (role) => {
                 path: "/sidebar/permission",
                 name: "Ruxsat-taqiq",
                 icon: <TbLockAccess size={25}/>
+            },
+            {
+                path: "/sidebar/default-kids-number",
+                name: "O'rtacha bolalar soni",
+                icon: <FaChild size={25}/>
             },
         ];
     }

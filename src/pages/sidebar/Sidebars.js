@@ -46,6 +46,7 @@ import PermissionsFromRelation from "../permission/PermissionsFromRelation";
 import MultiMenuOneFromOther from "../multimenu/MultiMenuOneFromOther";
 import {getUserData} from "../users/UserReducer";
 import {useEffect, useRef} from "react";
+import DefaultKidsNumber from "../children-number/DefaultKidsNumber";
 
 function Sidebars() {
     const user = useSelector(state => state.user.userData)
@@ -181,6 +182,7 @@ function Sidebars() {
                     <Route path="/send-notification" element={<SendNotifications/>}/>
                     <Route path="/product-pack" element={<ProductPack/>}/>
                     <Route path="/permission" element={<PermissionsFromRelation/>}/>
+                    <Route path="/default-kids-number" element={<DefaultKidsNumber/>}/>
                     <Route path="/one-multi-menu-other/:id" element={<MultiMenuOneFromOther/>}/>
                 </Routes>
                 <br/><br/>

@@ -4,8 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 export const baseUrl = () => {
-    return "http://185.217.131.74:8888/out/api/attachment/"
-    // return "http://192.168.21.204:8888/out/api/attachment/"
+    return "https://feednet.uz/out/api/attachment/"
 }
 
 export const baseUrl2 = () => {

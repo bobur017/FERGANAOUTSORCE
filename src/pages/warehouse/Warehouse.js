@@ -40,8 +40,7 @@ function Warehouse() {
         if (!firstUpdate.current) {
 
         } else {
-            var win = window.open(getFiless, '_blank');
-            win.focus();
+
         }
     }, [getFiless]);
 
@@ -115,6 +114,7 @@ function Warehouse() {
                                     <th>№</th>
                                     <th>Mahsulot nomi</th>
                                     <th>Miqdor</th>
+                                    <th>Qadoq miqdor</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -124,6 +124,7 @@ function Warehouse() {
                                             <td>{index + 1}</td>
                                             <td>{product.productName}</td>
                                             <td>{product.weight}</td>
+                                            <td>{product.packWeight}</td>
                                         </tr>
                                     )
                                 }
@@ -225,7 +226,6 @@ function Warehouse() {
                         </div>
                     </Col>
                 </Row> : null}
-                <embed/>
             </Container>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submit}>
@@ -283,7 +283,7 @@ function Warehouse() {
                                             <td>{product.weight}</td>
                                             <td>{product.packWeight}</td>
                                             <td>{product.pack}</td>
-                                            <td>{product.date}</td>
+                                            <td>{TimestampToInputDate(product?.createDate)}</td>
                                         </tr>
                                     )
                                 }

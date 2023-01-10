@@ -98,12 +98,11 @@ function InputOutputKidsNumberFromAdmin({data}) {
     }
     return (
         <div className={`${main.main}`}>
-            <NavbarHeader name={"Bolalar soni hisoboti"} navs={[{name: "MTT kesimida"}, {name: "Kun kesimida"}]}
+            <NavbarHeader name={"Bolalar soni"} navs={[{name: "MTT kesimida"}, {name: "Kun kesimida"},{name:"O'rtacha bola soni"},{name:"Muddat kiritish"}]}
                           currentNavs={setCurrentNavs}/>
             {currentNavs === 0 ? <Row>
                 <Col xs={12} sm={12} md={12} lg={12} xl={12} className={'figma-card-first mt-3 justify-content-around'}>
                     <Form onSubmit={getData2}>
-
                         <Row className="mb-3 align-items-center">
                             <Form.Group as={Col}>
                                 <Form.Label>Sanani tanlang</Form.Label>
@@ -313,6 +312,8 @@ function InputOutputKidsNumberFromAdmin({data}) {
                     </div> : <div className={"text-center"}>Bu kunda ma'lumot mavjud emas</div>}
                 </Col>
             </Row> : null}
+            {currentNavs === 2}
+            {currentNavs === 3}
         </div>
     );
 }

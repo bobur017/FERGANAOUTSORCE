@@ -39,9 +39,7 @@ function RegionDepartment() {
         if (firstUpdate.current) {
             firstUpdate.current = false;
             dispatch(getRegionDepartment());
-            console.log("useEffect1", firstUpdate.current);
         } else {
-            console.log("useEffect2", firstUpdate.current);
         }
     }, []);
 

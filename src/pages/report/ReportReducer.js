@@ -44,7 +44,8 @@ const slice = createSlice({
             state.menuOneDayReport2 = action.payload;
         },
         inputOutput: (state, action) => {
-            state.inputOutput = action.payload;
+            var win = window.open(action.payload, '_blank');
+            win.focus();
         },
         reports: (state, action) => {
             state.reports = action.payload;

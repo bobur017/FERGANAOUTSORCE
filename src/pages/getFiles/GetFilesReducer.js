@@ -12,7 +12,8 @@ const slice = createSlice({
     },
     reducers: {
         getFiless: (state, action) => {
-            state.getFiless = action.payload;
+            var win = window.open(action.payload, '_blank');
+            win.focus();
         },
         resultReducer: (state, action) => {
             state.result = action.payload;

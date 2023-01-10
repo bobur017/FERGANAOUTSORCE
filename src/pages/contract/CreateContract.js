@@ -160,14 +160,19 @@ function CreateContract() {
     }
     const changePrice = (index2) => (e) => {
         let kindergartenContractList = [...postStateContract.kindergartenContractList];
+        if (kindergartenContractList[0].productContracts[index2]?.maxPrice >= parseFloat(e.target.value).toFixed(2) ) {
         postStateContract.kindergartenContractList.forEach((kin, index) => {
-                kindergartenContractList[index].productContracts[index2] = {
-                    ...kindergartenContractList[index].productContracts[index2],
-                    price: e.target.value
-                };
-            }
+                    kindergartenContractList[index].productContracts[index2] = {
+                        ...kindergartenContractList[index].productContracts[index2],
+                        price: e.target.value
+                    };
+                }
+
         );
         setPostStateContract({...postStateContract, kindergartenContractList});
+        }else {
+            toast.error("Max narxdan oshmasligi kerak!");
+        }
     }
     const changePrice2 = (index) => {
         let kindergartenContractList = [...postStateContract.kindergartenContractList];
@@ -175,7 +180,6 @@ function CreateContract() {
     }
     const submit = (e) => {
         e.preventDefault();
-        console.log(postStateContract, "Tayyor");
         if (postStateContract.supplierId === '' || postStateContract.kindergartenContractList.some(item => item.id === "empty")) {
             toast.error("Barcha joylar to'ldirilishi shart");
         } else {
@@ -284,14 +288,20 @@ function CreateContract() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr style={{backgroundColor:'#dad9d9'}}>
+                                <tr style={{backgroundColor: '#dad9d9'}}>
                                     <td colSpan={2}>Narx</td>
                                     {
                                         postStateContract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
                                             <td key={index} onClick={() => changePrice2(index)}
                                                 style={{position: 'relative'}}>
                                                 {(prod?.productId === productState?.productId) ?
-                                                    <div style={{position: 'absolute',bottom:30,color:'#f38538',backgroundColor:'white',padding:3}}
+                                                    <div style={{
+                                                        position: 'absolute',
+                                                        bottom: 30,
+                                                        color: '#f38538',
+                                                        backgroundColor: 'white',
+                                                        padding: 3
+                                                    }}
                                                          className={"tooltipText shadow"}>
                                                         Max narx:{prod?.maxPrice}
                                                     </div> : null}

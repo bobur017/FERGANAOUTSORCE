@@ -35,13 +35,13 @@ export const login = (data) => apiCall({
 export const tokenNull = () => {
     return {
         type: slice.actions.tokenReducer.type,
-        payload: null
+        payload: ''
     }
 }
 export const errorNull = () => {
     return {
         type: slice.actions.errorReducer.type,
-        payload: {}
+        payload: ''
     }
 }
 

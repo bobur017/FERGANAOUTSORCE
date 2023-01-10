@@ -233,7 +233,7 @@ function Contract() {
                 <Modal.Header closeButton>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className={'miniTable2'}>
+                    <div className={'miniTable2'} style={{height:'80vh'}}>
                         <table className={'w-100'}>
                             <thead>
                             <tr>
@@ -250,8 +250,8 @@ function Contract() {
                             </thead>
                             <tbody>
                             <tr>
-                                <td>1</td>
-                                <td>Narx</td>
+
+                                <td colSpan={2}>Narx</td>
                                 {
                                     contract?.contract?.kindergartenContractList?.length > 0 ? contract?.contract?.kindergartenContractList[0]?.productContracts.map((prod, index) =>
                                         <td key={index}>
@@ -263,7 +263,7 @@ function Contract() {
                             {
                                 contract.contract?.kindergartenContractList?.map((kinder, index) =>
                                     <tr key={index}>
-                                        <td>{index + 2}</td>
+                                        <td>{index + 1}</td>
                                         <td>{kinder?.number}{kinder?.kindergartenName}</td>
                                         {
                                             kinder?.productContracts?.map((prod, index2) =>

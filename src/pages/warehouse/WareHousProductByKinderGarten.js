@@ -9,7 +9,7 @@ import GetKinderByDepartment from "../GetKinderByDepartment";
 import NavbarHeader from "../more/NavbarHeader";
 
 function WareHousProductByKinderGarten(props) {
-    const [params,setParams] = useState({pageSize:10,pageNumber:0,kindergartenId:''})
+    const [params, setParams] = useState({pageSize: 10, pageNumber: 0, kindergartenId: ''})
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     const warehouses = useSelector(state => state.warehouse.warehouses);
@@ -24,13 +24,13 @@ function WareHousProductByKinderGarten(props) {
     }
     const changePage0 = (pageNumber) => {
         dispatch(getWarehouse({pageNumber, pageSize: 10}));
-        setParams({...params,pageNumber });
+        setParams({...params, pageNumber});
     }
     const getDepartmentId = (data) => {
 
     }
     const getKinderId = (data) => {
-        dispatch(getWarehouse({...params,getKinderId:data?.id}));
+        dispatch(getWarehouse({...params, getKinderId: data?.id}));
     }
     return (
         <Container fluid={true}>
@@ -40,35 +40,39 @@ function WareHousProductByKinderGarten(props) {
                     <GetKinderByDepartment getDepartmentId={getDepartmentId} getKinderId={getKinderId}/>
                 </Col>
                 <Col className={'figma-card'}>
-                    <div className={'w-100 d-flex justify-content-end'}>
-                        <button className={'buttonPdf my-2'} onClick={getPdf}>PDF</button>
-                    </div>
-                    {warehouses?.list?.length > 0 ? <div className={'tableCalendar'}>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>№</th>
-                                <th>Mahsulot nomi</th>
-                                <th>Miqdor</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                warehouses?.list?.map((product, index) =>
-                                    <tr key={index} style={{cursor: 'pointer'}}>
-                                        <td>{index + 1}</td>
-                                        <td>{product.productName}</td>
-                                        <td>{product.weight}</td>
+                    {warehouses?.list?.length > 0 ?
+                        <>
+                            <div className={'w-100 d-flex justify-content-end'}>
+                                <button className={'buttonPdf my-2'} onClick={getPdf}>PDF</button>
+                            </div>
+                            <div className={'tableCalendar'}>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Mahsulot nomi</th>
+                                        <th>Miqdor</th>
                                     </tr>
-                                )
-                            }
-                            </tbody>
-                        </table>
-                        <br/>
-                        <FromPageSizeBottom currentPage={warehouses?.getPageNumber}
-                                            pageSize={warehouses?.getPageSize} changesPage={changePage0}
-                                            allPageSize={warehouses?.allPageSize}/>
-                    </div>: <div className={"text-center"}>Ma'lumotlar mavjud emas</div>}
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        warehouses?.list?.map((product, index) =>
+                                            <tr key={index} style={{cursor: 'pointer'}}>
+                                                <td>{index + 1}</td>
+                                                <td>{product.productName}</td>
+                                                <td>{product.weight}</td>
+                                            </tr>
+                                        )
+                                    }
+                                    </tbody>
+                                </table>
+                                <br/>
+                                <FromPageSizeBottom currentPage={warehouses?.getPageNumber}
+                                                    pageSize={warehouses?.getPageSize} changesPage={changePage0}
+                                                    allPageSize={warehouses?.allPageSize}/>
+                            </div>
+                        </>
+                        : !warehouses?.list ? <div className={"text-center"}>Ma'lumotlar mavjud emas</div>:<div className={"text-center"}>Omborda mahsulot mavjud emas</div>}
                 </Col>
 
             </Row>

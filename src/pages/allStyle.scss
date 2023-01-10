@@ -568,6 +568,7 @@
     background: #48B1AB;
     border-radius: 10px;
   }
+  overflow: auto;
   table {
     //width: 2000px;
     border-collapse: separate;
@@ -687,4 +688,8 @@
   color: black;
   text-decoration: none;
 }
+.district {
+  box-shadow: 0px 2px 27px rgba(23, 74, 164, 0.1);
+  border-radius: 6px;
 
+}

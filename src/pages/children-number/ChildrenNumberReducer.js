@@ -11,11 +11,14 @@ const slice = createSlice({
         kidsNumbers: [],
         kidsNumbersByDate: [],
         kidsNumbersByDepartment: [],
-        kidsNumber: {},
+        kidsNumberDefault: [],
     },
     reducers: {
         kidsNumbers: (state, action) => {
             state.kidsNumbers = action.payload;
+        },
+        kidsNumberDefault: (state, action) => {
+            state.kidsNumberDefault = action.payload;
         },
         kidsNumbersByDepartment: (state, action) => {
             state.kidsNumbersByDepartment = action.payload;
@@ -35,6 +38,17 @@ const slice = createSlice({
             toastError(action.payload)
         },
     }
+})
+
+export const getDefaultKidsNumbers = (params) => apiCall({
+    url: "/averageKidsNumber",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.kidsNumberDefault.type,
+    error: slice.actions.errorReducer.type
 })
 
 export const getKidsNumbersByDate = (data,params) => apiCall({
