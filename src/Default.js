@@ -1,7 +1,7 @@
 import React from 'react';
-import {useEffect, useRef, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const baseUrl = () => {
     // return "https://feednet.uz/out/api/attachment/"
