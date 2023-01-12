@@ -5,7 +5,7 @@ import {Button, Card, Col, Container, Form, InputGroup, Modal, Offcanvas, Row, T
 import NavbarHeader from "../more/NavbarHeader";
 import {getAge} from "../age/AgeReducer";
 import {addMultiMenuMeal, deleteMultiMenuOne, getMultiMenuOne} from "./MultiMenuReducer";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {getMeal} from "../meal/MealReducer";
 import DropdownCustom from "../more/DropdownCustom";
 import {percentage, tableRowCustomTd3} from "../more/Functions";
@@ -59,7 +59,7 @@ function MultiMenuOne() {
     const meals = useSelector(state => state.meal.meals);
     const multiMenu = useSelector(state => state.multiMenu);
     const firstUpdate = useRef(false);
-
+    const history = useNavigate();
     useEffect(() => {
         if (firstUpdate.current) {
             dispatch(getMultiMenuOne(multiMenuId.id));
@@ -137,6 +137,10 @@ function MultiMenuOne() {
     const deleteOnclick = (data) => {
         dispatch(deleteMultiMenuOne(data))
     }
+    const back = () => {
+        history("/sidebar/multiMenu")
+    }
+
 
     return (
         <div className={'allMain'}>
@@ -144,6 +148,7 @@ function MultiMenuOne() {
                           handleShow={handleShowCanvas}/>
             <Container fluid>
                 <Row>
+                    <div><button className={"buttonPdf"} onClick={()=>back()}>Ortga</button></div>
                     <Col xs={8} sm={8} md={8} lg={8} xl={8} className={'figma-card-first mt-3'}>
                         <Row>
                             {

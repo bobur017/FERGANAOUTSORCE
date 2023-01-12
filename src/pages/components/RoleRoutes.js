@@ -99,7 +99,7 @@ export const rolesList = (role) => {
             },
             {
                 path: "/sidebar/relation-view",
-                name: "Menyularni biriktirish",
+                name: "Menyu",
                 icon: <BsFillMenuButtonFill size={25}/>
             },
             {
@@ -171,7 +171,7 @@ export const rolesList = (role) => {
             },
             {
                 path: "/sidebar/relation-view",
-                name: "Menyularni biriktirish",
+                name: "Menyu",
                 icon: <BsFillMenuButtonFill size={25}/>
             },
         ];
@@ -270,7 +270,7 @@ export const rolesList = (role) => {
             },
             {
                 path: "/sidebar/relation-view",
-                name: "Menyularni biriktirish",
+                name: "Menyu",
                 icon: <BsFillMenuButtonFill size={25}/>
             },
             {
@@ -304,7 +304,7 @@ export const rolesList = (role) => {
             },
             {
                 path: "/sidebar/relation-view",
-                name: "Menyularni biriktirish",
+                name: "Menyu",
                 icon: <BsFillMenuButtonFill size={25}/>
             },
             {
@@ -343,7 +343,7 @@ export const rolesList = (role) => {
             },
             {
                 path: "/sidebar/relation-view",
-                name: "Menyularni biriktirish",
+                name: "Menyu",
                 icon: <BsFillMenuButtonFill size={25}/>
             },
             {

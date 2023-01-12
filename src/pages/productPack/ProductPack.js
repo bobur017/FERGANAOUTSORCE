@@ -16,15 +16,21 @@ import DropdownCustom from "../more/DropdownCustom";
 function ProductPack() {
     const [show, setShow] = useState(false);
     const [edit, setEdit] = useState(false);
-    const [productState, setProductState] = useState({id: '', name: 'Mahsulot tanlash'});
+    const [productState, setProductState] = useState({id: '', name: 'Mahsulot tanlang'});
     const [packState, setProductPackState] = useState();
     const [packs, setProductPacks] = useState([]);
     const handleClose = () => {
         setShow(false);
+        setEdit(false);
         setProductPackState({id: '', name: ''});
     };
-    const handleShow = () => {
-        setShow(true)
+    const handleShow = (data) => {
+        console.log(data)
+       if (data == null){
+           console.log("keldi")
+           setProductState({id:'',name:"Mahsulot tanlang"})
+       }
+        setShow(true);
     };
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
@@ -81,7 +87,7 @@ function ProductPack() {
                           buttonName={"Mahsulot qadoq'ini qo'shish"}/>
             <br/>
             <div className={'figma-card'}>
-                {packs?.list > 0 ? <div className={'tableCalendar'}>
+                {packs?.list?.length > 0 ? <div className={'tableCalendar'}>
                     <table style={{color: 'black'}}>
                         <thead>
                         <tr>
@@ -131,7 +137,7 @@ function ProductPack() {
                         <Form.Control name='pack' required value={packState?.pack} onChange={onChanges("pack")}
                                       placeholder="Qadoq miqdorini kiriting " type={'number'} step={"0.01"}
                                       min={3}
-                                      max={500}
+                                      max={5000}
                                       onWheel={e => e.target.blur()}/>
                         <br/>
                     </Modal.Body>

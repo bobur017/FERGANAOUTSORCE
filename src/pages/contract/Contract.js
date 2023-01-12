@@ -13,6 +13,7 @@ import {Button, Form, Modal, Row, Table} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
 import {useNavigate} from "react-router-dom";
 import {TimestampToInputDate} from "../funcs/Funcs";
+import {getRoleStorage} from "../more/Functions";
 
 
 function Contract() {
@@ -50,8 +51,7 @@ function Contract() {
         if (!firstUpdate.current) {
 
         } else {
-            var win = window.open(menuOneDay, '_blank');
-            win.focus();
+
         }
     }, [contractFile]);
 
@@ -149,7 +149,7 @@ function Contract() {
                     <Button variant="danger" onClick={handleClose}>
                         YO'Q
                     </Button>
-                    <Button variant="primary" onClick={()=>dispatch(deleteContract(contractState?.id))}>
+                    <Button variant="primary" onClick={() => dispatch(deleteContract(contractState?.id))}>
                         HA
                     </Button>
                 </Modal.Footer></>
@@ -181,9 +181,11 @@ function Contract() {
                             <th>Holati</th>
                             <th>Boshlanish sanasi</th>
                             <th>Tugash sanasi</th>
-                            <th>Tasdiqlash</th>
-                            <th>O'zgartirish</th>
-                            <th>O'chirish</th>
+                            {getRoleStorage() !== "ROLE_BOSHQARMA_BUXGALTER" ? <>
+                                {getRoleStorage() === "ROLE_BUXGALTER" ? <th>Tasdiqlash</th> : null}
+                                <th>O'zgartirish</th>
+                                <th>O'chirish</th>
+                            </> : null}
                         </tr>
                         </thead>
                         <tbody>
@@ -201,24 +203,26 @@ function Contract() {
                                     <td>{item?.status}</td>
                                     <td>{TimestampToInputDate(item?.startDay)}</td>
                                     <td>{TimestampToInputDate(item?.endDay)}</td>
-                                    <td>
-                                        {item?.status === "YANGI" ? <Button variant='outline-success' size='sm'
-                                                                            onClick={() => dispatch(contractVerified(item.id))}>
-                                            Tasdiqlash
-                                        </Button> : null}
-                                    </td>
-                                    <td>
-                                        {item?.status === "YANGI" ? <Button variant='outline-info' size='sm'
-                                                                            onClick={() => history("/sidebar/edit-contract/" + item?.id)}>
-                                            O'zgartirish
-                                        </Button> : null}
-                                    </td>
-                                    <td>
-                                        {item?.status === "YANGI" ? <Button variant='outline-danger' size='sm'
-                                                                            onClick={() => onClickDepartment(item, 2)}>
-                                            O'chirish
-                                        </Button> : null}
-                                    </td>
+                                    {getRoleStorage() !== "ROLE_BOSHQARMA_BUXGALTER" ? <>
+                                        {getRoleStorage() === "ROLE_BUXGALTER" ? <td>
+                                            {item?.status === "YANGI" ? <Button variant='outline-success' size='sm'
+                                                                                onClick={() => dispatch(contractVerified(item.id))}>
+                                                Tasdiqlash
+                                            </Button> : null}
+                                        </td> : null}
+                                        <td>
+                                            {item?.status === "YANGI" ? <Button variant='outline-info' size='sm'
+                                                                                onClick={() => history("/sidebar/edit-contract/" + item?.id)}>
+                                                O'zgartirish
+                                            </Button> : null}
+                                        </td>
+                                        <td>
+                                            {item?.status === "YANGI" ? <Button variant='outline-danger' size='sm'
+                                                                                onClick={() => onClickDepartment(item, 2)}>
+                                                O'chirish
+                                            </Button> : null}
+                                        </td>
+                                    </>:null}
                                 </tr>
                             )
                         }
@@ -233,7 +237,7 @@ function Contract() {
                 <Modal.Header closeButton>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className={'miniTable2'} style={{height:'80vh'}}>
+                    <div className={'miniTable2'} style={{height: '75vh'}}>
                         <table className={'w-100'}>
                             <thead>
                             <tr>
@@ -264,7 +268,7 @@ function Contract() {
                                 contract.contract?.kindergartenContractList?.map((kinder, index) =>
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{kinder?.number}{kinder?.kindergartenName}</td>
+                                        <td className={"d-flex"}>{kinder?.number} {kinder?.kindergartenName}</td>
                                         {
                                             kinder?.productContracts?.map((prod, index2) =>
                                                 <td key={index2}>

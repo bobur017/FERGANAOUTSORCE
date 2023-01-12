@@ -124,7 +124,7 @@ export const getInputOutputKidsNumberPdf = (data,params) => apiCall({
 })
 
 export const getInputOutputKidsNumberPdfDay = (data,params) => apiCall({
-    url: "/out/api/report/getAllByDate/{id}"+data.id,
+    url: "/report/getAllByDate/"+data.id,
     method: "GET",
     headers: {
         Authorization: getToken(),

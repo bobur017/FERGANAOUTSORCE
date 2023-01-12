@@ -9,8 +9,8 @@ const slice = createSlice({
         result: {},
         error: {},
         kidsNumbers: [],
-        kidsNumbersByDate: [],
-        kidsNumbersByDepartment: [],
+        kidsNumbersByDate: {},
+        kidsNumbersByDepartment: {},
         kidsNumberDefault: [],
     },
     reducers: {

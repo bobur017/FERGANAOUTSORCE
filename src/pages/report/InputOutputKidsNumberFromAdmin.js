@@ -34,10 +34,10 @@ function InputOutputKidsNumberFromAdmin({data}) {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
             dispatch(getDepartment());
+            console.log(kidsNumbersByDepartment?.length,"kidsNumbersByDepartment")
         } else {
-
         }
-    }, [inputOutputs]);
+    }, [kidsNumbersByDepartment]);
 
     const onChangeDate = (e) => {
         if (e.target.type === 'date') {
@@ -68,14 +68,16 @@ function InputOutputKidsNumberFromAdmin({data}) {
         }
     }
 
-    const getReportPdf = (e) => {
-        e.preventDefault();
-        dispatch(getInputOutputKidsNumberPdf(departmentId, params));
+    const getReportPdf = () => {
+        if (kidsNumbersByDepartment.length > 0) {
+            dispatch(getInputOutputKidsNumberPdf(departmentId, {date}));
+        }
     }
 
-    const getReportPdf2 = (e) => {
-        e.preventDefault();
-        dispatch(getInputOutputKidsNumberPdfDay(departmentId, params));
+    const getReportPdf2 = () => {
+        if (kidsNumbersByDate?.length > 0) {
+            dispatch(getInputOutputKidsNumberPdfDay(kindergarten, params));
+        }
     }
 
     const getMttsByDepartment2 = (data) => {
@@ -98,7 +100,8 @@ function InputOutputKidsNumberFromAdmin({data}) {
     }
     return (
         <div className={`${main.main}`}>
-            <NavbarHeader name={"Bolalar soni"} navs={[{name: "MTT kesimida"}, {name: "Kun kesimida"},{name:"O'rtacha bola soni"},{name:"Muddat kiritish"}]}
+            <NavbarHeader name={"Bolalar soni"}
+                          navs={[{name: "MTT kesimida"}, {name: "Kun kesimida"}]}
                           currentNavs={setCurrentNavs}/>
             {currentNavs === 0 ? <Row>
                 <Col xs={12} sm={12} md={12} lg={12} xl={12} className={'figma-card-first mt-3 justify-content-around'}>
@@ -112,13 +115,9 @@ function InputOutputKidsNumberFromAdmin({data}) {
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridZip" className={"d-flex"}>
                                 <button className={'createButtons mt-4'} type={'submit'}>Tayyor</button>
-                                <button className={'buttonPdf mt-4 mx-3'} type={'submit'} onClick={getReportPdf}>PDF
-                                </button>
-                            </Form.Group>
-                            <Form.Group as={Col} controlId="formGridZip">
+                                <button className={'buttonPdf mt-4 mx-3'} type={"button"} onClick={getReportPdf}>PDF</button>
                             </Form.Group>
                         </Row>
-
                     </Form>
                 </Col>
                 <Col xs={5} sm={5} md={5} lg={5} xl={5}
@@ -152,39 +151,41 @@ function InputOutputKidsNumberFromAdmin({data}) {
 
                 </Col>
                 <Col xs={7} sm={7} md={7} lg={7} xl={7} className={'figma-card-first mt-3'}>
-                    {kidsNumbersByDepartment.length > 0 ? <div className={"tableCalendar"}>
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>№</th>
-                                    <th>MTT nomi</th>
-                                    {
-                                        kidsNumbersByDepartment.length > 0 ? kidsNumbersByDepartment[0]?.subDTO.map((item, index) =>
-                                            <th key={index}>{item.ageGroupName}</th>
-                                        ) : null
-                                    }
-                                    <th>Holati</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                    {kidsNumbersByDepartment?.length > 0 ? <div className={"tableCalendar"}>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>MTT nomi</th>
                                 {
-                                    kidsNumbersByDepartment.map((item, index) =>
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{item.kindergartenName}</td>
-                                            {
-                                                item.subDTO.map((item2, index2) =>
-                                                    <td key={index2}>{item2.number}</td>
-                                                )
-                                            }
-                                            <td style={{color: colors(item.status), fontWeight: 600}}>{item.status}</td>
-                                        </tr>
-                                    )
+                                    kidsNumbersByDepartment.length > 0 ? kidsNumbersByDepartment[0]?.subDTO.map((item, index) =>
+                                        <th key={index}>{item.ageGroupName}</th>
+                                    ) : null
                                 }
-                                </tbody>
-                            </table>
-                        </div> :
-                        <div className={"text-center"}>Bu kunda ma'lumotlar mavjud emas!</div>
+                                <th>Holati</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                kidsNumbersByDepartment.map((item, index) =>
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{item.kindergartenName}</td>
+                                        {
+                                            item.subDTO.map((item2, index2) =>
+                                                <td key={index2}>{item2.number}</td>
+                                            )
+                                        }
+                                        <td style={{color: colors(item.status), fontWeight: 600}}>{item.status}</td>
+                                    </tr>
+                                )
+                            }
+                            </tbody>
+                        </table>
+                    </div> : kidsNumbersByDepartment?.length ?
+                        <div className={"text-center fs-3"} style={{color: 'red'}}>Ma'lumot mavjud emas</div> :
+                        <div className={"text-center fs-3"} style={{color: 'red'}}>Bu kunda bolalar soni mavjud
+                            emas</div>
                     }
                 </Col>
             </Row> : null}
@@ -209,7 +210,7 @@ function InputOutputKidsNumberFromAdmin({data}) {
 
                             <Form.Group as={Col} controlId="formGridZip" className={'d-flex'}>
                                 <button className={'createButtons mt-4 mx-3'} type={'submit'}>Tayyor</button>
-                                <button className={'buttonPdf mt-4'} type={'submit'} onClick={getReportPdf2}>PDF
+                                <button className={'buttonPdf mt-4'} type={"button"} onClick={getReportPdf2}>PDF
                                 </button>
                             </Form.Group>
                         </Row>
@@ -309,7 +310,9 @@ function InputOutputKidsNumberFromAdmin({data}) {
                             }
                             </tbody>
                         </table>
-                    </div> : <div className={"text-center"}>Bu kunda ma'lumot mavjud emas</div>}
+                    </div> : kidsNumbersByDate.length ?
+                        <div className={"text-center fs-3"} style={{color: 'red'}}>Ma'lumot mavjud emas</div> :
+                        <div className={"text-center fs-3"} style={{color: 'red'}}>Bu vaqt oralig'ida bolalar soni mavjud emas</div>}
                 </Col>
             </Row> : null}
             {currentNavs === 2}

@@ -50,6 +50,7 @@ function ProductList() {
 
 
     const submitMtt = (e) => {
+        console.log("ssssss",productState)
         e.preventDefault();
         if (productState.id !== '') {
             dispatch(editProduct(productState));
@@ -154,11 +155,11 @@ function ProductList() {
                                       step={'0.01'}
                                       placeholder="Uglevod "/>
                         <br/>
-                        <Form.Label>Kilo kalloriya</Form.Label>
+                        <Form.Label>Energetik quvvati</Form.Label>
                         <Form.Control name='kcal' type={'number'} onWheel={(e) => e.target.blur()} required
                                       value={productState.kcal} onChange={onChanges}
                                       step={'0.01'}
-                                      placeholder="Kilo kalloriya"/>
+                                      placeholder="Energetik quvvati"/>
                         <br/>
                         <Form.Label>Oqsil</Form.Label>
                         <Form.Control name='protein' type={'number'} onWheel={(e) => e.target.blur()} required

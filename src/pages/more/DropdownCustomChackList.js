@@ -58,7 +58,7 @@ function MyDropdown({list, name, setData, editList, param}) {
 
     const getItem = (data) => {
         const currentList = [...stateList];
-        currentList.push({...data,"productId":data.id});
+        currentList.push({...data, "productId": data.id});
         console.log("getItem")
         if (stateList?.some(item => item[param] === data[param])) {
             toast.error("Bu avval tanlangan!");
@@ -69,7 +69,7 @@ function MyDropdown({list, name, setData, editList, param}) {
     }
 
     useEffect(() => {
-        console.log(editList,"editList");
+        console.log(editList, "editList");
         // eslint-disable-next-line valid-typeof
         if (editList?.length !== 0) {
             setStateList(editList);
@@ -82,11 +82,28 @@ function MyDropdown({list, name, setData, editList, param}) {
         setData(currentList);
         setStateList(currentList);
     }
+    // const checkWeight = (index,e) => {
+    //     let ok = false;
+    //       console.log(stateList[index]?.weight,e.target.name,parseFloat(e.target.value).toFixed(2));
+    //   if ((parseFloat(e.target.value).toFixed(2) <= parseFloat(stateList[index]?.weight).toFixed(2)) && (e.target.name === "waste")){
+    //       ok = true;
+    //   }else {
+    //       if (parseFloat(e.target.value).toFixed(2) >= stateList[index]?.waste && stateList[index]?.weight && e.target.name !== "waste" ){
+    //           console.log("oooooo")
+    //           ok = true;
+    //       }
+    //   }
+    //   return ok;
+    // }
     const onChangeList = (index) => (e) => {
-        let myList = [...stateList];
-        myList[index] = {...myList[index],weight:e.target.value}
-        setData(myList);
-        setStateList(myList);
+        // if (checkWeight(index,e)) {
+            let myList = [...stateList];
+            myList[index] = {...myList[index], [e.target.name]: e.target.value}
+            setData(myList);
+            setStateList(myList);
+        // }else {
+        //     toast.error("Chiqidli mahsulotning miqdori chiqidsizning miqdoridan katta yoki teng");
+        // }
     }
 
     return (
@@ -95,22 +112,33 @@ function MyDropdown({list, name, setData, editList, param}) {
                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                     {name}
                 </Dropdown.Toggle>
-
                 <Dropdown.Menu as={CustomMenu}>
                     {
                         lists?.map((item, index) =>
-                            <Dropdown.Item key={index} value={item.id} onClick={() => getItem(item)}>{item?.name}</Dropdown.Item>
+                            <Dropdown.Item key={index} value={item.id}
+                                           onClick={() => getItem(item)}>{item?.name}</Dropdown.Item>
                         )
                     }
                 </Dropdown.Menu>
             </Dropdown>
+            <div className={'d-flex justify-content-between'}>
+                <span></span>
+                <span className={"d-flex justify-content-center w-50"}>
+                    <span>Chiqidli</span>
+                    <span className={'mx-5'}>Chiqidsiz</span>
+                </span>
+            </div>
             {
                 stateList?.map((item, index) =>
                     <span key={index}>
-                        <br/>
-                    <InputGroup size="sm" className="mb-3">
-                        <InputGroup.Text id="inputGroup-sizing-sm" style={{width: '70%'}}>{item.name}</InputGroup.Text>
-                        <Form.Control type={'number'} step={"0.01"} required name={"weight"} size={'sm'} value={item.weight ? item.weight : ""} onWheel={(e)=>e.target.blur()} onChange={onChangeList(index)} placeholder={"vazni"}/>
+                    <InputGroup size="sm" className="mb-2">
+                        <InputGroup.Text id="inputGroup-sizing-sm" style={{width: '50%'}}>{item.name}</InputGroup.Text>
+                        <Form.Control type={'number'} step={"0.01"} required name={"weight"} size={'sm'}
+                                      value={item.weight ? item.weight : ""} onWheel={(e) => e.target.blur()}
+                                      onChange={onChangeList(index)} placeholder={"vazni"}/>
+                        <Form.Control type={'number'} step={"0.01"} required name={"waste"} size={'sm'}
+                                      value={item?.waste ? item?.waste : ""} onWheel={(e) => e.target.blur()}
+                                      onChange={onChangeList(index)} placeholder={"vazni"}/>
                         <InputGroup.Text><Button variant={'danger'} size={'sm'}
                                                  onClick={() => removeItem()}><ImBin/></Button> </InputGroup.Text>
                     </InputGroup>

@@ -82,6 +82,10 @@ function MealList() {
         }
     }
 
+    const waste = (checked) => {
+
+    }
+
     const onChanges = (param) => (e) => {
         if (param === "file") {
             setFileState(e.target.files[0]);
@@ -136,8 +140,11 @@ function MealList() {
                         }
                     </Form.Select>
                     <br/>
+                    <div>
+
                     <DropdownCustomChackList editList={mealState.productMealList} list={products}
                                              name={"Mahsulotlar"} setData={getProducts} param={"name"}/>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={handleClose}>
@@ -164,16 +171,18 @@ function MealList() {
                             <tr>
                                 <th>#</th>
                                 <th>Mahsulot</th>
-                                <th>Vazni</th>
+                                <th>Chiqidli vazni</th>
+                                <th>Chiqidsiz vazni</th>
                             </tr>
                             </thead>
                             <tbody>
                             {
                                 mealState?.productMealList?.map((item, index) =>
-                                    <tr>
+                                    <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{item.name}</td>
                                         <td>{item.weight}</td>
+                                        <td>{item?.waste}</td>
                                     </tr>
                                 )
                             }

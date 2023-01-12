@@ -66,9 +66,8 @@ function Sanpin() {
 
     const getAgeItem = (data) => {
         var list = [...sanpinCategoryState.dailyNormDTOList];
-        console.log(checkSame(list, data, "ageGroupId", "id"), "check")
         if (!checkSame(list, data, "ageGroupId", "id")) {
-            list.push({ageGroupId: data.id, weight: '', name: data.name})
+            list.push({ageGroupId: data.id, weight: '', ageGroupName: data.name})
         } else {
             toast.error("Bunday yosh toifasi tanlangan!")
         }
@@ -76,7 +75,6 @@ function Sanpin() {
     }
 
     const deleteAgeFromInput = (index, item) => {
-        console.log(index, item, "salom")
         let list = [...sanpinCategoryState.dailyNormDTOList];
         setsanpinCategoryState({
             ...sanpinCategoryState,

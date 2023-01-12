@@ -20,6 +20,8 @@ const slice = createSlice({
         },
         contractFile: (state, action) => {
             state.contractFile = action.payload;
+            var win = window.open(action.payload, '_blank');
+            win.focus();
         },
         resultReducer: (state, action) => {
             state.result = action.payload;

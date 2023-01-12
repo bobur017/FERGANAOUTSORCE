@@ -145,7 +145,7 @@ function Users() {
                     </Col>
                     <Col xs={12} sm={12} md={9} lg={9} xl={9}>
                         <div className={'figma-card mt-3'}>
-                            <div className={'tableCalendar'} style={{overflowY:'hidden',maxHeight:'100%'}}>
+                            {users?.length > 0 ? <div className={'tableCalendar'} style={{overflowY: 'hidden', maxHeight: '100%'}}>
                                 <table>
                                     <thead>
                                     <tr>
@@ -179,25 +179,29 @@ function Users() {
                                                     >
                                                         <BiDotsVerticalRounded size={25}/>
                                                         {
-                                                            more === item.id ? <div className={'more shadow'} style={{zIndex:1000}}>
-                                                                {item.status ? <div className={'sub-more'}  onClick={()=>dispatch(statusUser(item,{status: !item.status}))}>
-                                                                    <BiUserX size={20} color={'#E9573F'}/>
-                                                                    <span className={'mx-1'}>Xodimni cheklash</span>
-                                                                </div> : <div className={'sub-more'} onClick={()=>dispatch(statusUser(item,{status: !item.status}))}>
-                                                                    <BiUserCheck size={20} color={'#8CC152'} />
-                                                                    <span>Xodimni faolasht..</span>
-                                                                </div>
-                                                                }
-                                                                <div className={'sub-more'}
-                                                                     onClick={() => handleShow(item)}>
-                                                                    <BiEdit size={20}/>
-                                                                    <span>O'zgartirish</span>
-                                                                </div>
-                                                                <div className={'sub-more'} onClick={()=>dispatch(deleteUser(item))}>
-                                                                    <MdDeleteForever size={20}/>
-                                                                    <span>O'chirish</span>
-                                                                </div>
-                                                            </div> : null
+                                                            more === item.id ?
+                                                                <div className={'more shadow'} style={{zIndex: 1000}}>
+                                                                    {item.status ? <div className={'sub-more'}
+                                                                                        onClick={() => dispatch(statusUser(item, {status: !item.status}))}>
+                                                                        <BiUserX size={20} color={'#E9573F'}/>
+                                                                        <span className={'mx-1'}>Xodimni cheklash</span>
+                                                                    </div> : <div className={'sub-more'}
+                                                                                  onClick={() => dispatch(statusUser(item, {status: !item.status}))}>
+                                                                        <BiUserCheck size={20} color={'#8CC152'}/>
+                                                                        <span>Xodimni faolasht..</span>
+                                                                    </div>
+                                                                    }
+                                                                    <div className={'sub-more'}
+                                                                         onClick={() => handleShow(item)}>
+                                                                        <BiEdit size={20}/>
+                                                                        <span>O'zgartirish</span>
+                                                                    </div>
+                                                                    <div className={'sub-more'}
+                                                                         onClick={() => dispatch(deleteUser(item))}>
+                                                                        <MdDeleteForever size={20}/>
+                                                                        <span>O'chirish</span>
+                                                                    </div>
+                                                                </div> : null
                                                         }
                                                     </button>
                                                 </td>
@@ -210,7 +214,10 @@ function Users() {
                                 <br/>
                                 <br/>
                                 <br/>
-                            </div>
+                            </div> :users?.length ?
+                                <div className={"text-center fs-3"} style={{color: 'red'}}>Ma'lumot mavjud emas</div> :
+                                <div className={"text-center fs-3"} style={{color: 'red'}}>Xodimlar mavjud
+                                    emas</div>}
                         </div>
                     </Col>
                 </Row>

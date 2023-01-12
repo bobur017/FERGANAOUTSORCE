@@ -9,7 +9,7 @@ const slice = createSlice({
         userData: {},
         result: {},
         error: {},
-        users: [],
+        users: {},
         roles: [],
         departmentRoles: [],
         kindergartenRoles: [],

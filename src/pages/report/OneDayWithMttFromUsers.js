@@ -58,9 +58,9 @@ function OneDayWithMttFromUsers({id}) {
         <div>
             <NavbarHeader name={"Kunlik taomnoma"}/>
             <div className={"figma-card-first mt-3"}>
-                {stateSelector?.kindergartenName !== null ? <Container fluid={true}>
+                <Container fluid={true}>
                     <Row className={'figma-card-first'}>
-                        <Col className={'d-flex align-items-center justify-content-around'}>
+                        {stateSelector?.kindergartenName !== null ? <Col className={'d-flex align-items-center justify-content-around'}>
 
                             <button className={'buttonInfo mx-1'}
                                     onClick={() => pushMenuId()}>Batafsil
@@ -69,14 +69,15 @@ function OneDayWithMttFromUsers({id}) {
                                     onClick={() => getFiles("pdf")}>PDF
                             </button>
                             <button className={'buttonExcel mx-1'} onClick={() => getFiles("excel")}>Excel</button>
-                        </Col>
-                        <Col>
+                        </Col>:null}
+                        <Col xs={6} sm={6} md={6}>
                             <Form.Label>Sana</Form.Label>
                             <Form.Control onChange={getByDate} type={'date'} name={'date'}/>
                         </Col>
                     </Row>
-                </Container>:null}
-                {stateSelector?.kindergartenName !== null ? <div className={'figma-card mt-3'}>
+                </Container>
+                {stateSelector?.kindergartenName !== null ?
+                    <div className={'figma-card mt-3'}>
                     <div>
                         <div className={'fs-5 fw-bolder mb-2'}>Taomnoma</div>
                         <div className={'infoText'}>
@@ -97,7 +98,7 @@ function OneDayWithMttFromUsers({id}) {
                         </div>
                     </div>
                 </div>: <div className={"figma-card text-center fs-3 mt-3"} style={{color:'#e58107'}}>Bu kunga taomnoma biriktirilmagan</div>}
-                <div className={'figma-card mt-3'}>
+                {stateSelector?.kidsNumber?.subDTO ? <div className={'figma-card mt-3'}>
                     <div className={'fs-5 fw-bolder'}> Kiritilgan bolalar soni</div>
                     {stateSelector?.kidsNumber?.subDTO?.map((age, index2) =>
                         < div key={index2} className={'infoText'}>
@@ -105,7 +106,7 @@ function OneDayWithMttFromUsers({id}) {
                             <div>{age?.number}</div>
                         </div>
                     )}
-                </div>
+                </div> : <div className={"figma-card text-center fs-3 mt-3"} style={{color:'#e58107'}}>Bu kunga bolalar soni kiritilmagan</div>}
             </div>
         </div>
     );

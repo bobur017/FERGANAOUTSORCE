@@ -79,8 +79,8 @@ function Warehouse() {
             setProductReceived({...productReceived, [e.target.name]: new Date(e.target.value).getTime()})
         } else {
             let packWeight = productReceived?.pack > 0 ? parseInt(e.target.value) : e.target.value;
-            let receivedWeight = productReceived?.pack > 0 ? (parseInt(e.target.value) * productReceived?.pack) :e.target.value;
-            setProductReceived({...productReceived, receivedWeight,packWeight});
+            let receivedWeight = productReceived?.pack > 0 ? (parseInt(e.target.value) * productReceived?.pack) : e.target.value;
+            setProductReceived({...productReceived, receivedWeight, packWeight});
         }
     }
 
@@ -103,7 +103,7 @@ function Warehouse() {
                 currentNavs={setCurrentNavs}/>
             <Container fluid={true} className={'mt-3'}>
                 {currentNavs === 0 ? <Row>
-                    <Col className={'figma-card'}>
+                    {warehouses?.list?.length > 0 ? <Col className={'figma-card'}>
                         <div className={'w-100 d-flex justify-content-end'}>
                             <button className={'buttonPdf my-2'} onClick={getPdf}>PDF</button>
                         </div>
@@ -120,7 +120,8 @@ function Warehouse() {
                                 <tbody>
                                 {
                                     warehouses?.list?.map((product, index) =>
-                                        <tr key={index} style={{cursor: 'pointer'}} onClick={()=>handleShow2(product?.inOutList)}>
+                                        <tr key={index} style={{cursor: 'pointer'}}
+                                            onClick={() => handleShow2(product?.inOutList)}>
                                             <td>{index + 1}</td>
                                             <td>{product.productName}</td>
                                             <td>{product.weight}</td>
@@ -135,11 +136,14 @@ function Warehouse() {
                                                 pageSize={warehouses?.getPageSize} changesPage={changePage0}
                                                 allPageSize={warehouses?.allPageSize}/>
                         </div>
-                    </Col>
+                    </Col> : warehouses?.list ?
+                        <div className={"text-center fs-3"} style={{color: 'red'}}>Ma'lumot mavjud emas </div> :
+                        <div className={"text-center fs-3"} style={{color: 'red'}}>Qabul qilingan mahsulotlar mavjud
+                            emas</div>}
                 </Row> : null}
                 {currentNavs === 2 ? <Row>
                     <Col className={'figma-card'}>
-                        <div className={'tableCalendar'}>
+                        {acceptedProduct?.list?.length > 0 ? <div className={'tableCalendar'}>
                             <table>
                                 <thead>
                                 <tr>
@@ -181,12 +185,15 @@ function Warehouse() {
                             <FromPageSizeBottom currentPage={acceptedProduct.getPageNumber}
                                                 pageSize={acceptedProduct?.getPageSize} changesPage={changePage2}
                                                 allPageSize={acceptedProduct?.allPageSize}/>
-                        </div>
+                        </div> : warehouses?.list ?
+                            <div className={"text-center fs-3"} style={{color: 'red'}}>Ma'lumot mavjud emas </div> :
+                            <div className={"text-center fs-3"} style={{color: 'red'}}>Qabul qilingan mahsulotlar mavjud
+                                emas</div>}
                     </Col>
                 </Row> : null}
                 {currentNavs === 1 ? <Row>
                     <Col className={'figma-card'}>
-                        <div className={'tableCalendar'}>
+                        {acceptedProducts?.list?.length > 0 ? <div className={'tableCalendar'}>
                             <table>
                                 <thead>
                                 <tr>
@@ -223,7 +230,10 @@ function Warehouse() {
                             <FromPageSizeBottom currentPage={acceptedProducts.getPageNumber}
                                                 pageSize={acceptedProducts?.getPageSize} changesPage={changePage1}
                                                 allPageSize={acceptedProducts?.allPageSize}/>
-                        </div>
+                        </div> : warehouses?.list ?
+                            <div className={"text-center fs-3"} style={{color: 'red'}}>Ma'lumot mavjud emas </div> :
+                            <div className={"text-center fs-3"} style={{color: 'red'}}>Omborda ma'lumot mavjud
+                                emas</div>}
                     </Col>
                 </Row> : null}
             </Container>
@@ -240,7 +250,8 @@ function Warehouse() {
                         <Form.Control type={'date'} name={"date"}
                                       value={TimestampToInputDate(productReceived.date)}
                                       onChange={onChangeProductWeight}
-                                      onWheel={event => event.target.blur()} max={TimestampToInputDate(productReceived.date)}/>
+                                      onWheel={event => event.target.blur()}
+                                      max={TimestampToInputDate(productReceived.date)}/>
                         <Form.Label>Qabul qilinadigan miqdor</Form.Label>
                         <Form.Control max={productReceived?.residualPackWeight} type={'number'} name={"packWeight"}
                                       value={productReceived.packWeight} step={'0.01'}

@@ -128,7 +128,7 @@ function UsersDepartment() {
                     </Col>
                     <Col xs={12} sm={12} md={9} lg={9} xl={9}>
                         <div className={'figma-card mt-3'}>
-                            <div className={'tableCalendar'}>
+                            {users?.length > 0? <div className={'tableCalendar'}>
                                 <table>
                                     <thead>
                                     <tr>
@@ -196,7 +196,10 @@ function UsersDepartment() {
                                 <br/>
                                 <br/>
                                 <br/>
-                            </div>
+                            </div>:users?.length ?
+                                <div className={"text-center fs-3"} style={{color: 'red'}}>Ma'lumot mavjud emas</div> :
+                                <div className={"text-center fs-3"} style={{color: 'red'}}>Xodimlar mavjud
+                                    emas</div>}
                         </div>
                     </Col>
                 </Row>
