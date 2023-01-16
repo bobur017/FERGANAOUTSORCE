@@ -151,7 +151,7 @@ function RelationMenu() {
     const multiMenuList = useSelector(state => state.multiMenu.multiMenuList);
     const calendar = useSelector(state => state.multiMenu.checkCalendar);
     const departmentsRel = useSelector(state => state.department.departmentsRelAdd);
-    const mttsRelations = useSelector(state => state.mtt.mttsRelationsAdd);
+    const mttsRelations = useSelector(state => state.mtt.mttsRelations);
     const relationsResult = useSelector(state => state.multiMenu.relationsResult);
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);
@@ -322,6 +322,8 @@ function RelationMenu() {
     }
 
     const getDates2 = (checked, data, index) => {
+        if (data?.stayTimeNumber === multiMenuState?.stayTimeNumber){
+
         setChecked1(false);
         setChecked2(false);
         setChecked3(false);
@@ -415,6 +417,9 @@ function RelationMenu() {
             kinList: kinderList, checkedCount: kinderList.length
         });
         setCalendarState(calendarList);
+        }else {
+            toast.error("Taomnomani ovqatlanish vaqti MTT ga mos emas");
+        }
     }
 
     const changeDate = (num, year, month) => {
@@ -546,6 +551,7 @@ function RelationMenu() {
         }
     }
     const getKindergarten = (data) => {
+
         setDepartmentId(data);
         let list = newMtts.filter(mtt => mtt.departmentId === data.departmentId && currentDay?.date === mtt.date);
         if (list.length > 0) {

@@ -36,7 +36,7 @@ function Contract() {
     const handleShow2 = (id) => {
         dispatch(getContractOne(id));
         setId(id);
-        setShow2(true)
+        setShow2(true);
     };
     const history = useNavigate();
 
@@ -170,7 +170,7 @@ function Contract() {
             <br/>
             <div className={'figma-card'}>
                 <div className={'tableCalendar'}>
-                    <table style={{color: 'black'}}>
+                    {contracts?.list.length > 0 ? <table style={{color: 'black'}}>
                         <thead>
                         <tr>
                             <th>#</th>
@@ -222,12 +222,14 @@ function Contract() {
                                                 O'chirish
                                             </Button> : null}
                                         </td>
-                                    </>:null}
+                                    </> : null}
                                 </tr>
                             )
                         }
                         </tbody>
-                    </table>
+                    </table> : contracts?.list ?
+                        <div className={"fs-3 w-100 text-center"} style={{color: 'red'}}>Ma'lumotlarmavjud emas</div> :
+                        <div className={"fs-3 w-100 text-center"} style={{color: 'red'}}>Shartnomalar tuzilmagan</div>}
                 </div>
             </div>
             <Modal show={show} onHide={handleClose}>

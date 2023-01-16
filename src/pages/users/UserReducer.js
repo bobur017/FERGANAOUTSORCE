@@ -11,12 +11,16 @@ const slice = createSlice({
         error: {},
         users: {},
         roles: [],
+        rolesGet: [],
         departmentRoles: [],
         kindergartenRoles: [],
     },
     reducers: {
         users: (state, action) => {
             state.users = action.payload;
+        },
+        rolesGet: (state, action) => {
+            state.rolesGet = action.payload;
         },
         userData: (state, action) => {
             state.userData = action.payload;
@@ -37,7 +41,7 @@ const slice = createSlice({
         },
         errorReducer: (state, action) => {
             state.error = action.payload;
-            toastError(action.payload)
+            toastError(action.payload);
         },
     }
 })
@@ -97,6 +101,16 @@ export const statusUser = (data,params) => apiCall({
 export const deleteUser = (data) => apiCall({
     url: "/user/" + data.id,
     method: "DELETE",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.resultReducer.type,
+    error: slice.actions.errorReducer.type
+});
+
+export const resetPasswordUser = (data) => apiCall({
+    url: "/user/reset/password/" + data.id,
+    method: "PUT",
     headers: {
         Authorization: getToken(),
     },
@@ -179,6 +193,16 @@ export const getRoles = (params) => apiCall({
     },
     params,
     success: slice.actions.getRoles.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getRolesGet = () => apiCall({
+    url: "/role/get",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.rolesGet.type,
     error: slice.actions.errorReducer.type
 })
 

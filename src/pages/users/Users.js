@@ -2,13 +2,22 @@ import React from 'react';
 import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addUserDepartment, addUserRegion, deleteUser, editUser, getAllUser, getRoles, statusUser} from "./UserReducer";
+import {
+    addUserDepartment,
+    addUserRegion,
+    deleteUser,
+    editUser,
+    getAllUser,
+    getRoles,
+    resetPasswordUser,
+    statusUser
+} from "./UserReducer";
 import NavbarHeader from "../more/NavbarHeader";
 import Role from "../role/Role";
 import {getDepartment} from "../departments/RegionDepartmentReducer";
 import main from "../relationMultiMenu/relationStyle.module.scss";
 import {AiOutlineEnvironment} from "react-icons/ai";
-import {BiDotsVerticalRounded, BiEdit, BiUserCheck, BiUserX} from "react-icons/bi";
+import {BiDotsVerticalRounded, BiEdit, BiRefresh, BiUserCheck, BiUserX} from "react-icons/bi";
 import {MdDeleteForever} from "react-icons/md";
 
 function Users() {
@@ -200,6 +209,11 @@ function Users() {
                                                                          onClick={() => dispatch(deleteUser(item))}>
                                                                         <MdDeleteForever size={20}/>
                                                                         <span>O'chirish</span>
+                                                                    </div>
+                                                                    <div className={'sub-more'}
+                                                                         onClick={() => dispatch(resetPasswordUser(item))}>
+                                                                        <BiRefresh size={20}/>
+                                                                        <span>Parolni tiklash</span>
                                                                     </div>
                                                                 </div> : null
                                                         }

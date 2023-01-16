@@ -4,15 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export const baseUrl = () => {
-    // return "https://feednet.uz/out/api/attachment/"
-    return "http://192.168.0.119:8888/out/api/attachment/"
+    return "https://feednet.uz/out/api/attachment/"
+    // return "http://192.168.0.119:8888/out/api/attachment/"
+}
+
+export const baseUrl3 = () => {
+    return "https://feednet.uz"
+    // return "http://localhost:3000"
 }
 
 export const baseUrl2 = () => {
-    // return "https://feednet.uz/out/api"
-    // return "http://localhost:8888/out/api"
-    // return "http://188.166.229.158:8888/out/api"
-    return "http://192.168.0.119:8888/out/api"
+    return "https://feednet.uz/out/api";
+    // return "http://localhost:8888/out/api";
+    // return "http://192.168.0.119:8888/out/api";
 }
 
 function Default(props) {

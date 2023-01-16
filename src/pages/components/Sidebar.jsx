@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleRight, FaBars,} from "react-icons/fa";
 import './App.css'
-import {NavLink} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import {ImExit} from 'react-icons/im';
 import {rolesList} from "./RoleRoutes";
 import logo from '../login/image/img.png'
@@ -10,12 +10,19 @@ import {useMediaQuery} from "react-responsive";
 const Sidebar = ({children}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [menuItem, setMenuItem] = useState([]);
+    const history = useNavigate();
     const [num, setNum] = useState(0);
     const toggle = () => setIsOpen(!isOpen);
     useEffect(() => {
         setMenuItem(rolesList(localStorage.getItem("role")));
     }, []);
     const isBigScreen = useMediaQuery({query: '(max-width: 576px)'});
+    const pushLogin = () => {
+        localStorage.setItem("Authorization"," ");
+        localStorage.setItem("Refresh"," ");
+        window.history.pushState("object or string", "Title", "/");
+        window.location.reload();
+    }
     return (
         <div className={'d-flex'} style={{height: "90%"}}>
             {!isBigScreen ? <div style={{width: isOpen ? "200px" : "80px"}} className="sidebar shadow">
@@ -36,10 +43,10 @@ const Sidebar = ({children}) => {
                         );
                     })
                     }
-                    <NavLink to={"/"} className="link mb-2" id={"link2"}>
+                    <div  className="link mb-2" id={"link2"} style={{cursor:"pointer"}} onClick={pushLogin}>
                         <div className="icon"><ImExit size={25}/></div>
-                        <div style={{display: isOpen ? "block" : "none"}} className="link_text">Chiqish</div>
-                    </NavLink>
+                        <div style={{display: isOpen ? "block" : "none"}} className="link_text" >Chiqish</div>
+                    </div>
                 </div>
             </div> : <nav className={"mobile-navbar"}>
                 <ul>

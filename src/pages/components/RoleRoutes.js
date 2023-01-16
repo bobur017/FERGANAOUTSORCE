@@ -112,6 +112,11 @@ export const rolesList = (role) => {
                 name: "Omborxona",
                 icon: <TbBuildingWarehouse size={25}/>
             },
+            {
+                path: "/sidebar/send-notification",
+                name: "Bildirishnoma yuborish",
+                icon: <RiNotification2Line size={25}/>
+            },
         ];
     }else if(role === "ROLE_OMBORCHI"){
         return [
@@ -235,6 +240,11 @@ export const rolesList = (role) => {
                 name: "Omborxona",
                 icon: <TbBuildingWarehouse size={25}/>
             },
+            {
+                path: "/sidebar/send-notification",
+                name: "Bildirishnoma yuborish",
+                icon: <RiNotification2Line size={25}/>
+            },
             // {
             //     path: "/sidebar/remove-product",
             //     name: "Chiqidlar",
@@ -330,11 +340,6 @@ export const rolesList = (role) => {
                 path: "/sidebar/info",
                 name: "Ma'lumotlar",
                 icon: <TiInfoLargeOutline size={25}/>
-            },
-            {
-                path: "/sidebar/send-notification",
-                name: "Bildirishnoma yuborish",
-                icon: <RiNotification2Line size={25}/>
             },
             {
                 path: "/sidebar/users-department",

@@ -11,10 +11,14 @@ const slice = createSlice({
         departmentsRel: [],
         departmentsRelAdd: [],
         departments: [],
+        departmentsTime: {},
     },
     reducers: {
         departments: (state, action) => {
             state.departments = action.payload;
+        },
+        departmentsTime: (state, action) => {
+            state.departmentsTime = action.payload;
         },
         regionDepartments: (state, action) => {
             state.regionDepartments = action.payload;
@@ -88,6 +92,27 @@ export const getDepartment = () => apiCall({
         Authorization: getToken(),
     },
     success: slice.actions.departments.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getDepartmentTime = () => apiCall({
+    url: "/department/time",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.departmentsTime.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const addTime = (params) => apiCall({
+    url: "/department/time",
+    method: "PUT",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
 })
 

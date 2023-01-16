@@ -9,10 +9,18 @@ const slice = createSlice({
         result: {},
         error: {},
         meals: [],
+        mealOne: [],
+        mealSanpin: [],
     },
     reducers: {
         meals: (state, action) => {
             state.meals = action.payload;
+        },
+        mealOne: (state, action) => {
+            state.mealOne = action.payload;
+        },
+        mealSanpin: (state, action) => {
+            state.mealSanpin = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -32,6 +40,27 @@ export const getMeal = () => apiCall({
         Authorization: getToken(),
     },
     success: slice.actions.meals.type,
+    error: slice.actions.errorReducer.type
+})
+export const getMealOne = (id) => apiCall({
+    url: "/meal/getProduct/"+id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.mealOne.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getMealSanpin = (params,data) => apiCall({
+    url: "/meal/getSanPin",
+    method: "POST",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    data,
+    success: slice.actions.mealSanpin.type,
     error: slice.actions.errorReducer.type
 })
 

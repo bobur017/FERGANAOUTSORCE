@@ -9,6 +9,8 @@ import {downloadFilesa} from "../DownLOader";
 import {getRoleStorage} from "../more/Functions";
 import FromPageSizeBottom from "../fromPage/FromPageSizeBottom";
 import {TimestampToInputDate} from "../funcs/Funcs";
+import MoreButtons from "../more/MoreButtons";
+import {MdDeleteForever} from "react-icons/md";
 
 function Warehouse() {
     const [wareHouseState, setWareHouseState] = useState();
@@ -17,7 +19,10 @@ function Warehouse() {
         "receivedWeight": 0
     });
     const [currentNavs, setCurrentNavs] = useState(0);
+    const [currentNumber, setCurrentNumber] = useState(0);
     const [inOutList, setInOutList] = useState([]);
+    const [productState, setProductState] = useState();
+    const [productCurrent, setProductCurrent] = useState();
     const warehouses = useSelector(state => state.warehouse.warehouses);
     const result = useSelector(state => state.warehouse.result);
     const acceptedProduct = useSelector(state => state.warehouse.acceptedProduct);
@@ -30,7 +35,10 @@ function Warehouse() {
 
     const handleClose = () => setShow(false);
     const handleClose2 = () => setShow2(false);
-    const handleShow = () => setShow(true);
+    const handleShow = (num) => {
+        setCurrentNumber(num);
+        setShow(true);
+    }
     const handleShow2 = (list) => {
         setInOutList(list);
         setShow2(true);
@@ -66,7 +74,7 @@ function Warehouse() {
 
     const onClickProduct = (data) => {
         setProductReceived({...data, packWeight: '', date: Date.now()});
-        handleShow();
+        handleShow(1);
     }
 
     const submit = (e) => {
@@ -96,8 +104,68 @@ function Warehouse() {
     const changePage2 = (page) => {
         dispatch(getAcceptedProduct({page, pageSize: 10}));
     }
+    const activeOrInActive = (data) => {
+        setProductState(data);
+    }
+    const getDateMore = (index, data) => {
+        setProductState(data);
+        setProductCurrent({...warehouses?.list[index]});
+        handleShow(2)
+    }
+    const inputProduct = () => {
+        return (
+            <Form onSubmit={submit}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{productReceived?.productName}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                        <span className={'mb-3'} style={{color: '#fcb713'}}>Maximal kiritish miqdori:
+                            <span style={{color: '#000'}}>{productReceived?.residualWeight}</span></span>
+                    <br/>
+                    <Form.Label>Sana</Form.Label>
+                    <Form.Control type={'date'} name={"date"}
+                                  value={TimestampToInputDate(productReceived.date)}
+                                  onChange={onChangeProductWeight}
+                                  onWheel={event => event.target.blur()}
+                                  max={TimestampToInputDate(productReceived.date)}/>
+                    <Form.Label>Qabul qilinadigan miqdor</Form.Label>
+                    <Form.Control max={productReceived?.residualPackWeight} type={'number'} name={"packWeight"}
+                                  value={productReceived.packWeight} step={'0.01'}
+                                  onChange={onChangeProductWeight}
+                                  onWheel={event => event.target.blur()} required/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Bekor qilish
+                    </Button>
+                    <Button variant="primary" type={'submit'}>
+                        Tayyor
+                    </Button>
+                </Modal.Footer>
+            </Form>
+        )
+    }
+    const submitWaste = (e) => {
+      e.preventDefault();
+
+    }
+    const wasteProduct = () => {
+        return (
+            <Form onSubmit={submitWaste}>
+                <Modal.Header>{productCurrent?.productName}  miqdori:{productCurrent?.packWeight}</Modal.Header>
+                <Modal.Body>
+                    <Form.Label>KG / DONA</Form.Label>
+                    <Form.Control type={"number"} name={"waste"} step={"0.01"} onWheel={e=>e.target.blur()} max={productCurrent?.packWeight}/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant={"danger"} onClick={handleClose}>Ortga</Button>
+                    <Button variant={"primary"} type={"submit"}>Tayyor</Button>
+                </Modal.Footer>
+            </Form>
+        )
+    }
     return (
-        <div>
+        <div className={"allMain"}>
             <NavbarHeader
                 navs={[{name: "Ombordagi mahsulotlar"}, {name: "Qabul qilingan mahsulotlar"}, getRoleStorage() === "ROLE_OMBORCHI" ? {name: "Mahsulot qabul qilish"} : '']}
                 currentNavs={setCurrentNavs}/>
@@ -115,17 +183,26 @@ function Warehouse() {
                                     <th>Mahsulot nomi</th>
                                     <th>Miqdor</th>
                                     <th>Qadoq miqdor</th>
+                                    <th>Chiqid</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {
                                     warehouses?.list?.map((product, index) =>
-                                        <tr key={index} style={{cursor: 'pointer'}}
-                                            onClick={() => handleShow2(product?.inOutList)}>
+                                        <tr key={index}
+                                        >
                                             <td>{index + 1}</td>
-                                            <td>{product.productName}</td>
-                                            <td>{product.weight}</td>
-                                            <td>{product.packWeight}</td>
+                                            <td style={{cursor: 'pointer'}}
+                                                onClick={() => handleShow2(product?.inOutList)}>{product.productName}</td>
+                                            <td style={{cursor: 'pointer'}}
+                                                onClick={() => handleShow2(product?.inOutList)}>{product.weight}</td>
+                                            <td style={{cursor: 'pointer'}}
+                                                onClick={() => handleShow2(product?.inOutList)}>{product.packWeight}</td>
+                                            <td><MoreButtons list={[
+                                                {name: "Chiqidga chiqarish", icon: <MdDeleteForever/>}
+                                            ]} data={product} setActive={activeOrInActive}
+                                                             active={productState?.id === product.id}
+                                                             getDate={getDateMore}/></td>
                                         </tr>
                                     )
                                 }
@@ -238,80 +315,51 @@ function Warehouse() {
                 </Row> : null}
             </Container>
             <Modal show={show} onHide={handleClose}>
-                <Form onSubmit={submit}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>{productReceived?.productName}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <span className={'mb-3'} style={{color: '#fcb713'}}>Maximal kiritish miqdori:
-                            <span style={{color: '#000'}}>{productReceived?.residualWeight}</span></span>
-                        <br/>
-                        <Form.Label>Sana</Form.Label>
-                        <Form.Control type={'date'} name={"date"}
-                                      value={TimestampToInputDate(productReceived.date)}
-                                      onChange={onChangeProductWeight}
-                                      onWheel={event => event.target.blur()}
-                                      max={TimestampToInputDate(productReceived.date)}/>
-                        <Form.Label>Qabul qilinadigan miqdor</Form.Label>
-                        <Form.Control max={productReceived?.residualPackWeight} type={'number'} name={"packWeight"}
-                                      value={productReceived.packWeight} step={'0.01'}
-                                      onChange={onChangeProductWeight}
-                                      onWheel={event => event.target.blur()} required/>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Bekor qilish
-                        </Button>
-                        <Button variant="primary" type={'submit'}>
-                            Tayyor
-                        </Button>
-                    </Modal.Footer>
-                </Form>
+                {currentNumber === 1 ? inputProduct():null}
+                {currentNumber === 2 ? wasteProduct():null}
             </Modal>
             <Modal show={show2} onHide={handleClose2} size={"xl"}>
-                <Form onSubmit={submit}>
-                    <Modal.Header closeButton>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className={'tableCalendar'}>
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>№</th>
-                                    <th>Narxi</th>
-                                    <th>Umumiy miqdori</th>
-                                    <th>Qadoq miqdori</th>
-                                    <th>Qadoqlar soni</th>
-                                    <th>Qabul qilingan sana</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {
-                                    inOutList?.map((product, index) =>
-                                        <tr key={index} style={{cursor: 'pointer'}}>
-                                            <td>{index + 1}</td>
-                                            <td>{product.price}</td>
-                                            <td>{product.weight}</td>
-                                            <td>{product.packWeight}</td>
-                                            <td>{product.pack}</td>
-                                            <td>{TimestampToInputDate(product?.createDate)}</td>
-                                        </tr>
-                                    )
-                                }
-                                </tbody>
-                            </table>
-                            <br/>
-                            {/*<FromPageSizeBottom currentPage={acceptedProduct.getPageNumber}*/}
-                            {/*                    pageSize={acceptedProduct?.getPageSize} changesPage={changePage2}*/}
-                            {/*                    allPageSize={acceptedProduct?.allPageSize}/>*/}
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Bekor qilish
-                        </Button>
-                    </Modal.Footer>
-                </Form>
+                <Modal.Header closeButton>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className={'tableCalendar'}>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Narxi</th>
+                                <th>Umumiy miqdori</th>
+                                <th>Qadoq miqdori</th>
+                                <th>Qadoqlar soni</th>
+                                <th>Qabul qilingan sana</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                inOutList?.map((product, index) =>
+                                    <tr key={index} style={{cursor: 'pointer'}}>
+                                        <td>{index + 1}</td>
+                                        <td>{product.price}</td>
+                                        <td>{product.weight}</td>
+                                        <td>{product.packWeight}</td>
+                                        <td>{product.pack}</td>
+                                        <td>{TimestampToInputDate(product?.createDate)}</td>
+                                    </tr>
+                                )
+                            }
+                            </tbody>
+                        </table>
+                        <br/>
+                        {/*<FromPageSizeBottom currentPage={acceptedProduct.getPageNumber}*/}
+                        {/*                    pageSize={acceptedProduct?.getPageSize} changesPage={changePage2}*/}
+                        {/*                    allPageSize={acceptedProduct?.allPageSize}/>*/}
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Bekor qilish
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </div>
     );

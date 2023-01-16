@@ -46,7 +46,7 @@ function ChildrenNumber() {
     }
     const makeAgeGroup = () => {
         let subDTO = ages.map((age, index) => {
-                return {...age, number: 0, ageGroupId: age.ageGroupId, ageGroupName: age.name}
+                return {...age, number: 0, ageGroupId: age.id, ageGroupName: age.name}
             }
         )
         setChildrenState({...childrenState, subDTO, date: params.date, status: "KIRITISH"});

@@ -2,13 +2,22 @@ import React, {useEffect, useState} from 'react';
 import {FormCheck, ToggleButton} from "react-bootstrap";
 import {forEach} from "react-bootstrap/ElementChildren";
 import CheckedMttComponent from "../mtt/CheckedMttComponent";
+import CheckedMttComponent2 from "../mtt/CheckedMttComponent2";
 
-function CheckBoxCustom({list, getChecked, name, allChecked}) {
+function CheckBoxCustom({list, getChecked, name, allChecked,clickItem}) {
     const [checked, setChecked] = useState(false);
+    const [activeItem, setActiveItem] = useState(false);
     const checkedItem = (data, checked, index) => {
         getChecked(data, checked, index);
     }
-
+    const onClicked = (data,index) => {
+        if (data === activeItem) {
+            setActiveItem(null);
+        } else {
+            clickItem(data,index);
+            setActiveItem(data);
+        }
+    }
     const allCh = (checkedThis) => {
         setChecked(checkedThis);
         allChecked(checkedThis);
@@ -28,7 +37,8 @@ function CheckBoxCustom({list, getChecked, name, allChecked}) {
             <br/>
             {
                 list?.map((item, index) =>
-                    <CheckedMttComponent item={item} key={index} getChange={checkedItem} name={name} index={index}/>
+                    <CheckedMttComponent2 item={item} key={index} getChange={checkedItem} name={name} index={index}
+                                         active={activeItem === item} onClickName={onClicked}/>
                 )
             }
         </div>

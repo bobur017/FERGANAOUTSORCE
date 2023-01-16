@@ -3,22 +3,18 @@ import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    addUserDepartment,
     addUserKindergarten,
-    addUserRegion,
     deleteUser,
     editUser,
-    getAllUser,
-    getRoles,
+    getAllUser, resetPasswordUser,
     statusUser
 } from "./UserReducer";
 import NavbarHeader from "../more/NavbarHeader";
 import Role from "../role/Role";
 import main from "../relationMultiMenu/relationStyle.module.scss";
-import {AiOutlineEnvironment} from "react-icons/ai";
-import {BiDotsVerticalRounded, BiEdit, BiUserCheck, BiUserX} from "react-icons/bi";
+import {BiDotsVerticalRounded, BiEdit, BiRefresh, BiUserCheck, BiUserX} from "react-icons/bi";
 import {MdDeleteForever} from "react-icons/md";
-import {getMtt, getMttDepartment} from "../mtt/MttReducer";
+import { getMttDepartment} from "../mtt/MttReducer";
 import {RiHome5Line} from "react-icons/ri";
 
 function UsersDepartment() {
@@ -182,6 +178,11 @@ function UsersDepartment() {
                                                                      onClick={() => dispatch(deleteUser(item))}>
                                                                     <MdDeleteForever size={20}/>
                                                                     <span>O'chirish</span>
+                                                                </div>
+                                                                <div className={'sub-more'}
+                                                                     onClick={() => dispatch(resetPasswordUser(item))}>
+                                                                    <BiRefresh size={20}/>
+                                                                    <span>Parolni tiklash</span>
                                                                 </div>
                                                             </div> : null
                                                         }

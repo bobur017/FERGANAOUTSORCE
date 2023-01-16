@@ -140,7 +140,7 @@ function MyDropdown({list, name, setData, editList, param}) {
                                       value={item?.waste ? item?.waste : ""} onWheel={(e) => e.target.blur()}
                                       onChange={onChangeList(index)} placeholder={"vazni"}/>
                         <InputGroup.Text><Button variant={'danger'} size={'sm'}
-                                                 onClick={() => removeItem()}><ImBin/></Button> </InputGroup.Text>
+                                                 onClick={() => removeItem(index)}><ImBin/></Button> </InputGroup.Text>
                     </InputGroup>
                     </span>
                 )

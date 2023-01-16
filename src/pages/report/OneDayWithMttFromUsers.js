@@ -43,7 +43,6 @@ function OneDayWithMttFromUsers({id}) {
     }
     const getFiles = (type) => {
         setFileType(type);
-        console.log("ishlashi kerak")
         dispatch(getMenuReport({type, reportId: stateSelector?.id}))
     }
 

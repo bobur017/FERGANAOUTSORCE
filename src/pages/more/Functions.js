@@ -42,7 +42,7 @@ export const tableRowCustomTd3 = (maiList) => {
         maiList?.map((item, index) => {
                 if (index !== 0) {
                     return (
-                        <tr key={("a" + index) + 1}>
+                        <tr key={item.id}>
                             <td>{item.ageGroupName}</td>
                             <td>{item.weight}</td>
                         </tr>

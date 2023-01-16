@@ -51,6 +51,28 @@ export const getDefaultKidsNumbers = (params) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
+export const addDefaultKidsNumbers = (data,id) => apiCall({
+    url: "/averageKidsNumber/"+id,
+    method: "POST",
+    headers: {
+        Authorization: getToken(),
+    },
+    data,
+    success: slice.actions.resultReducer.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const editDefaultKidsNumbers = (data,id) => apiCall({
+    url: "/averageKidsNumber/"+id,
+    method: "PUT",
+    headers: {
+        Authorization: getToken(),
+    },
+    data,
+    success: slice.actions.resultReducer.type,
+    error: slice.actions.errorReducer.type
+})
+
 export const getKidsNumbersByDate = (data,params) => apiCall({
     url: "/kidsNumber/getAllByDate/"+data.id,
     method: "GET",

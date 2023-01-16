@@ -4,7 +4,6 @@ import {Link, Route, Routes} from "react-router-dom";
 import About from "./About";
 import Product from "../product/Product";
 import {Container, Nav, Navbar, Row} from "react-bootstrap";
-import logo from "../login/image/img.png"
 import userLogo from "../image/img.png"
 import RegionDepartment from "../departments/RegionDepartment";
 import Age from "../age/Age";
@@ -47,6 +46,7 @@ import MultiMenuOneFromOther from "../multimenu/MultiMenuOneFromOther";
 import {getUserData} from "../users/UserReducer";
 import {useEffect, useRef} from "react";
 import DefaultKidsNumber from "../children-number/DefaultKidsNumber";
+import KidsNumberOther from "../children-number/KidsNumberOther";
 
 function Sidebars() {
     const user = useSelector(state => state.user.userData)
@@ -94,7 +94,17 @@ function Sidebars() {
                             </div>
                             <div className={"d-flex w-25 align-items-center justify-content-around"}>
                                 <div className={'p-2'}
-                                     style={{backgroundColor: '#eeeeee', borderRadius: "50%", cursor: 'pointer'}}><Link
+                                     style={{backgroundColor: '#eeeeee', borderRadius: "50%", cursor: 'pointer',position:'relative'}}>
+                                    {user?.notification !== 0 ? <span style={{
+                                        paddingLeft: 2,
+                                        paddingRight: 2,
+                                        backgroundColor: '#f1a603',
+                                        borderRadius: 30,
+                                        position: 'absolute',
+                                        top: -3,
+                                        left: -3
+                                    }}>{user?.notification}</span>:null}
+                                    <Link
                                     to={"/sidebar/notification"} className={"link-none"}><TbBell size={25}/></Link></div>
                                 <div className={'p-2'}
                                      style={{backgroundColor: '#eeeeee', borderRadius: "50%", cursor: 'pointer'}}>
@@ -132,6 +142,7 @@ function Sidebars() {
                                      style={{backgroundColor: '#eeeeee', borderRadius: "30%", cursor: 'pointer'}}>
                                     <Link
                                         to={"/sidebar/notification"} className={"link-none"}>
+                                    <span className={"fs-3"}>{user?.notification}</span>
                                         <TbBell
                                             size={15}/></Link></div>
                                 <div className={'px-1'}
@@ -182,7 +193,7 @@ function Sidebars() {
                     <Route path="/send-notification" element={<SendNotifications/>}/>
                     <Route path="/product-pack" element={<ProductPack/>}/>
                     <Route path="/permission" element={<PermissionsFromRelation/>}/>
-                    <Route path="/default-kids-number" element={<DefaultKidsNumber/>}/>
+                    <Route path="/default-kids-number" element={<KidsNumberOther/>}/>
                     <Route path="/one-multi-menu-other/:id" element={<MultiMenuOneFromOther/>}/>
                 </Routes>
                 <br/><br/>

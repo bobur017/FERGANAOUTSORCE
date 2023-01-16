@@ -15,10 +15,20 @@ const slice = createSlice({
         checkCalendar: {},
         checkCalendar2: {},
         multiMenuFile: "",
+        multiMenuProductFile: "",
+        multiMenuProduct: [],
     },
     reducers: {
         multiMenuList: (state, action) => {
             state.multiMenuList = action.payload;
+        },
+        multiMenuProductFile: (state, action) => {
+            // state.multiMenuFile = action.payload;
+            var win = window.open(action.payload, '_blank');
+            win.focus();
+        },
+        multiMenuProduct: (state, action) => {
+            state.multiMenuProduct = action.payload;
         },
         multiMenuFile: (state, action) => {
             // state.multiMenuFile = action.payload;
@@ -59,6 +69,25 @@ export const getMultiMenu = () => apiCall({
         Authorization: getToken(),
     },
     success: slice.actions.multiMenuList.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getMultiMenuProduct = (id) => apiCall({
+    url: "/multiMenu/getProduct/" + id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.multiMenuProduct.type,
+    error: slice.actions.errorReducer.type
+})
+export const getMultiMenuProductFile = (id) => apiCall({
+    url: "/multiMenu/getProductFile/" + id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.multiMenuProductFile.type,
     error: slice.actions.errorReducer.type
 })
 export const getMultiMenuOne = (id) => apiCall({

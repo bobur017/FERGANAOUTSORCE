@@ -1,7 +1,7 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {getMenuOne} from "../multimenu/MultiMenuReducer";
 import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import {tableRowCustomTd3} from "../more/Functions";
@@ -9,6 +9,7 @@ import {tableRowCustomTd3} from "../more/Functions";
 function GetOneDayMenu() {
     const [state, setState] = useState();
     const dispatch = useDispatch();
+    const  history = useNavigate();
     const stateSelector = useSelector(state => state.multiMenu.menu)
     const firstUpdate = useRef(false);
     const reportId = useParams("id");
@@ -24,6 +25,7 @@ function GetOneDayMenu() {
     return (
         <div>
            <div className={'figma-card'}>
+               <button className={"buttonPdf"} onClick={()=>history("/sidebar/menu-mtt")}>ORTGA</button>
                        <Col xs={12} sm={12} md={12}
                             className={'text-center mt-3'}>
                            <Card className={'m-0'}>

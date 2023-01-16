@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {toast} from "react-toastify";
 import {apiCall} from "../../ApiCall";
 import {getToken, toastError} from "../more/Functions";
+import {baseUrl2, baseUrl3} from "../../Default";
 
 const slice = createSlice({
     name: "notification",
@@ -9,14 +10,19 @@ const slice = createSlice({
         result: {},
         error: {},
         notifications: [],
+        notificationOne: {},
     },
     reducers: {
         notifications: (state, action) => {
             state.notifications = action.payload;
         },
+        notificationOne: (state, action) => {
+            state.notificationOne = action.payload;
+        },
         resultReducer: (state, action) => {
             state.result = action.payload;
             toast.success(action.payload?.text);
+            window.location.replace(baseUrl3()+"/sidebar/info");
         },
         errorReducer: (state, action) => {
             state.error = action.payload;
@@ -32,6 +38,16 @@ export const getNotification = () => apiCall({
         Authorization: getToken(),
     },
     success: slice.actions.notifications.type,
+    error: slice.actions.errorReducer.type
+})
+
+export const getNotificationOne = (id) => apiCall({
+    url: "/notification/"+id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.notificationOne.type,
     error: slice.actions.errorReducer.type
 })
 

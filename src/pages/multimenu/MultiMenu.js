@@ -1,18 +1,24 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Button, Col, Form, InputGroup, Modal, Table} from "react-bootstrap";
+import {Button, Col, Form, InputGroup, Modal} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
 import {getMealTime} from "../meal/MealTimeReducer";
-import {addAge, editAge} from "../age/AgeReducer";
-import {addMultiMenu, deleteMultiMenu, editMultiMenu, getFileMultiMenu, getMultiMenu} from "./MultiMenuReducer";
+import {
+    addMultiMenu,
+    deleteMultiMenu,
+    editMultiMenu,
+    getFileMultiMenu,
+    getMultiMenu,
+    getMultiMenuProduct, getMultiMenuProductFile
+} from "./MultiMenuReducer";
 import {useNavigate} from "react-router-dom";
-import main from "../relationMultiMenu/relationStyle.module.scss";
 import ReactApexChart from "react-apexcharts";
 import {colorTextStr} from "../funcs/Funcs";
 import {RiDeleteBin2Fill} from "react-icons/ri";
 import {BsPencilSquare} from "react-icons/bs";
 import {AiOutlineFilePdf} from "react-icons/ai";
+import {Document, Page} from "react-pdf";
 
 function MultiMenu() {
     const defaultData = {
@@ -62,6 +68,13 @@ function MultiMenu() {
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
     const history = useNavigate();
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
+
+    function onDocumentLoadSuccess({numPages}) {
+        setNumPages(numPages);
+    }
+
     const handleClose2 = () => {
         setMultiMenuState(defaultData);
         setShow2(false);
@@ -79,14 +92,18 @@ function MultiMenu() {
         } else if (num === 2) {
             setNumber(2);
             setMultiMenuState(data);
-            history("/sidebar/multi-menu-one/"+data?.id);
+            history("/sidebar/multi-menu-one/" + data?.id);
         } else if (num === 3) {
         }
     };
     const handleShow2 = (num, data) => {
         if (num === 3) {
             setMultiMenuState(data);
+        } else if (num === 4) {
+            setMultiMenuState(data);
+            dispatch(getMultiMenuProduct(data?.id));
         }
+        setNumber(num);
         setShow2(true);
     };
 
@@ -101,9 +118,9 @@ function MultiMenu() {
 
     useEffect(() => {
         if (firstUpdate.current) {
-
+            console.log(multiMenu.multiMenuProduct, "multiMenu.multiMenuProduct")
         }
-    }, [multiMenu.multiMenuFile]);
+    }, [multiMenu.multiMenuProduct]);
 
     useEffect(() => {
         setMultiList(multiMenu.multiMenuList)
@@ -131,7 +148,10 @@ function MultiMenu() {
 
     const onChangeItem = (index) => (e) => {
         if (e.target.name !== "mealTimeIdList") {
-            setMultiMenuState({...multiMenuState, [e.target.name]:e.target.type ==="number"?parseInt( e.target.value) : e.target.value})
+            setMultiMenuState({
+                ...multiMenuState,
+                [e.target.name]: e.target.type === "number" ? parseInt(e.target.value) : e.target.value
+            })
         } else {
             let list = [...multiMenuState.mealTimeIdList];
             list[index] = {...list[index], checked: e.target.checked}
@@ -144,33 +164,147 @@ function MultiMenu() {
     const getFile = (data) => {
         dispatch(getFileMultiMenu(data));
     }
+    const getFileProd = () => {
+        dispatch(getMultiMenuProductFile(multiMenuState?.id));
+    }
+    const deleteTooltip = () => {
+        return (
+            <>
+                <Modal.Header closeButton>
+                </Modal.Header>
+                <Modal.Body><span style={{fontSize: 20, color: '#f57f08'}}>{multiMenuState.name}</span>ni o'chirishni
+                    xohlaysizmi?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose2}>
+                        YO'Q
+                    </Button>
+                    <Button variant="primary" onClick={() => dispatch(deleteMultiMenu(multiMenuState))}>
+                        HA
+                    </Button>
+                </Modal.Footer></>
+        )
+    }
+    const totalSum = (list) => {
+        let total = 0;
+        list.forEach(item =>
+            total = item.weight + total);
+        return total.toFixed(2);
+    }
+    const tbodyT = (list) => {
+        let trows = [];
+        let count = 0;
+        list.forEach((item, index) => {
+                item.productWeightList?.forEach((item2, index2) => {
+                        count = count + 1;
+                        if (index2 === 0) {
+                            trows.push(
+                                <tr key={index}>
+                                    <td rowSpan={item?.productWeightList?.length}>{index + 1}</td>
+                                    <td rowSpan={item?.productWeightList?.length}>{item?.sanPinCategoryName}</td>
+                                    <td>{count}</td>
+                                    <td>{item2?.productName}</td>
+                                    {
+                                        item2.dateWeightList?.map((item3, index3) =>
+                                            <td key={index3}>{item3?.weight?.toFixed(2)}</td>
+                                        )
+                                    }
+                                    <td>{totalSum(item2?.dateWeightList)}</td>
+                                    <td rowSpan={item?.productWeightList?.length}>{item?.planWeight.toFixed(2)}</td>
+                                    <td rowSpan={item?.productWeightList?.length}>{item?.doneWeight.toFixed(2)}</td>
+                                    <td rowSpan={item?.productWeightList?.length}>{((item?.planWeight / item?.doneWeight) * 100).toFixed(2)}</td>
+                                </tr>)
+                        } else {
+                            trows.push(
+                                <tr key={index2}>
+                                    <td>{count}</td>
+                                    <td>{item2?.productName}</td>
+                                    {
+                                        item2.dateWeightList?.map((item3, index3) =>
+                                            <td key={index3}>{item3?.weight?.toFixed(2)}</td>
+                                        )
+                                    }
+                                    <td>{totalSum(item2?.dateWeightList)}</td>
+                                </tr>)
+                        }
+                    }
+                )
+            }
+        )
+        return trows;
+    }
+    const fileRender = () => {
+        return (
+            <div className={"miniTable3 p-3"}>
+                <div>
+                    <button className={"buttonPdf"} onClick={getFileProd}>PDF</button>
+                </div>
+                <br/>
+                {multiMenu.multiMenuProduct?.length > 0 ? <table className={"text-center"}>
+                        <thead>
+                        <tr>
+                            <th>T/r</th>
+                            <th>SanPin kategoriya nomi</th>
+                            <th>T/r</th>
+                            <th>Maxsulot nomi</th>
+                            {multiMenu.multiMenuProduct?.length > 0 ? multiMenu.multiMenuProduct[0].productWeightList[0]?.dateWeightList?.map((item, index) =>
+                                <th key={index}>{item?.day}</th>
+                            ) : null}
+                            <th>Jami</th>
+                            <th>Me'yor</th>
+                            <th>Haqiqatda</th>
+                            <th>Bajarilishi (%)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            multiMenu.multiMenuProduct?.length > 0 ?
+                                tbodyT(multiMenu.multiMenuProduct) : null
+                        }
+                        </tbody>
+                    </table> :
+                    <div className={"w-100 fs-3 text-center"} style={{color: 'red'}}>Mahsulotlar mavjud emas!</div>}
+            </div>
+        )
+    }
+
 
     return (
         <div className={'allMain'}>
             <NavbarHeader name={"Taomnomalar bo'limi"} buttonName={"Taomnoma qo'shish"}
                           handleShow={() => handleShow(1)}/>
-
             <div className={'figma-card mt-3'}>
                 <div>
                     {multiMenuList?.map((item, index) =>
-                        <Col xs={12} sm={12} md={12} lg={12} xl={12} className={''} key={index}>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12} key={index}>
                             <div className={"d-flex justify-content-between"}>
-                            <button className={"d-flex buttonPdf m-1"} onClick={() => getFile(item)} ><AiOutlineFilePdf
-                                color={'#E9573F'} size={25}/> <span className={"mx-3"}>yuklash</span></button>
+                                <div className={"d-flex"}>
+                                    <button className={"d-flex buttonPdf m-1"} onClick={() => getFile(item)}>
+                                        <AiOutlineFilePdf
+                                            color={'#E9573F'} size={25}/> <span className={"mx-3"}>Yuklash</span>
+                                    </button>
+                                    <button className={"buttonInfo m-1"}
+                                            onClick={() => handleShow2(4, item)}>Mahsulotlarini
+                                        ko'rish
+                                    </button>
+                                </div>
                                 {item.edit ? <div className={"d-flex justify-content-end w-25"}>
                                     <div style={{cursor: 'pointer'}} className={"mx-3"}
                                          onClick={() => handleShow2(3, item)}><RiDeleteBin2Fill color={'#E9573F'}
                                                                                                 size={20}/></div>
                                     <div style={{cursor: 'pointer'}} onClick={() => handleShow(2, item)}><BsPencilSquare
                                         color={'orange'} size={20}/></div>
-                                </div>:null}
+                                </div> : null}
                             </div>
                             <div className={'card px-2'}>
                                 <div className={'d-flex justify-content-between align-items-center w-100'}>
-                                    <div className={` my-Hover`}  onClick={()=>pushUrl(item)}>
+                                    <div className={` my-Hover`} onClick={() => pushUrl(item)}>
                                         <span style={{fontSize: 25}} className={'fw-semibold'}>{item.name}</span>
                                         <br/>
                                         <span style={{fontSize: 20}}>{item.daily} kun uchun mo‘ljallangan</span>
+                                        <br/>
+                                        <span style={{fontSize: 14}}>{item?.numberOfFeedingsName}</span>
+                                        <br/>
+                                        <span style={{fontSize: 14}}>{item?.stayTimeName}</span>
                                         <br/>
                                         <span>{item.regionalDepartmentName} tomonidan tuzilgan.</span>
                                     </div>
@@ -301,19 +435,11 @@ function MultiMenu() {
                 </Form>
             </Modal>
 
-            <Modal show={show2} onHide={handleClose2}>
-                <Modal.Header closeButton>
-                </Modal.Header>
-                <Modal.Body><span style={{fontSize:20,color:'#f57f08'}}>{multiMenuState.name}</span>ni o'chirishni xohlaysizmi?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose2}>
-                        YO'Q
-                    </Button>
-                    <Button variant="primary" onClick={()=> dispatch(deleteMultiMenu(multiMenuState))}>
-                        HA
-                    </Button>
-                </Modal.Footer>
+            <Modal show={show2} onHide={handleClose2} size={number === 4 ? "xl" : ""}>
+                {number === 3 ? deleteTooltip() : null}
+                {number === 4 ? fileRender() : null}
             </Modal>
+            {/*192.168.0.119:8888/out/api/attachment/file1/Qish fasli uchun.pdf*/}
         </div>
     )
         ;

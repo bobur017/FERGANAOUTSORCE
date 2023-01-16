@@ -11,10 +11,10 @@ const slice = createSlice({
         oneDay: {},
         menuOneDay: [],
         reports: [],
-        inputOutput:{},
-        kidsNumber:{},
-        menuOneDayReport:{},
-        menuOneDayReport2:'',
+        inputOutput: {},
+        kidsNumber: {},
+        menuOneDayReport: {},
+        menuOneDayReport2: '',
     },
     reducers: {
         kidsNumber: (state, action) => {
@@ -36,8 +36,13 @@ const slice = createSlice({
             state.menuOneDay = action.payload;
         },
         menuOneDayReport: (state, action) => {
-            var win = window.open(action.payload, '_blank');
-            win.focus();
+            if (action.payload) {
+
+                var win = window.open(action.payload, '_blank');
+                win.focus();
+            }else {
+                toast.error("Bu kunga bola soni kiritilmagan!")
+            }
 
         },
         menuOneDayReport2: (state, action) => {
@@ -85,7 +90,7 @@ export const getMenuReport2 = () => apiCall({
         "Content-Type": "application/octet-stream"
     },
     // params,
-    responseType:"blob",
+    responseType: "blob",
     success: slice.actions.menuOneDayReport2.type,
     error: slice.actions.errorReducer.type
 })
@@ -112,8 +117,8 @@ export const getInputOutputKidsNumber = (params) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const getInputOutputKidsNumberPdf = (data,params) => apiCall({
-    url: "/report/getAllByDepartmentId/"+data.id,
+export const getInputOutputKidsNumberPdf = (data, params) => apiCall({
+    url: "/report/getAllByDepartmentId/" + data.id,
     method: "GET",
     headers: {
         Authorization: getToken(),
@@ -123,8 +128,8 @@ export const getInputOutputKidsNumberPdf = (data,params) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const getInputOutputKidsNumberPdfDay = (data,params) => apiCall({
-    url: "/report/getAllByDate/"+data.id,
+export const getInputOutputKidsNumberPdfDay = (data, params) => apiCall({
+    url: "/report/getAllByDate/" + data.id,
     method: "GET",
     headers: {
         Authorization: getToken(),
@@ -145,7 +150,7 @@ export const getReport = () => apiCall({
 })
 
 export const oneDay = (id) => apiCall({
-    url: "/report/getReportById/"+id,
+    url: "/report/getReportById/" + id,
     method: "GET",
     headers: {
         Authorization: getToken(),

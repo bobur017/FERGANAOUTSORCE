@@ -6,10 +6,11 @@ import NavbarHeader from "../more/NavbarHeader";
 import {getAge} from "../age/AgeReducer";
 import {addMultiMenuMeal, deleteMultiMenuOne, getMultiMenuOne} from "./MultiMenuReducer";
 import {useNavigate, useParams} from "react-router-dom";
-import {getMeal} from "../meal/MealReducer";
+import {getMeal, getMealOne, getMealSanpin} from "../meal/MealReducer";
 import DropdownCustom from "../more/DropdownCustom";
 import {percentage, tableRowCustomTd3} from "../more/Functions";
 import {colorText} from "../funcs/Funcs";
+import {toast} from "react-toastify";
 
 function MultiMenuOne() {
     const defaultData = {
@@ -52,10 +53,11 @@ function MultiMenuOne() {
 
     const [multiMenuState, setMultiMenuState] = useState({});
     const [mealState, setMealState] = useState(defaultData);
-    const [ageGroupList, setAgeGroupList] = useState();
     const [multiMenuId, setMultiMenuId] = useState(useParams("id"));
     const [number, setNumber] = useState(0);
     const dispatch = useDispatch();
+    const mealOne = useSelector(state => state.meal.mealOne);
+    const mealSanpin = useSelector(state => state.meal.mealSanpin);
     const meals = useSelector(state => state.meal.meals);
     const multiMenu = useSelector(state => state.multiMenu);
     const firstUpdate = useRef(false);
@@ -85,13 +87,41 @@ function MultiMenuOne() {
 
 
     const onChangeItem = (index, data) => (e) => {
-        let list = [...mealState.ageStandardList];
-        list[index] = {...list[index], [e.target.name]: e.target.value, ageGroupId: data.id}
-        setMealState({...mealState, ageStandardList: list});
+        if ((parseInt(e.target.value) >= 1 && parseInt(e.target.value) <= 250) || e.target.value === '') {
+            if (mealState.mealId) {
+                let list = [...mealState.ageStandardList];
+                list[index] = {...list[index], [e.target.name]: e.target.value, ageGroupId: data.id}
+                setMealState({...mealState, ageStandardList: list});
+                dispatch(getMealSanpin({
+                    multiMenuId: multiMenuId?.id,
+                    mealId: mealState.mealId,
+                }, list));
+            }else {
+                toast.error("Avval taomni tanlasg")
+            }
+        }
     }
 
     const getMealOnclicked = (data) => {
-        setMealState({...mealState, mealName: data.name, mealId: data.id})
+        dispatch(getMealOne(data?.id));
+        console.log(data.id, "meal id")
+        dispatch(getMealSanpin({
+            multiMenuId: multiMenuId?.id,
+            mealId: data.id
+        }, mealState.ageStandardList.map((item, index) => {
+            return {...item, weight: '', ageGroupId: item.id};
+        })));
+        console.log(mealState.ageStandardList.map((item, index) => {
+            return {...item, weight: '', ageGroupId: item.id};
+        }), "mealState.ageStandardList")
+        setMealState({
+            ...mealState,
+            mealName: data.name,
+            mealId: data.id,
+            ageStandardList: mealState.ageStandardList.map((item, index) => {
+                return {...item, weight: '', ageGroupId: item.id};
+            })
+        })
     }
     const renderAddMealToMenu = () => {
         return (
@@ -107,7 +137,7 @@ function MultiMenuOne() {
                     <br/>
                     {
                         mealState.ageStandardList?.map((item, index) =>
-                            <InputGroup size="sm" className="mb-3" key={index}>
+                            <InputGroup size="sm" className="mb-3" key={item?.id}>
                                 <InputGroup.Text id="inputGroup-sizing-sm"
                                                  style={{width: '70%'}}>{item.name}</InputGroup.Text>
                                 <Form.Control type={'number'} step={"0.01"} required name={"weight"} size={'sm'}
@@ -116,7 +146,80 @@ function MultiMenuOne() {
                                               placeholder={"vazni"} onChange={onChangeItem(index, item)}/>
                             </InputGroup>
                         )
-                    }
+                    }<br/>
+                    <div className={"d-flex w-100"}>
+                        <div className={'miniTable2'}>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>T/R</th>
+                                    <th>Nomi</th>
+                                    <th>Vazni</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {mealOne.map((item, index) =>
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{item?.name}</td>
+                                        <td>{item?.weight}</td>
+                                    </tr>
+                                )}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className={'miniTable'} style={{width: "70%",fontSize:20}}>
+                            <table >
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Nomi</th>
+                                    <th>Yosh toifa</th>
+                                    <th>Rejada</th>
+                                    <th>Amalda</th>
+                                    <th>Foiz</th>
+                                </tr>
+                                </thead>
+                                {
+                                    mealSanpin?.map((item, index) => {
+                                            return (
+                                                <tbody key={index}>
+                                                {
+                                                    item?.ageGroupSanpinNormList?.map((sanpinNorm, index2) => {
+                                                        if (index2 !== 0) {
+                                                            return (
+                                                                <tr key={index2}>
+                                                                    <td style={{maxWidth: 100}}>{sanpinNorm?.ageGroupName}</td>
+                                                                    <td className={'text-center'}>{sanpinNorm?.planWeight}</td>
+                                                                    <td className={'text-center'}>{sanpinNorm?.doneWeight}</td>
+                                                                    <td className={'text-center'}
+                                                                        style={colorText(percentage(sanpinNorm?.doneWeight, sanpinNorm?.planWeight))}>{percentage(sanpinNorm?.doneWeight, sanpinNorm?.planWeight)} %
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        } else {
+                                                            return (<tr key={index2}>
+                                                                <td rowSpan={item?.ageGroupSanpinNormList.length}>{index + 1}</td>
+                                                                <td rowSpan={item?.ageGroupSanpinNormList.length}
+                                                                    style={{maxWidth: 100}}>{item.sanpinCategoryName}</td>
+                                                                <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].ageGroupName}</td>
+                                                                <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].planWeight}</td>
+                                                                <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].doneWeight}</td>
+                                                                <td className={'text-center'}
+                                                                    style={colorText(percentage(item?.ageGroupSanpinNormList[0].doneWeight, item?.ageGroupSanpinNormList[0].planWeight))}>{percentage(item?.ageGroupSanpinNormList[0].doneWeight, item?.ageGroupSanpinNormList[0].planWeight)} %
+                                                                </td>
+                                                            </tr>)
+                                                        }
+                                                    })
+                                                }
+                                                </tbody>
+                                            )
+                                        }
+                                    )
+                                }
+                            </table>
+                        </div>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -148,9 +251,11 @@ function MultiMenuOne() {
                           handleShow={handleShowCanvas}/>
             <Container fluid>
                 <Row>
-                    <div><button className={"buttonPdf"} onClick={()=>back()}>Ortga</button></div>
                     <Col xs={8} sm={8} md={8} lg={8} xl={8} className={'figma-card-first mt-3'}>
                         <Row>
+                            <div>
+                                <button className={"buttonPdf"} onClick={() => back()}>Ortga</button>
+                            </div>
                             {
                                 multiMenuState?.menuList?.map((menu, index) =>
                                     <Col key={index} xs={12} sm={12} md={12} lg={6} xl={6}
@@ -165,7 +270,7 @@ function MultiMenuOne() {
                                                                 <div
                                                                     className={'w-100 d-flex justify-content-between my-2 fw-bolder'}>{mealTime.mealTimeName}
                                                                     <button className={'createButtons mx-2'}
-                                                                            style={{fontSize:13}}
+                                                                            style={{fontSize: 13}}
                                                                             onClick={() => handleShow(1, mealTime)}>Taom
                                                                         qo'shish
                                                                     </button>
@@ -230,7 +335,7 @@ function MultiMenuOne() {
                                 <thead>
                                 <tr>
                                     <th>№</th>
-                                    <th style={{maxWidth:100}}>Nomi</th>
+                                    <th style={{maxWidth: 100}}>Nomi</th>
                                     <th>Yosh toifa</th>
                                     <th>Rejada</th>
                                     <th>Amalda</th>
@@ -240,26 +345,31 @@ function MultiMenuOne() {
                                 {
                                     multiMenuState?.sanpinMenuNorm?.map((item, index) => {
                                             return (
-                                                <tbody>
+                                                <tbody key={index}>
                                                 {
                                                     item?.ageGroupSanpinNormList?.map((sanpinNorm, index2) => {
                                                         if (index2 !== 0) {
                                                             return (
                                                                 <tr key={index2}>
-                                                                    <td style={{maxWidth:100}}>{sanpinNorm?.ageGroupName}</td>
+                                                                    <td style={{maxWidth: 100}}>{sanpinNorm?.ageGroupName}</td>
                                                                     <td className={'text-center'}>{sanpinNorm?.planWeight}</td>
                                                                     <td className={'text-center'}>{sanpinNorm?.doneWeight}</td>
-                                                                    <td className={'text-center'} style={colorText(percentage(sanpinNorm?.doneWeight, sanpinNorm?.planWeight))}>{percentage(sanpinNorm?.doneWeight, sanpinNorm?.planWeight)} %</td>
+                                                                    <td className={'text-center'}
+                                                                        style={colorText(percentage(sanpinNorm?.doneWeight, sanpinNorm?.planWeight))}>{percentage(sanpinNorm?.doneWeight, sanpinNorm?.planWeight)} %
+                                                                    </td>
                                                                 </tr>
                                                             )
                                                         } else {
-                                                            return (<tr key={index}>
+                                                            return (<tr key={index2}>
                                                                 <td rowSpan={item?.ageGroupSanpinNormList.length}>{index + 1}</td>
-                                                                <td rowSpan={item?.ageGroupSanpinNormList.length} style={{maxWidth:100}}>{item.sanpinCategoryName}</td>
+                                                                <td rowSpan={item?.ageGroupSanpinNormList.length}
+                                                                    style={{maxWidth: 100}}>{item.sanpinCategoryName}</td>
                                                                 <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].ageGroupName}</td>
                                                                 <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].planWeight}</td>
                                                                 <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].doneWeight}</td>
-                                                                <td className={'text-center'} style={colorText(percentage(item?.ageGroupSanpinNormList[0].doneWeight, item?.ageGroupSanpinNormList[0].planWeight))}>{percentage(item?.ageGroupSanpinNormList[0].doneWeight, item?.ageGroupSanpinNormList[0].planWeight)} %</td>
+                                                                <td className={'text-center'}
+                                                                    style={colorText(percentage(item?.ageGroupSanpinNormList[0].doneWeight, item?.ageGroupSanpinNormList[0].planWeight))}>{percentage(item?.ageGroupSanpinNormList[0].doneWeight, item?.ageGroupSanpinNormList[0].planWeight)} %
+                                                                </td>
                                                             </tr>)
                                                         }
                                                     })
@@ -274,7 +384,7 @@ function MultiMenuOne() {
                     </Col>
                 </Row>
             </Container>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} size={number === 1 ? "lg" : ""}>
                 {
                     myRender()
                 }
