@@ -104,7 +104,7 @@ export const rolesList = (role) => {
             },
             {
                 path: "/sidebar/remove-product",
-                name: "Chiqidlar",
+                name: "Yaroqsiz mahsulotlar",
                 icon: <RiDeleteBin6Line size={25}/>
             },
             {
@@ -247,7 +247,7 @@ export const rolesList = (role) => {
             },
             // {
             //     path: "/sidebar/remove-product",
-            //     name: "Chiqidlar",
+            //     name: "Yaroqsiz mahsulotlar",
             //     icon: <RiDeleteBin6Line size={25}/>
             // },
         ];

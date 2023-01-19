@@ -228,6 +228,8 @@ function Users() {
                                 <br/>
                                 <br/>
                                 <br/>
+                                <br/>
+                                <br/>
                             </div> :users?.length ?
                                 <div className={"text-center fs-3"} style={{color: 'red'}}>Ma'lumot mavjud emas</div> :
                                 <div className={"text-center fs-3"} style={{color: 'red'}}>Xodimlar mavjud

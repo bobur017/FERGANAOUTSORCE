@@ -129,12 +129,12 @@ function Price() {
                 </Col>
                 <Col xs={12} sm={12} md={12} lg={6} xl={6}>
                     <div className={'figma-card'}>
-                        {pricesByProduct?.list?.length > 0 ? <>
                             <div className={'w-100 d-flex justify-content-between px-1 py-2 align-items-center'}>
                                 <div className={"fs-5 fw-bolder"}>{oneProduct?.name}</div>
                                 <button className={'createButtons'} onClick={() => handleShow(1, null)}>Narx biriktirish
                                 </button>
                             </div>
+                        {pricesByProduct?.list?.length > 0 ? <>
                             <div className={'tableCalendar'}>
                                 <table>
                                     <thead>
@@ -181,6 +181,8 @@ function Price() {
                                     }
                                     </tbody>
                                 </table>
+                                <br/>
+                                <br/>
                                 <br/>
                                 <FromPageSizeBottom allPageSize={pricesByProduct?.allPageSize}
                                                     pageSize={pricesByProduct?.pageSize}

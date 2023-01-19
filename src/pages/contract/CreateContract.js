@@ -160,7 +160,9 @@ function CreateContract() {
     }
     const changePrice = (index2) => (e) => {
         let kindergartenContractList = [...postStateContract.kindergartenContractList];
-        if (kindergartenContractList[0].productContracts[index2]?.maxPrice >= parseFloat(e.target.value).toFixed(2) ) {
+        let raget = e.target.value === '' ? 0 : parseFloat(e.target.value).toFixed(2);
+        console.log(kindergartenContractList[0].productContracts[index2]?.maxPrice,"price")
+        if (kindergartenContractList[0].productContracts[index2]?.maxPrice >= raget || !kindergartenContractList[0].productContracts[index2]?.maxPrice) {
         postStateContract.kindergartenContractList.forEach((kin, index) => {
                     kindergartenContractList[index].productContracts[index2] = {
                         ...kindergartenContractList[index].productContracts[index2],

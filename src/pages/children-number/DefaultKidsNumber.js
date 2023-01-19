@@ -46,6 +46,7 @@ function DefaultKidsNumber(props) {
         if (firstUpdate.current) {
             dispatch(getDepartment());
             dispatch(getDefaultKidsNumbers(params));
+            handleClose();
         }
     }, [result]);
     useEffect(() => {
@@ -68,7 +69,6 @@ function DefaultKidsNumber(props) {
         } else {
             setStateNumber(1);
         }
-        console.log(data)
         setKindergarten(data);
     }
 
@@ -136,7 +136,7 @@ function DefaultKidsNumber(props) {
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={submitaverageKidsNumber}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>O'rtacha bola soni</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         {kindergarten?.averageKidsNumber?.subDTO?.map((item, index) =>

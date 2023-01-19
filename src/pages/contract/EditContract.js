@@ -177,8 +177,9 @@ function EditContract() {
     }
     const changePrice = (index2) => (e) => {
         let kindergartenContractList = [...postStateContract.kindergartenContractList];
-        console.log(e.target.value);
-        if (kindergartenContractList[0].productContracts[index2]?.maxPrice >= parseFloat(e.target.value).toFixed(2) || e.target.value === '') {
+        let raget = e.target.value === '' ? 0 : parseFloat(e.target.value).toFixed(2);
+        console.log(kindergartenContractList[0].productContracts[index2]?.maxPrice,"price")
+        if (kindergartenContractList[0].productContracts[index2]?.maxPrice >= raget || !kindergartenContractList[0].productContracts[index2]?.maxPrice) {
             postStateContract.kindergartenContractList.forEach((kin, index) => {
                     let productLisy = [...kindergartenContractList[index].productContracts];
                     productLisy[index2] = {...productLisy[index2], price: e.target.value}
@@ -190,6 +191,22 @@ function EditContract() {
         }else {
             toast.error("Max narxdan oshmasligi kerak!");
         }
+        // let kindergartenContractList = [...postStateContract.kindergartenContractList];
+        // let raget = e.target.value === '' ? 0 : parseFloat(e.target.value).toFixed(2);
+        // console.log(kindergartenContractList[0].productContracts[index2]?.maxPrice,"price")
+        // if (kindergartenContractList[0].productContracts[index2]?.maxPrice >= raget || !kindergartenContractList[0].productContracts[index2]?.maxPrice) {
+        //     postStateContract.kindergartenContractList.forEach((kin, index) => {
+        //             kindergartenContractList[index].productContracts[index2] = {
+        //                 ...kindergartenContractList[index].productContracts[index2],
+        //                 price: e.target.value
+        //             };
+        //         }
+        //
+        //     );
+        //     setPostStateContract({...postStateContract, kindergartenContractList});
+        // }else {
+        //     toast.error("Max narxdan oshmasligi kerak!");
+        // }
     }
     const submit = (e) => {
         e.preventDefault();

@@ -170,7 +170,7 @@ function Contract() {
             <br/>
             <div className={'figma-card'}>
                 <div className={'tableCalendar'}>
-                    {contracts?.list.length > 0 ? <table style={{color: 'black'}}>
+                    {contracts?.list?.length > 0 ? <table style={{color: 'black'}}>
                         <thead>
                         <tr>
                             <th>#</th>
@@ -181,8 +181,8 @@ function Contract() {
                             <th>Holati</th>
                             <th>Boshlanish sanasi</th>
                             <th>Tugash sanasi</th>
+                            {getRoleStorage() === "ROLE_BO`LIM_BUXGALTER" ? <th>Tasdiqlash</th> : null}
                             {getRoleStorage() !== "ROLE_BOSHQARMA_BUXGALTER" ? <>
-                                {getRoleStorage() === "ROLE_BUXGALTER" ? <th>Tasdiqlash</th> : null}
                                 <th>O'zgartirish</th>
                                 <th>O'chirish</th>
                             </> : null}
@@ -203,13 +203,13 @@ function Contract() {
                                     <td>{item?.status}</td>
                                     <td>{TimestampToInputDate(item?.startDay)}</td>
                                     <td>{TimestampToInputDate(item?.endDay)}</td>
+                                    {getRoleStorage() === "ROLE_BO`LIM_BUXGALTER" ? <td>
+                                        {item?.status === "YANGI" ? <Button variant='outline-success' size='sm'
+                                                                            onClick={() => dispatch(contractVerified(item.id))}>
+                                            Tasdiqlash
+                                        </Button> : null}
+                                    </td> : null}
                                     {getRoleStorage() !== "ROLE_BOSHQARMA_BUXGALTER" ? <>
-                                        {getRoleStorage() === "ROLE_BUXGALTER" ? <td>
-                                            {item?.status === "YANGI" ? <Button variant='outline-success' size='sm'
-                                                                                onClick={() => dispatch(contractVerified(item.id))}>
-                                                Tasdiqlash
-                                            </Button> : null}
-                                        </td> : null}
                                         <td>
                                             {item?.status === "YANGI" ? <Button variant='outline-info' size='sm'
                                                                                 onClick={() => history("/sidebar/edit-contract/" + item?.id)}>

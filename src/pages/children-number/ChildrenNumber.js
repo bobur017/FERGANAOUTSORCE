@@ -113,7 +113,7 @@ function ChildrenNumber() {
                                 <button type={'submit'} className={'createButtons mt-3'}>Tayyor</button> : null}
                             {childrenState?.id !== null && getRoleStorage() === 'ROLE_RAXBAR' && childrenState?.status !== "TASDIQLANDI" ?
                                 <button onClick={() => thisverifide()}
-                                        className={'createButtons mt-3'}>Tasdiqlash</button> : null}
+                                        className={'createButtons mt-3'} type={"button"}>Tasdiqlash</button> : null}
                         </Form>
                     </Col>
 

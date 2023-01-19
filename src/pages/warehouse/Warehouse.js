@@ -182,7 +182,7 @@ function Warehouse() {
                                     <th>№</th>
                                     <th>Mahsulot nomi</th>
                                     <th>Miqdor</th>
-                                    <th>Qadoq miqdor</th>
+                                    <th>Qadoqlar soni</th>
                                     <th>Chiqid</th>
                                 </tr>
                                 </thead>
@@ -329,8 +329,8 @@ function Warehouse() {
                                 <th>№</th>
                                 <th>Narxi</th>
                                 <th>Umumiy miqdori</th>
-                                <th>Qadoq miqdori</th>
                                 <th>Qadoqlar soni</th>
+                                <th>Qadoq miqdori</th>
                                 <th>Qabul qilingan sana</th>
                             </tr>
                             </thead>
