@@ -14,8 +14,8 @@ import {FaUserCog} from "react-icons/fa";
 import {HiOutlineDocumentText, HiOutlineTruck} from "react-icons/hi";
 import {MdOutlinePriceChange} from "react-icons/md";
 import {RiDeleteBin6Line, RiNotification2Line} from "react-icons/ri";
-import {BiMailSend} from "react-icons/bi";
 import {FiPackage} from "react-icons/fi";
+import {AiOutlineBorderOuter} from "react-icons/ai";
 
 export const rolesList = (role) => {
 
@@ -101,6 +101,11 @@ export const rolesList = (role) => {
                 path: "/sidebar/relation-view",
                 name: "Menyu",
                 icon: <BsFillMenuButtonFill size={25}/>
+            },
+            {
+                path: "/sidebar/order",
+                name: "Buyurtma",
+                icon: <AiOutlineBorderOuter size={25}/>
             },
             {
                 path: "/sidebar/remove-product",

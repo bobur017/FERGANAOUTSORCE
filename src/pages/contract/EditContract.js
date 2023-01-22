@@ -334,7 +334,6 @@ function EditContract() {
                                                        value={prod?.price}
                                                        onWheel={e => e.target.blur()}
                                                        required
-                                                       disabled={!(prod?.productId === productState?.productId)}
                                                        onChange={changePrice(index)}/>
 
                                             </td>
@@ -358,7 +357,6 @@ function EditContract() {
                                                                value={prod?.packWeight}
                                                                onWheel={e => e.target.blur()}
                                                                required
-                                                               disabled={!(kinder?.kindergartenId === kindergartenState?.kindergartenId && prod?.productId === productState?.productId)}
                                                                onChange={changeProductWeight(index, index2, prod?.pack)}/>
                                                     </td>
                                                 )

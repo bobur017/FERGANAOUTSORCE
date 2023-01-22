@@ -14,6 +14,7 @@ function UserInfos() {
     const [number, setNumber] = useState();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.userData)
+    const result = useSelector(state => state.user.result)
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -22,6 +23,13 @@ function UserInfos() {
         setNumber(num);
         setShow(true)
     };
+
+    useEffect(() => {
+        if (firstUpdate.current) {
+            handleClose();
+            dispatch(getUserData());
+        }
+    }, [result]);
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -49,6 +57,7 @@ function UserInfos() {
     }
     const submitLogin = (e) => {
         e.preventDefault();
+        console.log(state)
         dispatch(editLogin(state));
     }
     const editLoginCurrent = () => {

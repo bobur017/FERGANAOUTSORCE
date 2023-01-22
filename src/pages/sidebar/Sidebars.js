@@ -47,6 +47,8 @@ import {getUserData} from "../users/UserReducer";
 import {useEffect, useRef} from "react";
 import DefaultKidsNumber from "../children-number/DefaultKidsNumber";
 import KidsNumberOther from "../children-number/KidsNumberOther";
+import Order from "../order/Order";
+import OneOrder from "../order/OneOrder";
 
 function Sidebars() {
     const user = useSelector(state => state.user.userData)
@@ -115,7 +117,6 @@ function Sidebars() {
                                 </div>
                             </div>
                         </div>
-
                     </Container> :
                     <Container fluid={true}>
                         <div className={'w-100 d-flex justify-content-between align-items-center'}>
@@ -194,6 +195,8 @@ function Sidebars() {
                     <Route path="/product-pack" element={<ProductPack/>}/>
                     <Route path="/permission" element={<PermissionsFromRelation/>}/>
                     <Route path="/default-kids-number" element={<KidsNumberOther/>}/>
+                    <Route path="/order" element={<Order/>}/>
+                    <Route path="/order/:id" element={<OneOrder/>}/>
                     <Route path="/one-multi-menu-other/:id" element={<MultiMenuOneFromOther/>}/>
                 </Routes>
                 <br/><br/>

@@ -21,6 +21,7 @@ import getFiles from "./pages/getFiles/GetFilesReducer";
 import notification from "./pages/notification/NotificationReducer";
 import pack from "./pages/productPack/ProductPackReducer";
 import permission from "./pages/permission/PermissionReducer";
+import order from "./pages/order/OrderReducer";
 import Api from "./Api"
 
 export default configureStore({
@@ -47,6 +48,7 @@ export default configureStore({
         notification,
         pack,
         permission,
+        order,
     },
     middleware: [Api],
 });

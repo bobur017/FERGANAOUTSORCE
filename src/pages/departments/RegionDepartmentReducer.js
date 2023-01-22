@@ -11,7 +11,7 @@ const slice = createSlice({
         departmentsRel: [],
         departmentsRelAdd: [],
         departments: [],
-        departmentsTime: {},
+        departmentsTime: [],
     },
     reducers: {
         departments: (state, action) => {

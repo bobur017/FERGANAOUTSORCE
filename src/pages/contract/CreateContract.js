@@ -72,6 +72,7 @@ function CreateContract() {
             setPostStateContract({...postStateContract, [e.target.name]: e.target.value})
         }
     }
+
     const addProductInKinder = (data) => {
         if (postStateContract?.kindergartenContractList[0]?.productContracts.some(item => item?.productId === data?.id)) {
             toast.error("Bu mahsulot qo'shilgan!");
@@ -161,7 +162,6 @@ function CreateContract() {
     const changePrice = (index2) => (e) => {
         let kindergartenContractList = [...postStateContract.kindergartenContractList];
         let raget = e.target.value === '' ? 0 : parseFloat(e.target.value).toFixed(2);
-        console.log(kindergartenContractList[0].productContracts[index2]?.maxPrice,"price")
         if (kindergartenContractList[0].productContracts[index2]?.maxPrice >= raget || !kindergartenContractList[0].productContracts[index2]?.maxPrice) {
         postStateContract.kindergartenContractList.forEach((kin, index) => {
                     kindergartenContractList[index].productContracts[index2] = {
@@ -312,7 +312,6 @@ function CreateContract() {
                                                        value={prod?.price}
                                                        onWheel={e => e.target.blur()}
                                                        required
-                                                       disabled={!(prod?.productId === productState?.productId)}
                                                        onChange={changePrice(index)}/>
 
                                             </td>
@@ -337,7 +336,6 @@ function CreateContract() {
                                                                value={prod?.packWeight}
                                                                onWheel={e => e.target.blur()}
                                                                required
-                                                               disabled={!(kinder?.kindergartenId === kindergartenState?.kindergartenId && prod?.productId === productState?.productId)}
                                                                onChange={changeProductWeight(index, index2, prod?.pack)}/>
 
                                                     </td>

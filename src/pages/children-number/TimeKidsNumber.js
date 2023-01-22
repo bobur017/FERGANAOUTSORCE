@@ -10,9 +10,9 @@ function TimeKidsNumber(props) {
     const [params, setParams] = useState({hours: '', minutes: ''});
     const [stateNumber, setStateNumber] = useState();
     const dispatch = useDispatch();
-    const result = useSelector(state => state.kidsNumber.result)
     const departments = useSelector(state => state.department.departments);
     const departmentsTime = useSelector(state => state.department.departmentsTime);
+    const result = useSelector(state => state.department.result);
     const ages = useSelector(state => state.age.ages);
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);
@@ -29,9 +29,9 @@ function TimeKidsNumber(props) {
             firstUpdate.current = true;
             dispatch(getDepartment());
         }else {
-            console.log(departmentsTime,"departmentsTime")
+            handleClose();
         }
-    }, [departmentsTime]);
+    }, [result]);
 
     const getDistrict = (data) => {
         dispatch(getDepartmentTime());
@@ -77,9 +77,11 @@ function TimeKidsNumber(props) {
                     <div className={"figma-card-first mt-3"}>
                         <div className={"w-100"}>
                            <button className={"createButtons"} onClick={handleShow}>Vaqtni belgilash</button>
-                            <div className={"text-center fs-3"}>
-                               <span className={"fs-5"}>Bola soni kiritish vaqti</span> <span style={{color:'green'}}>{departmentsTime.join(":")}</span> <span className={"fs-4"}>gacha</span>
-                            </div>
+                            {departmentsTime?.length > 0 ? <div className={"text-center fs-3"}>
+                                <span className={"fs-5"}>Bola soni kiritish vaqti</span> <span
+                                style={{color: 'green'}}>{departmentsTime?.join(":")}</span> <span
+                                className={"fs-4"}>gacha</span>
+                            </div> : <div className={"fs-3 w-100 text-center"} style={{color:'red'}}>Vaqt kiritilmagan</div>}
                         </div>
                     </div>
                 </Col>

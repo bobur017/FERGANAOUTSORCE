@@ -2,12 +2,14 @@ import {createSlice} from "@reduxjs/toolkit";
 import {toast} from "react-toastify";
 import {apiCall} from "../../ApiCall";
 import {getRoleStorage, getToken, toastError} from "../more/Functions";
+import {pushLogin} from "../../Default";
 
 const slice = createSlice({
     name: "user",
     initialState: {
         userData: {},
         result: {},
+        result2: {},
         error: {},
         users: {},
         roles: [],
@@ -29,6 +31,11 @@ const slice = createSlice({
             state.result = action.payload;
             toast.success(action.payload?.text);
 
+        },
+        resultReducer2: (state, action) => {
+            state.result2 = action.payload;
+            toast.success(action.payload?.text);
+            pushLogin()
         },
         getKindergartenRoles: (state, action) => {
             state.kindergartenRoles = action.payload;
@@ -53,7 +60,7 @@ export const editPassword = (data) => apiCall({
         Authorization: getToken(),
     },
     data,
-    success: slice.actions.userData.type,
+    success: slice.actions.resultReducer2.type,
     error: slice.actions.errorReducer.type
 });
 export const editLogin = (data) => apiCall({
@@ -63,7 +70,7 @@ export const editLogin = (data) => apiCall({
         Authorization: getToken(),
     },
     data,
-    success: slice.actions.userData.type,
+    success: slice.actions.resultReducer2.type,
     error: slice.actions.errorReducer.type
 });
 export const getUserData = (params) => apiCall({

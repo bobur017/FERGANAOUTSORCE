@@ -54,7 +54,6 @@ const Sidebar = ({children}) => {
                         return (
                             <NavLink to={item.path} key={index} className="mini-link" style={{display:'inline-block',textAlign:'center'}}>
                                 <div className="icon">{item.icon}</div>
-
                                 <div style={{fontSize:10,display:'flex'}}>{item.name}</div>
                             </NavLink>
                         );

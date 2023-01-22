@@ -5,7 +5,6 @@ import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {addProductContract, getAcceptedProduct, getAcceptedProductAll, getWarehouse} from "./WarehouseReducer";
 import NavbarHeader from "../more/NavbarHeader";
 import {getGetFiles} from "../getFiles/GetFilesReducer";
-import {downloadFilesa} from "../DownLOader";
 import {getRoleStorage} from "../more/Functions";
 import FromPageSizeBottom from "../fromPage/FromPageSizeBottom";
 import {TimestampToInputDate} from "../funcs/Funcs";
@@ -57,6 +56,8 @@ function Warehouse() {
 
         } else {
             dispatch(getAcceptedProduct());
+            dispatch(getAcceptedProductAll());
+            dispatch(getWarehouse());
             handleClose();
         }
     }, [result]);

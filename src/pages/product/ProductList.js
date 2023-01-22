@@ -2,8 +2,16 @@ import React from 'react';
 import NavbarHeader from "../more/NavbarHeader";
 import {useEffect, useMemo, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addProduct, deleteProduct, editProduct, getMeasurement, getProduct,} from "./ProductReducer";
+import {
+    addProduct,
+    deleteProduct,
+    editProduct,
+    getMeasurement,
+    getProduct,
+    getProductCategory,
+} from "./ProductReducer";
 import {Button, Form, Modal, Table} from "react-bootstrap";
+import {getSanpinCategory} from "./SanpinCategoryReducer";
 
 function ProductList() {
     const [show, setShow] = useState(false);
@@ -31,6 +39,9 @@ function ProductList() {
     useEffect(() => {
         if (firstUpdate.current) {
             dispatch(getProduct());
+            dispatch(getMeasurement());
+            dispatch(getProductCategory());
+            dispatch(getSanpinCategory());
             handleClose();
         }
     }, [product.result]);
@@ -50,7 +61,6 @@ function ProductList() {
 
 
     const submitMtt = (e) => {
-        console.log("ssssss",productState)
         e.preventDefault();
         if (productState.id !== '') {
             dispatch(editProduct(productState));

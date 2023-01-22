@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {errorNull, login, tokenNull} from "./ReducerLogin";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import {useMediaQuery} from "react-responsive";
 
 
 function Login() {
@@ -16,6 +17,7 @@ function Login() {
     const firstUpdate = useRef(false);
     const history = useNavigate();
 
+    const isBigScreen = useMediaQuery({query: '(max-width: 576px)'});
 
     useEffect(() => {
         if (token?.user_role !== undefined) {
@@ -85,7 +87,7 @@ function Login() {
                                                       placeholder={'Parolni kiriting'}/>
                                     </Form>
                                     <br/>
-                                    <Button size={'sm'} type={'submit'} form={'login'}
+                                    <Button size={'sm'} type={'submit'} form={'login'} className={"mb-3"}
                                             style={{width: '50%', backgroundColor: '#48B1AB'}}>
                                         <span>
                                             KIRISH
@@ -96,7 +98,7 @@ function Login() {
                         </Col>
                     </Row>
                 </Col>
-                <Col xs={12} sm={12} md={4} lg={4} xl={4} xxl={4}>
+                { !isBigScreen ? <Col xs={12} sm={12} md={4} lg={4} xl={4} xxl={4}>
                     <div className={'topImage'}>
 
                     </div>
@@ -114,7 +116,7 @@ function Login() {
                             </span>
                         </div>
                     </div>
-                </Col>
+                </Col> : null}
             </Row>
         </Container>
 
