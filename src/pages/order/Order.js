@@ -28,7 +28,10 @@ function Order() {
     const order = useSelector(state => state.order)
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setOrderState({});
+        setShow(false)
+    };
     const handleShow = (data) => {
         if (data === null) {
             setOrderState(orderDef);
@@ -68,7 +71,6 @@ function Order() {
         }
     }
     const setOrderData = (index, data) => {
-        console.log(data)
         setOrderState(data);
         if (index === 0) {
             setNumber(0);

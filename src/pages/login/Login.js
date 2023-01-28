@@ -17,7 +17,7 @@ function Login() {
     const firstUpdate = useRef(false);
     const history = useNavigate();
 
-    const isBigScreen = useMediaQuery({query: '(max-width: 576px)'});
+    const isBigScreen = useMediaQuery({query: '(max-width: 700px)'});
 
     useEffect(() => {
         if (token?.user_role !== undefined) {

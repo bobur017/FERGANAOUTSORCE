@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {editLogin, editPassword, getUserData} from "./UserReducer";
 import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
+import {pushLogin} from "../../Default";
 
 function UserInfos() {
     const def ={
@@ -14,7 +15,7 @@ function UserInfos() {
     const [number, setNumber] = useState();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.userData)
-    const result = useSelector(state => state.user.result)
+    const result = useSelector(state => state.user.result2)
     const firstUpdate = useRef(false);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -28,6 +29,7 @@ function UserInfos() {
         if (firstUpdate.current) {
             handleClose();
             dispatch(getUserData());
+            pushLogin();
         }
     }, [result]);
 
@@ -57,7 +59,6 @@ function UserInfos() {
     }
     const submitLogin = (e) => {
         e.preventDefault();
-        console.log(state)
         dispatch(editLogin(state));
     }
     const editLoginCurrent = () => {
@@ -68,7 +69,7 @@ function UserInfos() {
                     <Form.Label>Yangi loginni kiriting</Form.Label>
                     <Form.Control required name={"username"} minLength={5} value={state.username} onChange={changeInputs}/>
                     <Form.Label>Joriy parolni kiriting</Form.Label>
-                    <Form.Control required name={"oldPassword"} minLength={8} onChange={changeInputs}
+                    <Form.Control required name={"oldPassword"} minLength={6} onChange={changeInputs}
                                   value={state.oldPassword}/>
                 </Modal.Body>
                 <Modal.Footer>
@@ -89,13 +90,13 @@ function UserInfos() {
                 <Modal.Header  closeButton className={"fs-4"}>Parolni o'zgartirish</Modal.Header>
                 <Modal.Body>
                     <Form.Label>Joriy parolni kiriting</Form.Label>
-                    <Form.Control required name={"oldPassword"} minLength={8} onChange={changeInputs}
+                    <Form.Control required name={"oldPassword"} minLength={6} onChange={changeInputs}
                                   value={state.oldPassword}/>
                     <Form.Label>Yangi parolni kiriting</Form.Label>
-                    <Form.Control required name={"newPassword1"} minLength={8} onChange={changeInputs}
+                    <Form.Control required name={"newPassword1"} minLength={6} onChange={changeInputs}
                                   value={state.newPassword1}/>
                     <Form.Label>Yangi parolni takroran kiriting</Form.Label>
-                    <Form.Control required name={"newPassword2"} minLength={8} onChange={changeInputs}
+                    <Form.Control required name={"newPassword2"} minLength={6} onChange={changeInputs}
                                   value={state.newPassword2}/>
                 </Modal.Body>
                 <Modal.Footer>

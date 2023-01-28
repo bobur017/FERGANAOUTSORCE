@@ -212,14 +212,22 @@ function UsersDepartment() {
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Label>Ismi</Form.Label>
-                        <Form.Control name={'name'} className={'mb-2'} size={'sm'}  value={userState.name} onChange={onChangeState}
+                        <Form.Control name={'name'} size={'sm'} className={'mb-2'} value={userState.name} onChange={onChangeState}
+                                      minLength={3}
+                                      maxLength={25}
                                       required/>
-                        <Form.Label>Otasining ismi</Form.Label>
-                        <Form.Control name={'fatherName'} className={'mb-2'} size={'sm'}  value={userState.fatherName}
-                                      onChange={onChangeState} required/>
                         <Form.Label>Familyasi</Form.Label>
                         <Form.Control name={'surname'} className={'mb-2'} size={'sm'}  value={userState.surname}
-                                      onChange={onChangeState} required/>
+                                      onChange={onChangeState} required
+                                      minLength={3}
+                                      maxLength={25}
+                        />
+                        <Form.Label>Otasining ismi</Form.Label>
+                        <Form.Control name={'fatherName'} className={'mb-2'} size={'sm'}  value={userState.fatherName}
+                                      onChange={onChangeState}
+                                      minLength={3}
+                                      maxLength={25}
+                                      required/>
                         <Form.Label>Login</Form.Label>
                         <Form.Control name={'username'} className={'mb-2'} size={'sm'}  value={userState.username} minLength={5}
                                       onChange={onChangeState} required/>

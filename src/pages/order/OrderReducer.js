@@ -81,5 +81,16 @@ export const editOrder = (id,data) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
+export const roundOrder = (id,params) => apiCall({
+    url: "/order/toRoundOff/" + id,
+    method: "PUT",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.resultReducer.type,
+    error: slice.actions.errorReducer.type
+})
+
 
 export default slice.reducer;

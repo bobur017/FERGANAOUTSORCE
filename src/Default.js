@@ -27,9 +27,9 @@ export const pushLogin2 = (url) => {
 }
 
 export const baseUrl2 = () => {
-    return "https://feednet.uz/out/api";
+    // return "https://feednet.uz/out/api";
     // return "http://localhost:8888/out/api";
-    // return "http://192.168.0.122:8888/out/api";
+    return "http://192.168.0.122:8888/out/api";
     // return "http://192.168.58.204:8888/out/api";
 }
 

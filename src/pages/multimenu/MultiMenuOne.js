@@ -87,7 +87,7 @@ function MultiMenuOne() {
 
 
     const onChangeItem = (index, data) => (e) => {
-        if ((parseInt(e.target.value) >= 1 && parseInt(e.target.value) <= 250) || e.target.value === '') {
+        if ((parseInt(e.target.value) >= 0 && parseInt(e.target.value) <= 250) || e.target.value === '') {
             if (mealState.mealId) {
                 let list = [...mealState.ageStandardList];
                 list[index] = {...list[index], [e.target.name]: e.target.value, ageGroupId: data.id}
@@ -104,7 +104,6 @@ function MultiMenuOne() {
 
     const getMealOnclicked = (data) => {
         dispatch(getMealOne(data?.id));
-        console.log(data.id, "meal id")
         dispatch(getMealSanpin({
             multiMenuId: multiMenuId?.id,
             mealId: data.id

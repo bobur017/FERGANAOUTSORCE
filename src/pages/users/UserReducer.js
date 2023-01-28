@@ -30,12 +30,10 @@ const slice = createSlice({
         resultReducer: (state, action) => {
             state.result = action.payload;
             toast.success(action.payload?.text);
-
         },
         resultReducer2: (state, action) => {
             state.result2 = action.payload;
             toast.success(action.payload?.text);
-            pushLogin()
         },
         getKindergartenRoles: (state, action) => {
             state.kindergartenRoles = action.payload;
