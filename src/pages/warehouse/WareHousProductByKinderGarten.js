@@ -7,8 +7,10 @@ import {getWarehouse} from "./WarehouseReducer";
 import {getGetFiles} from "../getFiles/GetFilesReducer";
 import GetKinderByDepartment from "../GetKinderByDepartment";
 import NavbarHeader from "../more/NavbarHeader";
+import AddProductToWarehouse from "./AddProductToWarehouse";
 
 function WareHousProductByKinderGarten(props) {
+    const [currentNa, setCurrentNav] = useState(0);
     const [params, setParams] = useState({pageSize: 10, pageNumber: 0, kindergartenId: ''})
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
@@ -34,8 +36,9 @@ function WareHousProductByKinderGarten(props) {
     }
     return (
         <Container fluid={true}>
-            <NavbarHeader name={"Ombordagi qoldiqlar "}/>
-            <Row className={'mt-3'}>
+            <NavbarHeader name={"Ombordagi qoldiqlar "}
+                          currentNavs={setCurrentNav} navs={[{name: "Ombordagi mahsulotlar"}, {name: "Omborga mahsulot kiritish"}]}/>
+            {currentNa === 0 ? <Row className={'mt-3'}>
                 <Col>
                     <GetKinderByDepartment getDepartmentId={getDepartmentId} getKinderId={getKinderId}/>
                 </Col>
@@ -72,10 +75,12 @@ function WareHousProductByKinderGarten(props) {
                                                     allPageSize={warehouses?.allPageSize}/>
                             </div>
                         </>
-                        : !warehouses?.list ? <div className={"text-center"}>Ma'lumotlar mavjud emas</div>:<div className={"text-center"}>Omborda mahsulot mavjud emas</div>}
+                        : !warehouses?.list ? <div className={"text-center"}>Ma'lumotlar mavjud emas</div> :
+                            <div className={"text-center"}>Omborda mahsulot mavjud emas</div>}
                 </Col>
 
-            </Row>
+            </Row> : null}
+            {currentNa === 1 ? <AddProductToWarehouse/> : null}
         </Container>
     );
 }

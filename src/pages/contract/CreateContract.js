@@ -66,7 +66,7 @@ function CreateContract() {
         setPostStateContract({...postStateContract, supplierId: data?.id})
     }
     const setDateValue = (e) => {
-        if (e.target.name === 'date') {
+        if (e.target.type === 'date') {
             setPostStateContract({...postStateContract, [e.target.name]: new Date(e.target.value)})
         } else {
             setPostStateContract({...postStateContract, [e.target.name]: e.target.value})
@@ -147,7 +147,6 @@ function CreateContract() {
         }
     }
     const changeProductWeight = (index, index2, pack) => (e) => {
-        console.log(e.target.value);
         let kindergartenContractList = [...postStateContract?.kindergartenContractList];
         kindergartenContractList[index].productContracts[index2] = {
             ...kindergartenContractList[index].productContracts[index2],

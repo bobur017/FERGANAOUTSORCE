@@ -1,8 +1,14 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
-import {addProductContract, getAcceptedProduct, getAcceptedProductAll, getWarehouse} from "./WarehouseReducer";
+import {Button, Col, Container, Form, InputGroup, Modal, Row} from "react-bootstrap";
+import {
+    addProductContract,
+    addWarehouse, editWarehouse,
+    getAcceptedProduct,
+    getAcceptedProductAll,
+    getWarehouse
+} from "./WarehouseReducer";
 import NavbarHeader from "../more/NavbarHeader";
 import {getGetFiles} from "../getFiles/GetFilesReducer";
 import {getRoleStorage} from "../more/Functions";
@@ -10,6 +16,8 @@ import FromPageSizeBottom from "../fromPage/FromPageSizeBottom";
 import {TimestampToInputDate} from "../funcs/Funcs";
 import MoreButtons from "../more/MoreButtons";
 import {MdDeleteForever} from "react-icons/md";
+import ProductFromAdd from "../product/ProductFromAdd";
+import {AiTwotoneEdit} from "react-icons/ai";
 
 function Warehouse() {
     const [wareHouseState, setWareHouseState] = useState();
@@ -18,8 +26,10 @@ function Warehouse() {
         "receivedWeight": 0
     });
     const [currentNavs, setCurrentNavs] = useState(0);
+    const [edit, setEdit] = useState(false);
     const [currentNumber, setCurrentNumber] = useState(0);
     const [inOutList, setInOutList] = useState([]);
+    const [inOut, setInOut] = useState();
     const [productState, setProductState] = useState();
     const [productCurrent, setProductCurrent] = useState();
     const warehouses = useSelector(state => state.warehouse.warehouses);
@@ -33,13 +43,18 @@ function Warehouse() {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
-    const handleClose2 = () => setShow2(false);
+    const handleClose2 = () => {
+        setEdit(false);
+        setInOut({});
+        setShow2(false)
+    };
     const handleShow = (num) => {
         setCurrentNumber(num);
         setShow(true);
     }
     const handleShow2 = (list) => {
-        setInOutList(list);
+        setProductState(list)
+        setInOutList(list?.inOutList);
         setShow2(true);
     }
 
@@ -110,7 +125,11 @@ function Warehouse() {
     }
     const getDateMore = (index, data) => {
         setProductState(data);
-        setProductCurrent({...warehouses?.list[index]});
+        if (index === 0) {
+            setProductCurrent({...warehouses?.list[index]});
+        } else if (index === 1) {
+
+        }
         handleShow(2)
     }
     const inputProduct = () => {
@@ -147,16 +166,38 @@ function Warehouse() {
         )
     }
     const submitWaste = (e) => {
-      e.preventDefault();
+        e.preventDefault();
 
+    }
+    const editeInout = (data) => {
+        console.log(data)
+        setInOut(data);
+        setEdit(true);
+    }
+    const changeWeight = (e) => {
+        setInOut({
+            ...inOut,
+            [e.target.name]: e.target.value
+        });
+    }
+    const submitProduct = (e) => {
+        e.preventDefault();
+        dispatch(editWarehouse({
+            productId: inOut?.id,
+            weight: inOut?.weight,
+            price: inOut?.price,
+        },inOut));
+        setEdit(false);
+        setInOut({});
     }
     const wasteProduct = () => {
         return (
             <Form onSubmit={submitWaste}>
-                <Modal.Header>{productCurrent?.productName}  miqdori:{productCurrent?.packWeight}</Modal.Header>
+                <Modal.Header>{productCurrent?.productName} miqdori:{productCurrent?.packWeight}</Modal.Header>
                 <Modal.Body>
                     <Form.Label>KG / DONA</Form.Label>
-                    <Form.Control type={"number"} name={"waste"} step={"0.01"} onWheel={e=>e.target.blur()} max={productCurrent?.packWeight}/>
+                    <Form.Control type={"number"} name={"waste"} step={"0.01"} onWheel={e => e.target.blur()}
+                                  max={productCurrent?.packWeight}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant={"danger"} onClick={handleClose}>Ortga</Button>
@@ -194,13 +235,13 @@ function Warehouse() {
                                         >
                                             <td>{index + 1}</td>
                                             <td style={{cursor: 'pointer'}}
-                                                onClick={() => handleShow2(product?.inOutList)}>{product.productName}</td>
+                                                onClick={() => handleShow2(product)}>{product.productName}</td>
                                             <td style={{cursor: 'pointer'}}
-                                                onClick={() => handleShow2(product?.inOutList)}>{product.weight}</td>
+                                                onClick={() => handleShow2(product)}>{product.weight}</td>
                                             <td style={{cursor: 'pointer'}}
-                                                onClick={() => handleShow2(product?.inOutList)}>{product.packWeight}</td>
+                                                onClick={() => handleShow2(product)}>{product.packWeight}</td>
                                             <td><MoreButtons list={[
-                                                {name: "Chiqidga chiqarish", icon: <MdDeleteForever/>}
+                                                // {name: "Chiqidga chiqarish", icon: <MdDeleteForever/>}
                                             ]} data={product} setActive={activeOrInActive}
                                                              active={productState?.id === product.id}
                                                              getDate={getDateMore}/></td>
@@ -221,6 +262,7 @@ function Warehouse() {
                 </Row> : null}
                 {currentNavs === 2 ? <Row>
                     <Col className={'figma-card'}>
+                        <button className={"createButtons"} onClick={() => handleShow(3)}>Mahsulot kiritish</button>
                         {acceptedProduct?.list?.length > 0 ? <div className={'tableCalendar'}>
                             <table>
                                 <thead>
@@ -316,8 +358,9 @@ function Warehouse() {
                 </Row> : null}
             </Container>
             <Modal show={show} onHide={handleClose}>
-                {currentNumber === 1 ? inputProduct():null}
-                {currentNumber === 2 ? wasteProduct():null}
+                {currentNumber === 1 ? inputProduct() : null}
+                {currentNumber === 2 ? wasteProduct() : null}
+                {currentNumber === 3 ? <ProductFromAdd/> : null}
             </Modal>
             <Modal show={show2} onHide={handleClose2} size={"xl"}>
                 <Modal.Header closeButton>
@@ -333,6 +376,7 @@ function Warehouse() {
                                 <th>Qadoqlar soni</th>
                                 <th>Qadoq miqdori</th>
                                 <th>Qabul qilingan sana</th>
+                                <th style={{minWidth:300}}>O'zgartirish</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -345,6 +389,45 @@ function Warehouse() {
                                         <td>{product.packWeight}</td>
                                         <td>{product.pack}</td>
                                         <td>{TimestampToInputDate(product?.createDate)}</td>
+                                        <td>
+                                            <div className={"d-flex"}>
+                                                {edit && inOut?.id === product?.id ? <Form onSubmit={submitProduct}>
+                                                    <InputGroup className="mb-1">
+                                                        <InputGroup.Text id="basic-addon1 w-50"
+                                                        >{productState?.productName}</InputGroup.Text>
+                                                        <Form.Control
+                                                            placeholder="Miqdor"
+                                                            type={"number"}
+                                                            step={"0.01"}
+                                                            value={inOut?.weight || ""}
+                                                            name={"weight"}
+                                                            onChange={changeWeight}
+                                                            size={"sm"}
+                                                            required
+                                                        />
+
+                                                    </InputGroup>
+                                                    <InputGroup className="mb-1">
+                                                        <InputGroup.Text id="basic-addon1 w-50">Narx
+                                                            kiriting</InputGroup.Text>
+                                                        <Form.Control
+                                                            placeholder="Narxi"
+                                                            type={"number"}
+                                                            step={"0.01"}
+                                                            value={inOut?.price || ""}
+                                                            name={"price"}
+                                                            onChange={changeWeight}
+                                                            required
+                                                            size={"sm"}
+                                                        />
+
+                                                    </InputGroup>
+                                                    <button className={"buttonExcel"} type={"submit"}>Tayyor</button>
+                                                </Form> : null}
+                                                {!edit && inOut?.id !== product?.id ? <button className={"buttonInfo"}
+                                                                                              onClick={() => editeInout(product)}>O'zgartirish</button> : null}
+                                            </div>
+                                        </td>
                                     </tr>
                                 )
                             }
@@ -357,7 +440,7 @@ function Warehouse() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleClose2}>
                         Bekor qilish
                     </Button>
                 </Modal.Footer>

@@ -49,6 +49,8 @@ import DefaultKidsNumber from "../children-number/DefaultKidsNumber";
 import KidsNumberOther from "../children-number/KidsNumberOther";
 import Order from "../order/Order";
 import OneOrder from "../order/OneOrder";
+import ContractByOrder from "../contract/ContractByOrder";
+import AddProductToWarehouse from "../warehouse/AddProductToWarehouse";
 
 function Sidebars() {
     const user = useSelector(state => state.user.userData)
@@ -178,10 +180,12 @@ function Sidebars() {
                     <Route path="/supplier" element={<Supplier/>}/>
                     <Route path="/price" element={<Price/>}/>
                     <Route path="/contract" element={<Contract/>}/>
+                    <Route path="/contract/:orderId" element={<ContractByOrder/>}/>
                     <Route path="/create-contract" element={<CreateContract/>}/>
                     <Route path="/edit-contract/:id" element={<EditContract/>}/>
                     <Route path="/children-number" element={<ChildrenNumber/>}/>
                     <Route path="/warehouse" element={<Warehouse/>}/>
+                    <Route path="/warehouse/product" element={<AddProductToWarehouse/>}/>
                     <Route path="/warehouse-admin" element={<WareHousProductByKinderGarten/>}/>
                     <Route path="/report-warehouse" element={<InputOutput/>}/>
                     <Route path="/one-day-menu/:id" element={<GetOneDayMenu/>}/>

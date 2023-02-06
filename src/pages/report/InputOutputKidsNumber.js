@@ -79,7 +79,7 @@ function InputOutputKidsNumber({data}) {
                 </div>
 
             </div>
-            <div xs={7} sm={7} md={7} lg={7} xl={7} className={'figma-card-first mt-3'}>
+            <Col xs={7} sm={7} md={7} lg={7} xl={7} className={'figma-card-first mt-3'}>
                 {kidsNumbersByDate.length > 0 ? <div className={"tableCalendar"}>
                     <table>
                         <thead>
@@ -112,7 +112,7 @@ function InputOutputKidsNumber({data}) {
                         </tbody>
                     </table>
                 </div> : <div className={"text-center"}>Bu kunda ma'lumot mavjud emas</div>}
-            </div>
+            </Col>
         </div>
     );
 }

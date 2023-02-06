@@ -65,13 +65,13 @@ export const deleteWarehouse = (data) => apiCall({
 })
 
 
-export const addWarehouse = (data) => apiCall({
+export const addWarehouse = (params) => apiCall({
     url: "/warehouse",
     method: "POST",
     headers: {
         Authorization: getToken(),
     },
-    data,
+    params,
     success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
 })
@@ -97,13 +97,13 @@ export const getAcceptedProductAll = () => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const editWarehouse = (data) => apiCall({
+export const editWarehouse = (params,data) => apiCall({
     url: "/warehouse/" + data.id,
     method: "PUT",
     headers: {
         Authorization: getToken(),
     },
-    data,
+    params,
     success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
 })

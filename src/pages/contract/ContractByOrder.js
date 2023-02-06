@@ -2,7 +2,7 @@ import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
-import {editOrder, getOrderOne, getOrderOneFile, roundOrder} from "./OrderReducer";
+import {editOrder, getOrderOne, roundOrder} from "../order/OrderReducer";
 import NavbarHeader from "../more/NavbarHeader";
 import {getProduct} from "../product/ProductReducer";
 import {getMttDepartment} from "../mtt/MttReducer";
@@ -10,6 +10,8 @@ import {toast} from "react-toastify";
 import DropdownCustom from "../more/DropdownCustom";
 import {MdDeleteForever} from "react-icons/md";
 import {Button, Form, InputGroup, Modal} from "react-bootstrap";
+import {getSupplier} from "../supplier/SupplierReducer";
+import {TimestampToInputDate} from "../funcs/Funcs";
 
 function OneOrder() {
     const [orderState, setOrderState] = useState();
@@ -23,12 +25,13 @@ function OneOrder() {
     const firstUpdate = useRef(false);
     const products = useSelector(state => state.product.products);
     const mttsByDepartment = useSelector(state => state.mtt.mttsByDepartment);
-    const orderId = useParams("id");
-
+    const suppliers = useSelector(state => state.supplier.suppliers);
+    const orderId = useParams("orderId");
+    const [supplierState, setSupplierState] = useState({name: "Ta'minotchini tanlang"});
     useEffect(() => {
         if (!firstUpdate.current) {
         } else {
-            dispatch(getOrderOne(orderId?.id));
+            dispatch(getOrderOne(orderId?.orderId));
             handleClose();
         }
     }, [order.result]);
@@ -36,9 +39,10 @@ function OneOrder() {
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
-            dispatch(getOrderOne(orderId?.id));
+            dispatch(getOrderOne(orderId?.orderId));
             dispatch(getProduct());
             dispatch(getMttDepartment());
+            dispatch(getSupplier());
         } else {
             setOrderState(order.order);
         }
@@ -103,6 +107,9 @@ function OneOrder() {
         })
     }
 
+    const getSupplierDrop = (data) => {
+        setSupplierState(data);
+    }
     const deleteProductContract = (id) => {
         let list = [...orderState?.kindergartenContractList];
         orderState?.kindergartenContractList.forEach((item, index) => {
@@ -113,16 +120,22 @@ function OneOrder() {
         setOrderState({...orderState, kindergartenContractList: list});
     }
     const submitToServer = (data) => {
-        dispatch(editOrder(orderId?.id, {kindergartenOrderDTOList: orderState?.kindergartenContractList}));
+        dispatch(editOrder(orderId?.orderId, {kindergartenOrderDTOList: orderState?.kindergartenContractList}));
 
+    }
+
+    const setDateValue = (e) => {
+        if (e.target.type === 'date') {
+            setOrderState({...orderState, [e.target.name]: new Date(e.target.value)})
+        } else {
+            setOrderState({...orderState, [e.target.name]: e.target.value})
+        }
     }
     const round = (e) => {
         e.preventDefault();
-        dispatch(roundOrder(orderId.id, {weight: parseFloat(e.target.round.value)
-    }));
-    }
-    const getFilePdf = () => {
-      dispatch(getOrderOneFile(orderId.id));
+        dispatch(roundOrder(orderId?.orderId, {
+            weight: parseFloat(e.target.round.value)
+        }));
     }
     return (
         <div>
@@ -130,9 +143,60 @@ function OneOrder() {
 
             <div className={"figma-card mt-3"}>
                 <button onClick={() => history("/sidebar/order")} className={"buttonPdf m-2"}>Ortga</button>
-                <button onClick={() => getFilePdf()} className={"buttonPdf m-2"}>PDF</button>
                 <button onClick={() => handleShow()} className={"buttonInfo m-2"}>Yaxlitash</button>
-                <button onClick={() => handleShow()} className={"buttonExcel m-2"}>Hsartnoma tuzish</button>
+                <div className={'w-100 d-flex justify-content-between align-items-center my-header shadow'}>
+                    <div>
+                        <Form.Label>Ta'minotchi</Form.Label>
+                        <DropdownCustom name={supplierState.name} setData={getSupplierDrop}
+                                        list={suppliers?.list}/></div>
+                    <div>
+                        <Form.Label>LOT raqami</Form.Label>
+                        <Form.Control
+                            type={'text'}
+                            required
+                            value={orderState?.lotNumber}
+                            name={"lotNumber"}
+                            size={'sm'}
+                            onChange={setDateValue}
+                        />
+                    </div>
+                    <div>
+                        <Form.Label>Shartnoma raqami</Form.Label>
+                        <Form.Control
+                            type={'text'}
+                            required
+                            size={'sm'}
+                            value={orderState?.number}
+                            name={"number"}
+                            onChange={setDateValue}
+                        />
+                    </div>
+                    <div>
+                        <Form.Label>Boshlanish sanasi</Form.Label>
+                        <Form.Control
+                            type={'date'}
+                            value={TimestampToInputDate(orderState?.startDay)}
+                            name={"startDay"}
+                            size={'sm'}
+                            required
+                            onChange={setDateValue}
+                        />
+                    </div>
+                    <div>
+                        <Form.Label>Tugashsh sanasi</Form.Label>
+                        {/*<InputGroup.Text >Tugashsh sanasi</InputGroup.Text>*/}
+                        <Form.Control
+                            type={'date'}
+                            size={'sm'}
+                            value={TimestampToInputDate(orderState?.endDay)}
+                            name={"endDay"}
+                            required
+                            min={TimestampToInputDate(orderState?.startDay)}
+                            onChange={setDateValue}
+                        />
+                    </div>
+                </div>
+
                 <div className={"d-flex"}>
                     <div className={"miniTable2"}>
                         <table>
@@ -167,10 +231,10 @@ function OneOrder() {
                                         </td>
                                         {
                                             item.productContracts.map((item2, index2) =>
-                                                <td key={index2} style={{maxWidth:70}}>
+                                                <td key={index2} style={{maxWidth: 70}}>
                                                     <input type="number" step={"0.01"} name={"packWeight"}
                                                            value={item2.packWeight}
-                                                           style={{maxWidth:65}}
+                                                           style={{maxWidth: 65}}
                                                            onChange={onChangeWeight(index, index2)}/>
                                                 </td>
                                             )

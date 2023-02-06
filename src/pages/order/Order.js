@@ -75,7 +75,7 @@ function Order() {
         if (index === 0) {
             setNumber(0);
             handleShow(null);
-        }else if (index===1){
+        } else if (index === 1) {
             dispatch(deleteOrder(data))
         }
     }
@@ -84,9 +84,9 @@ function Order() {
         setActive(data);
     }
     const changePage = (page) => {
-       let params2 = {...params,page}
+        let params2 = {...params, page}
         dispatch(getOrder(params2));
-      setParams(params2);
+        setParams(params2);
     }
     const renderFunc = () => {
         if (number === 0) {
@@ -140,6 +140,7 @@ function Order() {
                             <th>№</th>
                             <th>Nomi</th>
                             <th>Sana</th>
+                            <th>Shartnoma tuzish</th>
                             <th>Boshqa</th>
                         </tr>
                         </thead>
@@ -148,8 +149,12 @@ function Order() {
                             order?.orders?.list?.length > 0 ? order?.orders?.list?.map((item, index) =>
                                 <tr key={index}>
                                     <td>{index + 1}</td>
-                                    <td onClick={()=>activeMore(item)}>{item.name}</td>
+                                    <td onClick={() => activeMore(item)}>{item.name}</td>
                                     <td>{TimestampToInputDate(item?.updateDate)}</td>
+                                    <td>
+                                        <button onClick={() => history("/sidebar/contract/" + item.id)} className={"buttonExcel"}>Shartnoma
+                                        </button>
+                                    </td>
                                     <td>
                                         <MoreButtons list={[
                                             {name: "O'zgartirish", icon: <AiFillEdit size={20}/>},
@@ -169,7 +174,8 @@ function Order() {
                     <br/>
                     <br/>
                     <br/>
-                    <FromPageSizeBottom pageSize={params?.getPageSize} currentPage={params?.getPageNumber} changesPage={changePage}/>
+                    <FromPageSizeBottom pageSize={params?.getPageSize} currentPage={params?.getPageNumber}
+                                        changesPage={changePage}/>
                 </div>
             </div>
             <Modal show={show} onHide={handleClose}>

@@ -18,6 +18,10 @@ const slice = createSlice({
         order: (state, action) => {
             state.order = action.payload;
         },
+        orderFile: (state, action) => {
+            var win = window.open(action.payload, '_blank');
+            win.focus();
+        },
         resultReducer: (state, action) => {
             state.result = action.payload;
             toast.success(action.payload?.text);
@@ -45,6 +49,15 @@ export const getOrderOne = (id) => apiCall({
         Authorization: getToken(),
     },
     success: slice.actions.order.type,
+    error: slice.actions.errorReducer.type
+})
+export const getOrderOneFile = (id) => apiCall({
+    url: "/order/reportPDFByOrder/"+id,
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.orderFile.type,
     error: slice.actions.errorReducer.type
 })
 
