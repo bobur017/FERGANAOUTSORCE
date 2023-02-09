@@ -179,11 +179,6 @@ export const rolesList = (role) => {
                 name: "Omborxona",
                 icon: <TbBuildingWarehouse size={25}/>
             },
-            {
-                path: "/sidebar/relation-view",
-                name: "Menyu",
-                icon: <BsFillMenuButtonFill size={25}/>
-            },
         ];
     }else  if(role === "ROLE_RAXBAR"){
         return [

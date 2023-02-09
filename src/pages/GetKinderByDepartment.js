@@ -35,7 +35,7 @@ function GetKinderByDepartment({getDepartmentId,getKinderId}) {
     }
 
     return (
-        <div className={`figma-card-first d-flex justify-content-between p-1 ${main.main}`}>
+        <div className={`figma-card-first d-flex justify-content-between p-1 ${main.main}`} style={{overflowY:'auto'}}>
             <div className={'w-50'}>
                 <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
                     {
@@ -62,7 +62,7 @@ function GetKinderByDepartment({getDepartmentId,getKinderId}) {
                     }
                 </div>
             </div>
-            <div className={'px-2 w-50'}>
+            <div  style={{maxHeight:'80vh'}} className={'px-2 w-50'}>
                 <div className={`${main.card}`} style={{backgroundColor: '#FFFFFF'}}>
                     {
                         mtts?.map((item, index) =>

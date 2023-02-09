@@ -74,7 +74,6 @@ function UsersDepartment() {
     const submit = (e) => {
         e.preventDefault();
         if (userState.id === null) {
-            console.log(params.id, "params id");
             dispatch(addUserKindergarten(userState, {kindergartenId: params.id}));
         } else {
             dispatch(editUser(userState));

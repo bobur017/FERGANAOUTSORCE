@@ -44,12 +44,13 @@ export const getWarehouse = (params) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const getAcceptedProduct = () => apiCall({
+export const getAcceptedProduct = (params) => apiCall({
     url: "/acceptedProduct/contract",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
+    params,
     success: slice.actions.acceptedProduct.type,
     error: slice.actions.errorReducer.type
 })
@@ -87,12 +88,13 @@ export const addProductContract = (data) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const getAcceptedProductAll = () => apiCall({
+export const getAcceptedProductAll = (params) => apiCall({
     url: "/acceptedProduct",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
+    params,
     success: slice.actions.acceptedProducts.type,
     error: slice.actions.errorReducer.type
 })

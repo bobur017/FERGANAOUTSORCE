@@ -1,16 +1,23 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {addMeal, deleteMeal, editMeal, getMeal} from "./MealReducer";
-import {Button, Col, Form, Modal, Row, Tab, Table, Tabs} from "react-bootstrap";
-import {GrAdd} from "react-icons/gr";
 import MealList from "./MealList";
 import MealCategory from "./MealCategory";
 import MealTime from "./MealTime";
 import NavbarHeader from "../more/NavbarHeader";
+import {getMeal} from "./MealReducer";
+import {getProduct} from "../product/ProductReducer";
+import {getMealCategory} from "./MealCategoryReducer";
+import {useDispatch} from "react-redux";
+import {getAge} from "../age/AgeReducer";
 
 function Meal() {
     const [current, setCurrent] = useState(0);
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch(getProduct());
+        dispatch(getMealCategory());
+        dispatch(getAge());
+    },[])
 
     return (
         <div className={'allMain'}>

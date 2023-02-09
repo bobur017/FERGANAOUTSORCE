@@ -26,6 +26,7 @@ function Warehouse() {
         "receivedWeight": 0
     });
     const [currentNavs, setCurrentNavs] = useState(0);
+    const [params,setParams]= useState({page:0,pageSize:20});
     const [edit, setEdit] = useState(false);
     const [currentNumber, setCurrentNumber] = useState(0);
     const [inOutList, setInOutList] = useState([]);
@@ -112,13 +113,13 @@ function Warehouse() {
         dispatch(getGetFiles());
     }
     const changePage1 = (page) => {
-        dispatch(getAcceptedProductAll({page, pageSize: 10}));
+        dispatch(getAcceptedProductAll({page, pageSize: 20}));
     }
-    const changePage0 = (page) => {
-        dispatch(getWarehouse({page, pageSize: 10}));
+    const changePage0 = (pageNumber) => {
+        dispatch(getWarehouse({pageNumber, pageSize: 20}));
     }
     const changePage2 = (page) => {
-        dispatch(getAcceptedProduct({page, pageSize: 10}));
+        dispatch(getAcceptedProduct({page, pageSize: 20}));
     }
     const activeOrInActive = (data) => {
         setProductState(data);

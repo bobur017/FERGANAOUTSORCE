@@ -23,7 +23,7 @@ function Mtt() {
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     const mtt = useSelector(state => state.mtt)
-    const departments = useSelector(state => state.department.departments)
+    const departments = useSelector(state => state.department.departments);
 
 
     useEffect(() => {

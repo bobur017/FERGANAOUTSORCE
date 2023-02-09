@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {useNavigate} from "react-router-dom";
 
 export const baseUrl = () => {
     return "https://feednet.uz/out/api/attachment/";
@@ -28,6 +27,7 @@ export const pushLogin2 = (url) => {
 
 export const baseUrl2 = () => {
     return "https://feednet.uz/out/api";
+    // return "https://2ead-84-54-84-242.eu.ngrok.io/out/api";
     // return "http://localhost:8888/out/api";
     // return "http://192.168.8.100:8888/out/api";
     // return "http://192.168.58.204:8888/out/api";

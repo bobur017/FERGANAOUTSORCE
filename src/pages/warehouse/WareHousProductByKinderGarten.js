@@ -11,7 +11,7 @@ import AddProductToWarehouse from "./AddProductToWarehouse";
 
 function WareHousProductByKinderGarten(props) {
     const [currentNa, setCurrentNav] = useState(0);
-    const [params, setParams] = useState({pageSize: 10, pageNumber: 0, kindergartenId: ''})
+    const [params, setParams] = useState({pageSize: 20, pageNumber: 0, kindergartenId: ''})
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
     const warehouses = useSelector(state => state.warehouse.warehouses);
@@ -25,14 +25,16 @@ function WareHousProductByKinderGarten(props) {
         dispatch(getGetFiles(params));
     }
     const changePage0 = (pageNumber) => {
-        dispatch(getWarehouse({pageNumber, pageSize: 10}));
+        dispatch(getWarehouse({...params,pageNumber}));
         setParams({...params, pageNumber});
     }
     const getDepartmentId = (data) => {
 
     }
     const getKinderId = (data) => {
-        dispatch(getWarehouse({...params, getKinderId: data?.id}));
+        dispatch(getWarehouse({...params, kindergartenId: data?.id}));
+        console.log(params)
+        setParams({...params, kindergartenId: data?.id})
     }
     return (
         <Container fluid={true}>
