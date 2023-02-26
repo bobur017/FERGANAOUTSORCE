@@ -116,7 +116,7 @@ function MealList() {
                                   placeholder="vazni "/>
                     <br/>
                     <Form.Label>Taom rasmi</Form.Label>
-                    <Form.Control name='file' required type={'file'}
+                    <Form.Control name='file' type={'file'}
                                   onChange={onChanges("file")}
                                   accept="image/png, image/jpeg"
                                   placeholder="Rasmi"
