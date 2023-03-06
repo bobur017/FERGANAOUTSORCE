@@ -4,16 +4,15 @@ import {apiCall} from "../../ApiCall";
 import {getToken, toastError} from "../more/Functions";
 
 const slice = createSlice({
-    name: "age",
+    name: "accountant",
     initialState: {
         result: {},
         error: {},
-        ages: [],
-        loading: false,
+        accountants: [],
     },
     reducers: {
-        ages: (state, action) => {
-            state.ages = action.payload;
+        accountants: (state, action) => {
+            state.accountants = action.payload;
         },
         resultReducer: (state, action) => {
             state.result = action.payload;
@@ -23,24 +22,21 @@ const slice = createSlice({
             state.error = action.payload;
             toastError(action.payload)
         },
-        startLoading: (state, action) => {
-            state.loading = action.payload;
-        },
     }
 })
 
-export const getAge = () => apiCall({
-    url: "/ageGroup",
+export const getAccountant = () => apiCall({
+    url: "/accountant",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
-    success: slice.actions.ages.type,
+    success: slice.actions.accountants.type,
     error: slice.actions.errorReducer.type
 })
 
-export const deleteAge = (data) => apiCall({
-    url: "/ageGroup/" + data.id,
+export const deleteAccountant = (data) => apiCall({
+    url: "/accountant/" + data.id,
     method: "DELETE",
     headers: {
         Authorization: getToken(),
@@ -50,8 +46,8 @@ export const deleteAge = (data) => apiCall({
 })
 
 
-export const addAge = (data) => apiCall({
-    url: "/ageGroup",
+export const addAccountant = (data) => apiCall({
+    url: "/accountant",
     method: "POST",
     headers: {
         Authorization: getToken(),
@@ -61,8 +57,8 @@ export const addAge = (data) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const editAge = (data) => apiCall({
-    url: "/ageGroup/" + data.id,
+export const editAccountant = (data) => apiCall({
+    url: "/accountant/" + data.id,
     method: "PUT",
     headers: {
         Authorization: getToken(),
@@ -70,14 +66,7 @@ export const editAge = (data) => apiCall({
     data,
     success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
-});
-
-export const loadingStart = (data) => {
-    return {
-        type: slice.actions.startLoading.type,
-        payload: data
-    }
-}
+})
 
 
 export default slice.reducer;

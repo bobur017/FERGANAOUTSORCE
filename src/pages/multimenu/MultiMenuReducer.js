@@ -152,6 +152,15 @@ export const getFileMultiMenu = (data) => apiCall({
     success: slice.actions.multiMenuFile.type,
     error: slice.actions.errorReducer.type
 })
+export const getFileMultiMenuAll = () => apiCall({
+    url: "/multiMenu/getFileDefault",
+    method: "GET",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.multiMenuFile.type,
+    error: slice.actions.errorReducer.type
+})
 export const relationMultiMenu = (data, id) => apiCall({
     url: "/menu/" + id,
     method: "POST",

@@ -74,14 +74,13 @@ function OneOrder() {
             );
             setOrderState({...orderState, kindergartenContractList: list});
         } else {
-            toast.error("Bu mahsulot tanlangan!")
+            toast.error("Bu mahsulot tanlangan!");
         }
     }
 
     const addMttContract = (data) => {
         let list = [...orderState?.kindergartenContractList];
         if (!list.some(item => item.kindergartenId === data.id)) {
-
             orderState?.kindergartenContractList[0].productContracts?.map((item, index) => {
                     return {...item, weight: "", packWeight: ""}
                 }
@@ -119,9 +118,10 @@ function OneOrder() {
         );
         setOrderState({...orderState, kindergartenContractList: list});
     }
-    const submitToServer = (data) => {
-        dispatch(editOrder(orderId?.orderId, {kindergartenOrderDTOList: orderState?.kindergartenContractList}));
-
+    const submitToServer = (e) => {
+        e.preventDefault();
+        // dispatch(editOrder(orderId?.orderId, {kindergartenOrderDTOList: orderState?.kindergartenContractList}));
+        console.log(orderState?.kindergartenContractList, "orderState?.kindergartenContractList")
     }
 
     const setDateValue = (e) => {
@@ -139,11 +139,19 @@ function OneOrder() {
     }
     return (
         <div>
-            <NavbarHeader name={"Buyurtmani o'zgartirish"} buttonName={"Tayyor"} handleShow={submitToServer}/>
+            <NavbarHeader name={"Shartnoma yaratish"}/>
 
-            <div className={"figma-card mt-3"}>
-                <button onClick={() => history("/sidebar/order")} className={"buttonPdf m-2"}>Ortga</button>
-                <button onClick={() => handleShow()} className={"buttonInfo m-2"}>Yaxlitash</button>
+            <Form className={"figma-card mt-3"} onSubmit={submitToServer}>
+                <div className={"d-flex justify-content-between"}>
+                    <div>
+                        <button onClick={() => history("/sidebar/order")} className={"buttonPdf m-2"}
+                                type={'button'}>Ortga
+                        </button>
+                        <button onClick={() => handleShow()} className={"buttonInfo m-2"} type={'button'}>Yaxlitash
+                        </button>
+                    </div>
+                    <button className={"createButtons m-2"} type={'submit'}>Tayyor</button>
+                </div>
                 <div className={'w-100 d-flex justify-content-between align-items-center my-header shadow'}>
                     <div>
                         <Form.Label>Ta'minotchi</Form.Label>
@@ -232,9 +240,10 @@ function OneOrder() {
                                         {
                                             item.productContracts.map((item2, index2) =>
                                                 <td key={index2} style={{maxWidth: 70}}>
-                                                    <input type="number" step={"0.01"} name={"packWeight"}
+                                                    <input type="number" step={"0.001"} name={"packWeight"}
                                                            value={item2.packWeight}
                                                            style={{maxWidth: 65}}
+                                                           required={true}
                                                            onChange={onChangeWeight(index, index2)}/>
                                                 </td>
                                             )
@@ -252,7 +261,7 @@ function OneOrder() {
                 </div>
                 <DropdownCustom name={"MTT +"} list={mttsByDepartment}
                                 setData={addMttContract}/>
-            </div>
+            </Form>
             <Modal show={show} onHide={handleClose}>
                 <Form onSubmit={round}>
                     <Modal.Header closeButton>
@@ -266,7 +275,7 @@ function OneOrder() {
                                 aria-describedby="basic-addon1"
                                 required
                                 type={'number'}
-                                step={"0.01"}
+                                step={"0.001"}
                                 size={"sm"}
                                 name={"round"}
                                 onWheel={e => e.target.blur()}

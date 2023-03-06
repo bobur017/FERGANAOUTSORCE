@@ -109,7 +109,7 @@ function MultiMenuOne() {
                             <InputGroup size="sm" className="mb-3" key={index}>
                                 <InputGroup.Text id="inputGroup-sizing-sm"
                                                  style={{width: '70%'}}>{item.name}</InputGroup.Text>
-                                <Form.Control type={'number'} step={"0.01"} required name={"weight"} size={'sm'}
+                                <Form.Control type={'number'} step={"0.001"} required name={"weight"} size={'sm'}
                                               value={item.weight ? item.weight : ""}
                                               onWheel={(e) => e.target.blur()}
                                               placeholder={"vazni"} onChange={onChangeItem(index, item)}/>
@@ -133,11 +133,8 @@ function MultiMenuOne() {
             return renderAddMealToMenu();
         }
     }
-    const deleteOnclick = (data) => {
-        dispatch(deleteMultiMenuOne(data))
-    }
     const back = () => {
-      history("/sidebar/multiMenu")
+      history("/sidebar/multiMenu");
     }
 
     return (

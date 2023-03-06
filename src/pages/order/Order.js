@@ -11,6 +11,7 @@ import {TimestampToInputDate} from "../funcs/Funcs";
 import {historyDef, pushFunc, pushLogin, pushLogin2} from "../../Default";
 import {useNavigate} from "react-router-dom";
 import FromPageSizeBottom from "../fromPage/FromPageSizeBottom";
+import LoadingPage from "../loading/LoadingPage";
 
 function Order() {
     const history = useNavigate();
@@ -22,6 +23,7 @@ function Order() {
     };
     const [orderState, setOrderState] = useState(orderDef);
     const [active, setActive] = useState();
+    const [load, setLoad] = useState(false);
     const [number, setNumber] = useState(0);
     const [params, setParams] = useState({pageSize: 20, page: 0});
     const dispatch = useDispatch();
@@ -44,8 +46,9 @@ function Order() {
         if (firstUpdate.current) {
             handleClose();
             dispatch(getOrder(params));
+            setLoad(false);
         }
-    }, [order.result]);
+    }, [order.result,order.error]);
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -64,6 +67,8 @@ function Order() {
     }
     const submitCreateOrder = (e) => {
         e.preventDefault();
+        setLoad(true);
+        handleClose();
         if (orderState?.id) {
             dispatch(editOrder(orderState));
         } else {
@@ -181,7 +186,7 @@ function Order() {
             <Modal show={show} onHide={handleClose}>
                 {renderFunc()}
             </Modal>
-
+            <LoadingPage load={load}/>
         </div>
     );
 }

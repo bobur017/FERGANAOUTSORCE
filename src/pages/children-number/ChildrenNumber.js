@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addKidsNumber, editKidsNumber, getKidsNumberOne, verifide} from "./ChildrenNumberReducer";
 import {Col, Container, Form, Row} from "react-bootstrap";
 import {TimestampToInputDate} from "../funcs/Funcs";
-import {getAge} from "../age/AgeReducer";
+import {getAge, loadingStart} from "../age/AgeReducer";
 import {getRoleStorage} from "../more/Functions";
 
 function ChildrenNumber() {
@@ -38,8 +38,6 @@ function ChildrenNumber() {
     }, [kidsNumber]);
 
     const getKinderWithDate = (e) => {
-        // console.log(new Date(e.target.value).getTime());
-        // console.log(params,"params");
         dispatch(getKidsNumberOne({date: new Date(e.target.value).getTime()}))
         setParams({...params, date: new Date(e.target.value).getTime()});
         setChildrenState({...childrenState, date: new Date(e.target.value).getTime()})
@@ -60,7 +58,7 @@ function ChildrenNumber() {
 
     const submit = (e) => {
         e.preventDefault();
-        console.log({...childrenState, date: params.date},"kidsNumber");
+        console.log({...childrenState, date: params.date}, "kidsNumber");
         if (childrenState?.id) {
             dispatch(editKidsNumber({...childrenState, date: params.date}));
         } else {
@@ -70,8 +68,15 @@ function ChildrenNumber() {
     const thisverifide = () => {
         dispatch(verifide(childrenState));
     }
+    const loadinge = () => {
+        dispatch(loadingStart(true))
+        setInterval(() => {
+            dispatch(loadingStart(false))
+        }, 2000)
+    }
     return (
         <div className={'figma-card'}>
+            {/*<button onClick={()=>loadinge()} className={"createButtons"}>loading</button>*/}
             <div className={'w-100 d-flex justify-content-around align-items-center'}>
                 <span style={{fontSize: 20}}>Bolalar sonini kiritish va ko'rish</span>
                 <div>
@@ -84,7 +89,6 @@ function ChildrenNumber() {
                 <Row className={'justify-content-center mt-2'}>
                     <Col xs={12} sm={12} md={6} lg={6} xl={6} className={'p-3 shadow border-3'}>
                         <Form onSubmit={submit}>
-
                             {childrenState?.subDTO ? childrenState?.subDTO?.map((age, index2) =>
                                     < div key={index2} className={'infoText d-flex justify-content-between '}>
                                         <div>{age?.ageGroupName}</div>

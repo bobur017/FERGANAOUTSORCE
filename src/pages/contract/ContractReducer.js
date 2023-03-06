@@ -67,7 +67,7 @@ export const getContractFile = (id) => apiCall({
 })
 
 export const deleteContract = (data) => apiCall({
-    url: "/contract/" + data.id,
+    url: "/contract/" + data,
     method: "DELETE",
     headers: {
         Authorization: getToken(),

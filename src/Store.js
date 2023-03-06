@@ -22,6 +22,7 @@ import notification from "./pages/notification/NotificationReducer";
 import pack from "./pages/productPack/ProductPackReducer";
 import permission from "./pages/permission/PermissionReducer";
 import order from "./pages/order/OrderReducer";
+import accountant from "./pages/accountant/AccountantReducer";
 import Api from "./Api"
 
 export default configureStore({
@@ -49,6 +50,7 @@ export default configureStore({
         pack,
         permission,
         order,
+        accountant,
     },
     middleware: [Api],
 });

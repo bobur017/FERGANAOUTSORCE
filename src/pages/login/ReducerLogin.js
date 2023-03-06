@@ -12,7 +12,6 @@ const slice = createSlice({
         resultReducer: (state, action) => {
             state.result = action.payload;
         },
-
         tokenReducer: (state, action) => {
             state.token = action.payload;
         },

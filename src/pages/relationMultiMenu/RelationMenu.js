@@ -17,6 +17,7 @@ import {toast} from "react-toastify";
 import {BsCheckAll} from "react-icons/bs";
 import LoadingPage from "../loading/LoadingPage";
 import {useNavigate} from "react-router-dom";
+import {loadingStart} from "../age/AgeReducer";
 
 export const mtt = [
     {
@@ -174,6 +175,7 @@ function RelationMenu() {
         if (!firstUpdate.current) {
 
         } else {
+            dispatch(loadingStart(false));
             history("/sidebar/relation-view");
         }
     }, [relationsResult]);
@@ -578,6 +580,7 @@ function RelationMenu() {
                 )
             );
             dispatch(relationMultiMenu(dayList, multiMenuState?.id));
+            dispatch(loadingStart(true));
         } else {
             toast.error("Taomnoma tanlanmagan!")
         }

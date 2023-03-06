@@ -160,7 +160,7 @@ function Sanpin() {
                             <InputGroup className="mb-3" key={index} size={'sm'}>
                                 <InputGroup.Text style={{width: '50%'}}><span style={{color: 'green'}}>Yosh toifasi nomi : </span> <span> {item.ageGroupName}</span>
                                 </InputGroup.Text>
-                                <Form.Control name={'weight'} type={'number'} step={'0.01'}
+                                <Form.Control name={'weight'} type={'number'} step={'0.001'}
                                               onWheel={(e) => e.target.blur()} value={item.weight}
                                               onChange={onChanges(index)} size={'sm'} required/>
                                 <InputGroup.Text>

@@ -18,9 +18,11 @@ import MoreButtons from "../more/MoreButtons";
 import {MdDeleteForever} from "react-icons/md";
 import ProductFromAdd from "../product/ProductFromAdd";
 import {AiTwotoneEdit} from "react-icons/ai";
+import LoadingPage from "../loading/LoadingPage";
 
 function Warehouse() {
     const [wareHouseState, setWareHouseState] = useState();
+    const [load, setLoad] = useState(false);
     const [productReceived, setProductReceived] = useState({
         "id": "",
         "receivedWeight": 0
@@ -35,6 +37,7 @@ function Warehouse() {
     const [productCurrent, setProductCurrent] = useState();
     const warehouses = useSelector(state => state.warehouse.warehouses);
     const result = useSelector(state => state.warehouse.result);
+    const error = useSelector(state => state.warehouse.error);
     const acceptedProduct = useSelector(state => state.warehouse.acceptedProduct);
     const acceptedProducts = useSelector(state => state.warehouse.acceptedProducts);
     const getFiless = useSelector(state => state.getFiles.getFiless);
@@ -75,8 +78,18 @@ function Warehouse() {
             dispatch(getAcceptedProductAll());
             dispatch(getWarehouse());
             handleClose();
+            setLoad(false)
         }
     }, [result]);
+
+    useEffect(() => {
+        if (!firstUpdate.current) {
+
+        } else {
+            handleClose();
+            setLoad(false)
+        }
+    }, [error]);
 
     useEffect(() => {
         if (!firstUpdate.current) {
@@ -131,7 +144,7 @@ function Warehouse() {
         } else if (index === 1) {
 
         }
-        handleShow(2)
+        handleShow(2);
     }
     const inputProduct = () => {
         return (
@@ -141,7 +154,7 @@ function Warehouse() {
                 </Modal.Header>
                 <Modal.Body>
                         <span className={'mb-3'} style={{color: '#fcb713'}}>Maximal kiritish miqdori:
-                            <span style={{color: '#000'}}>{productReceived?.residualWeight}</span></span>
+                            <span style={{color: '#000'}}>{productReceived?.residualPackWeight}</span></span>
                     <br/>
                     <Form.Label>Sana</Form.Label>
                     <Form.Control type={'date'} name={"date"}
@@ -151,7 +164,7 @@ function Warehouse() {
                                   max={TimestampToInputDate(productReceived.date)}/>
                     <Form.Label>Qabul qilinadigan miqdor</Form.Label>
                     <Form.Control max={productReceived?.residualPackWeight} type={'number'} name={"packWeight"}
-                                  value={productReceived.packWeight} step={'0.01'}
+                                  value={productReceived.packWeight} step={'0.001'}
                                   onChange={onChangeProductWeight}
                                   onWheel={event => event.target.blur()} required/>
                 </Modal.Body>
@@ -171,7 +184,6 @@ function Warehouse() {
 
     }
     const editeInout = (data) => {
-        console.log(data)
         setInOut(data);
         setEdit(true);
     }
@@ -185,11 +197,12 @@ function Warehouse() {
         e.preventDefault();
         dispatch(editWarehouse({
             productId: inOut?.id,
-            weight: inOut?.weight,
+            packWeight: inOut?.packWeight,
             price: inOut?.price,
         },inOut));
         setEdit(false);
         setInOut({});
+        setLoad(true);
     }
     const wasteProduct = () => {
         return (
@@ -197,7 +210,7 @@ function Warehouse() {
                 <Modal.Header>{productCurrent?.productName} miqdori:{productCurrent?.packWeight}</Modal.Header>
                 <Modal.Body>
                     <Form.Label>KG / DONA</Form.Label>
-                    <Form.Control type={"number"} name={"waste"} step={"0.01"} onWheel={e => e.target.blur()}
+                    <Form.Control type={"number"} name={"waste"} step={"0.001"} onWheel={e => e.target.blur()}
                                   max={productCurrent?.packWeight}/>
                 </Modal.Body>
                 <Modal.Footer>
@@ -238,14 +251,15 @@ function Warehouse() {
                                             <td style={{cursor: 'pointer'}}
                                                 onClick={() => handleShow2(product)}>{product.productName}</td>
                                             <td style={{cursor: 'pointer'}}
-                                                onClick={() => handleShow2(product)}>{product.weight}</td>
+                                                onClick={() => handleShow2(product)}>{product.weight?.toFixed(3)}</td>
                                             <td style={{cursor: 'pointer'}}
-                                                onClick={() => handleShow2(product)}>{product.packWeight}</td>
-                                            <td><MoreButtons list={[
-                                                // {name: "Chiqidga chiqarish", icon: <MdDeleteForever/>}
+                                                onClick={() => handleShow2(product)}>{product.packWeight?.toFixed(3)}</td>
+                                            <td>
+                                                <MoreButtons list={[
                                             ]} data={product} setActive={activeOrInActive}
                                                              active={productState?.id === product.id}
-                                                             getDate={getDateMore}/></td>
+                                                             getDate={getDateMore}/>
+                                            </td>
                                         </tr>
                                     )
                                 }
@@ -351,7 +365,7 @@ function Warehouse() {
                             <FromPageSizeBottom currentPage={acceptedProducts.getPageNumber}
                                                 pageSize={acceptedProducts?.getPageSize} changesPage={changePage1}
                                                 allPageSize={acceptedProducts?.allPageSize}/>
-                        </div> : warehouses?.list ?
+                        </div> : acceptedProducts?.list ?
                             <div className={"text-center fs-3"} style={{color: 'red'}}>Ma'lumot mavjud emas </div> :
                             <div className={"text-center fs-3"} style={{color: 'red'}}>Omborda ma'lumot mavjud
                                 emas</div>}
@@ -399,9 +413,9 @@ function Warehouse() {
                                                         <Form.Control
                                                             placeholder="Miqdor"
                                                             type={"number"}
-                                                            step={"0.01"}
-                                                            value={inOut?.weight || ""}
-                                                            name={"weight"}
+                                                            step={"0.001"}
+                                                            value={inOut?.packWeight || ""}
+                                                            name={"packWeight"}
                                                             onChange={changeWeight}
                                                             size={"sm"}
                                                             required
@@ -414,7 +428,7 @@ function Warehouse() {
                                                         <Form.Control
                                                             placeholder="Narxi"
                                                             type={"number"}
-                                                            step={"0.01"}
+                                                            step={"0.001"}
                                                             value={inOut?.price || ""}
                                                             name={"price"}
                                                             onChange={changeWeight}
@@ -446,6 +460,7 @@ function Warehouse() {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <LoadingPage/>
         </div>
     );
 }

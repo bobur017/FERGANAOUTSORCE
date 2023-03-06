@@ -12,7 +12,7 @@ import {BsArrowDownUp, BsFillMenuButtonFill} from "react-icons/bs";
 import {TiInfoLargeOutline} from "react-icons/ti";
 import {FaUserCog} from "react-icons/fa";
 import {HiOutlineDocumentText, HiOutlineTruck} from "react-icons/hi";
-import {MdOutlinePriceChange} from "react-icons/md";
+import {MdOutlineAccountTree, MdOutlinePriceChange} from "react-icons/md";
 import {RiDeleteBin6Line, RiNotification2Line} from "react-icons/ri";
 import {FiPackage} from "react-icons/fi";
 import {AiOutlineBorderOuter} from "react-icons/ai";
@@ -121,6 +121,11 @@ export const rolesList = (role) => {
                 path: "/sidebar/send-notification",
                 name: "Bildirishnoma yuborish",
                 icon: <RiNotification2Line size={25}/>
+            },
+            {
+                path: "/sidebar/accountant",
+                name: "MTTlarni biriktirish",
+                icon: <MdOutlineAccountTree size={25}/>
             },
         ];
     }else if(role === "ROLE_OMBORCHI"){
@@ -258,11 +263,11 @@ export const rolesList = (role) => {
                 name: "Ma'lumotlar",
                 icon: <TiInfoLargeOutline size={25}/>
             },
-            {
-                path: "/sidebar/contract",
-                name: "Shartnomalar",
-                icon: <HiOutlineDocumentText size={25}/>
-            },
+            // {
+            //     path: "/sidebar/contract",
+            //     name: "Shartnomalar",
+            //     icon: <HiOutlineDocumentText size={25}/>
+            // },
             {
                 path: "/sidebar/supplier",
                 name: "Ta'minotchilar",

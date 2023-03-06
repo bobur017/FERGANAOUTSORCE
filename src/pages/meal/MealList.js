@@ -110,7 +110,7 @@ function MealList() {
                     <br/>
 
                     <Form.Label>Taom vazni</Form.Label>
-                    <Form.Control name='weight' required type={'number'} step={'0.01'}
+                    <Form.Control name='weight' required type={'number'} step={'0.001'}
                                   onWheel={(e) => e.target.blur()} value={mealState.weight}
                                   onChange={onChanges("weight")}
                                   placeholder="vazni "/>

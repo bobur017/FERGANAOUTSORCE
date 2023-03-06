@@ -18,9 +18,9 @@ const slice = createSlice({
     },
     reducers: {
         kidsNumber: (state, action) => {
-            state.kidsNumber = action.payload;
             var win = window.open(action.payload, '_blank');
             win.focus();
+            state.kidsNumber = action.payload;
         },
         getInputOutputKidsNumberPdf: (state, action) => {
             // state.kidsNumber = action.payload;

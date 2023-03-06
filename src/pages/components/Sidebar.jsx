@@ -43,7 +43,9 @@ const Sidebar = ({children}) => {
                         );
                     })
                     }
-                    <div  className="link mb-2" id={"link2"} style={{cursor:"pointer"}} onClick={pushLogin}>
+                    <br/>
+                    <br/>
+                    <div  className="link mb-2 " id={"link2"} style={{cursor:"pointer",backgroundColor:'#48B1AB'}} onClick={pushLogin}>
                         <div className="icon"><ImExit size={25}/></div>
                         <div style={{display: isOpen ? "block" : "none"}} className="link_text" >Chiqish</div>
                     </div>

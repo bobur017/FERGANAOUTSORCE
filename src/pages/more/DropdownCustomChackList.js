@@ -133,10 +133,10 @@ function MyDropdown({list, name, setData, editList, param}) {
                     <span key={index}>
                     <InputGroup size="sm" className="mb-2">
                         <InputGroup.Text id="inputGroup-sizing-sm" style={{width: '50%'}}>{item.name}</InputGroup.Text>
-                        <Form.Control type={'number'} step={"0.01"} required name={"weight"} size={'sm'}
+                        <Form.Control type={'number'} step={"0.001"} required name={"weight"} size={'sm'}
                                       value={item.weight ? item.weight : ""} onWheel={(e) => e.target.blur()}
                                       onChange={onChangeList(index)} placeholder={"vazni"}/>
-                        <Form.Control type={'number'} step={"0.01"} required name={"waste"} size={'sm'}
+                        <Form.Control type={'number'} step={"0.001"} required name={"waste"} size={'sm'}
                                       value={item?.waste ? item?.waste : ""} onWheel={(e) => e.target.blur()}
                                       onChange={onChangeList(index)} placeholder={"vazni"}/>
                         <InputGroup.Text><Button variant={'danger'} size={'sm'}

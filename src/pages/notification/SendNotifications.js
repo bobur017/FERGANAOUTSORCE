@@ -3,11 +3,8 @@ import {Col, Container, Form, Row} from "react-bootstrap";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import NavbarHeader from "../more/NavbarHeader";
-import {getDepartment} from "../departments/RegionDepartmentReducer";
 import CheckBoxCustom2 from "../more/CheckBoxCustom2";
-import {getDepartmentRoles, getKindergartenRoles, getRolesGet} from "../users/UserReducer";
-import {getByDepartmentMtt} from "../mtt/MttReducer";
-import CheckBoxCustom3 from "../more/CheckBoxCustom3";
+import {getRolesGet} from "../users/UserReducer";
 import {addNotification} from "./NotificationReducer";
 import {toast} from "react-toastify";
 

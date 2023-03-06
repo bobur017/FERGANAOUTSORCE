@@ -162,25 +162,25 @@ function ProductList() {
                         <Form.Label>Uglevod</Form.Label>
                         <Form.Control name='carbohydrates' type={'number'} onWheel={(e) => e.target.blur()} required
                                       value={productState.carbohydrates} onChange={onChanges}
-                                      step={'0.01'}
+                                      step={'0.001'}
                                       placeholder="Uglevod "/>
                         <br/>
                         <Form.Label>Energetik quvvati</Form.Label>
                         <Form.Control name='kcal' type={'number'} onWheel={(e) => e.target.blur()} required
                                       value={productState.kcal} onChange={onChanges}
-                                      step={'0.01'}
+                                      step={'0.001'}
                                       placeholder="Energetik quvvati"/>
                         <br/>
                         <Form.Label>Oqsil</Form.Label>
                         <Form.Control name='protein' type={'number'} onWheel={(e) => e.target.blur()} required
                                       value={productState.protein} onChange={onChanges}
-                                      step={'0.01'}
+                                      step={'0.001'}
                                       placeholder="Oqsil"/>
                         <br/>
                         <Form.Label>Yog'</Form.Label>
                         <Form.Control name='oil' type={'number'} onWheel={(e) => e.target.blur()} required
                                       value={productState.oil} onChange={onChanges}
-                                      step={'0.01'}
+                                      step={'0.001'}
                                       placeholder="Yog'"/>
                         <br/>
                         <Form.Label>Mahsulot turi</Form.Label>

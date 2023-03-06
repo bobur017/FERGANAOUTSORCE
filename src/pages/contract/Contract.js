@@ -88,6 +88,7 @@ function Contract() {
             setRenderNumber(number);
         } else if (number === 2) {
             setContractState(data);
+            console.log(data,"data")
             setRenderNumber(number);
         }
         handleShow();
@@ -106,9 +107,9 @@ function Contract() {
     const totalByProduct = (index) => {
         let total = 0;
         contract.contract?.kindergartenContractList?.forEach((kin) =>
-            total += parseInt(kin?.productContracts[index]?.weight)
+            total += parseFloat(kin?.productContracts[index]?.weight)
         );
-        return total;
+        return total.toFixed(3);
     }
     const getFiles = (type) => {
         setFileType(type);
@@ -140,7 +141,7 @@ function Contract() {
         return (
             <>
                 <Modal.Header closeButton>
-                    <Modal.Title>{contractState.name}</Modal.Title>
+                    <Modal.Title>{contractState.lotNumber} lotli shartnoma</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     O'chirilgan ma'lumotni qayta tiklab bo'lmaydi, rostdan ham o'chirasizmi?

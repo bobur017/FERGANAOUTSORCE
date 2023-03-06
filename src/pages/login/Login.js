@@ -106,14 +106,12 @@ function Login() {
                         <div className={'p-5'}>
 
                             <span className={'textLogin1'}>
-                                Farg`ona viloyati
-                                Maktabgacha ta`lim
-                                boshqarmasi
+                                Maktabgacha ta‘lim tashkilotlarida ovqatlantirishni nazorat qilish tizimi.
                             </span>
                             <br/>
-                            <span className={'textLogin2'}>
-                                ovqatlantirishni nazorat qilish tizimi
-                            </span>
+                            {/*<span className={'textLogin2'}>*/}
+                            {/*    ovqatlantirishni nazorat qilish tizimi*/}
+                            {/*</span>*/}
                         </div>
                     </div>
                 </Col> : null}
