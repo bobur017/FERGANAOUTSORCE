@@ -30,7 +30,6 @@ function MultiMenuOne() {
     };
 
     const handleShow = (num, data) => {
-        console.log(data, "Maaaaaaaaaaaaaaaaaana")
         if (num === 1) {
             setNumber(num);
             setMealState({

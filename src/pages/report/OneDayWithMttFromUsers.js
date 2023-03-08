@@ -1,13 +1,9 @@
 import React from 'react';
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getMenuReport, getMenuReport2, oneDay, oneDayFromAll} from "./ReportReducer";
-import {TimestampToInputDate} from "../funcs/Funcs";
+import {getMenuReport, oneDayFromAll} from "./ReportReducer";
 import {useNavigate} from "react-router-dom";
 import {Col, Container, Form, Row} from "react-bootstrap";
-import fileDownload from "js-file-download";
-import {baseUrl2} from "../../Default";
-import FileDownload from "js-file-download";
 import {toast} from "react-toastify";
 import NavbarHeader from "../more/NavbarHeader";
 import {getFileMultiMenuAll} from "../multimenu/MultiMenuReducer";

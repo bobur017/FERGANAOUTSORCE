@@ -95,7 +95,7 @@ function Sidebars() {
                             Farg`ona viloyat
                             maktabgacha
                             ta`lim boshqarmasi
-                                <span style={{color: 'green', marginLeft: 4, fontSize: 15}}> Dastur test rejimida</span>
+                                <span style={{color: 'red', marginLeft: 4, fontSize: 15}}> Dastur test rejimida</span>
                             </span>
                                     </Nav.Link>
                                 </Nav>
