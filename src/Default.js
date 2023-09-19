@@ -3,14 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export const baseUrl = () => {
-    return "http://185.217.131.192:8888/out/api/"
+    return "http://95.130.227.104:8888/out/api/"
     // return "http://192.168.0.119:8888/out/api/attachment/";
 }
 
 export const baseUrl3 = () => {
     return "https://feednet.uz";
+    // return "http://95.130.227.104/out/api/"
     // return "http://localhost:3000"
-    // return "http://192.168.43.241/out/api/"
 }
 export const pushLogin = () => {
     localStorage.setItem("Authorization"," ");
@@ -27,9 +27,8 @@ export const pushLogin2 = (url) => {
 }
 
 export const baseUrl2 = () => {
-    return "https://feednet.uz/out/api";
-    // return "http://192.168.43.241:8888/out/api";
-    // return "http://185.217.131.192:8888/out/api";
+    // return "https://feednet.uz/out/api";
+    return "http://192.168.43.241:8888/out/api";
     // return "http://localhost:8888/out/api";
 }
 

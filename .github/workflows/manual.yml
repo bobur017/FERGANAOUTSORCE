@@ -1,0 +1,29 @@
+name: Deploy book-front to server 2
+on:
+  push:
+    branches:
+      - main
+env:
+  DOCKER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  SERVER_HOST: ${{ secrets.SERVER_NAME }}
+  SERVER_USERNAME: root
+
+jobs:
+  build_push_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy FRONT to server 2
+        uses: appleboy/ssh-action@master
+        with:
+          host: 95.130.227.104
+          username: root
+          password: qL0oR3pX1hcI
+          port: 22
+          script: |
+            cd yoshkitobxon/front-fergana
+            git pull
+            cd ..
+            docker-compose build frontend
+            docker-compose up -d frontend
+            exit
