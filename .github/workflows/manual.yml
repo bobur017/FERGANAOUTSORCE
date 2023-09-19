@@ -21,7 +21,7 @@ jobs:
           password: bI3pE6eV3gbS
           port: 22
           script: |
-            cd yoshkitobxon/front-fergana
+            cd yoshkitobxon/front-fergana/FERGANAOUTSORCE/
             git pull
             cd ..
             docker-compose build frontend
