@@ -3,13 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export const baseUrl = () => {
-    return "http://95.130.227.104:8888/out/api/"
+    return "http://95.130.227.104:7788/out/api/"
     // return "http://192.168.0.119:8888/out/api/attachment/";
 }
 
 export const baseUrl3 = () => {
-    return "https://feednet.uz";
-    // return "http://95.130.227.104/out/api/"
+    // return "https://feednet.uz";
+    return "http://95.130.227.104:7788/out/api/"
     // return "http://localhost:3000"
 }
 export const pushLogin = () => {
