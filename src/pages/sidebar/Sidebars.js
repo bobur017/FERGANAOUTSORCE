@@ -95,7 +95,7 @@ function Sidebars() {
                             Farg`ona viloyat
                             maktabgacha
                             ta`lim boshqarmasi
-                                <span style={{color: 'red', marginLeft: 4, fontSize: 15}}> Dastur test rejimida</span>
+                                <span style={{color: 'red', marginLeft: 4, fontSize: 15}}> Dastur test rejimida!</span>
                             </span>
                                     </Nav.Link>
                                 </Nav>
@@ -150,7 +150,7 @@ function Sidebars() {
                             ta`lim boshqarmasi
                                     <br/>
                                     <span
-                                        style={{color: 'red', marginLeft: 4, fontSize: 15}}> Dastur test rejimida</span>
+                                        style={{color: 'red', marginLeft: 4, fontSize: 15}}> Dastur test rejimida!</span>
                             </span>
                             </div>
                             <div className={"d-flex align-items-center justify-content-around w-75"}>
