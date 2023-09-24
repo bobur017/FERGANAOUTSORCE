@@ -8,8 +8,8 @@ export const baseUrl = () => {
 }
 
 export const baseUrl3 = () => {
-    // return "https://feednet.uz";
-    return "http://95.130.227.104:7788/out/api/"
+    return "https://feednet.uz";
+    // return "http://95.130.227.104:7788/out/api/"
     // return "http://localhost:3000"
 }
 export const pushLogin = () => {
