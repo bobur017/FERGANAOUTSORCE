@@ -33,13 +33,18 @@ function WareHousProductByKinderGarten(props) {
     }
     const getKinderId = (data) => {
         dispatch(getWarehouse({...params, kindergartenId: data?.id}));
-        console.log(params)
         setParams({...params, kindergartenId: data?.id})
+    }
+
+    const getTabList = () => {
+      return [{name: "Ombordagi mahsulotlar"},
+          // {name: "Omborga mahsulot kiritish"}
+      ];
     }
     return (
         <Container fluid={true}>
             <NavbarHeader name={"Ombordagi qoldiqlar "}
-                          currentNavs={setCurrentNav} navs={[{name: "Ombordagi mahsulotlar"}, {name: "Omborga mahsulot kiritish"}]}/>
+                          currentNavs={setCurrentNav} navs={getTabList()}/>
             {currentNa === 0 ? <Row className={'mt-3'}>
                 <Col>
                     <GetKinderByDepartment getDepartmentId={getDepartmentId} getKinderId={getKinderId}/>

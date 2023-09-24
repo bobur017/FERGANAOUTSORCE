@@ -46,16 +46,16 @@ export const rolesList = (role) => {
                 name: "MTT",
                 icon: <GiGreenhouse size={25}/>
             },
-            {
-                path: "/sidebar/meal",
-                name: "Taom",
-                icon: <GiMeal size={25}/>
-            },
-            {
-                path: "/sidebar/permission",
-                name: "Ruxsat-taqiq",
-                icon: <TbLockAccess size={25}/>
-            },
+            // {
+            //     path: "/sidebar/meal",
+            //     name: "Taom",
+            //     icon: <GiMeal size={25}/>
+            // },
+            // {
+            //     path: "/sidebar/permission",
+            //     name: "Ruxsat-taqiq",
+            //     icon: <TbLockAccess size={25}/>
+            // },
         ];
     } else if (role === "ROLE_SUPER_ADMIN") {
         return [
@@ -107,11 +107,11 @@ export const rolesList = (role) => {
                 name: "Buyurtma",
                 icon: <AiOutlineBorderOuter size={25}/>
             },
-            {
-                path: "/sidebar/remove-product",
-                name: "Yaroqsiz mahsulotlar",
-                icon: <RiDeleteBin6Line size={25}/>
-            },
+            // {
+            //     path: "/sidebar/remove-product",
+            //     name: "Yaroqsiz mahsulotlar",
+            //     icon: <RiDeleteBin6Line size={25}/>
+            // },
             {
                 path: "/sidebar/warehouse-admin",
                 name: "Omborxona",
@@ -122,11 +122,11 @@ export const rolesList = (role) => {
                 name: "Bildirishnoma yuborish",
                 icon: <RiNotification2Line size={25}/>
             },
-            {
-                path: "/sidebar/accountant",
-                name: "MTTlarni biriktirish",
-                icon: <MdOutlineAccountTree size={25}/>
-            },
+            // {
+            //     path: "/sidebar/accountant",
+            //     name: "MTTlarni biriktirish",
+            //     icon: <MdOutlineAccountTree size={25}/>
+            // },
         ];
     }else if(role === "ROLE_OMBORCHI"){
         return [
@@ -366,11 +366,11 @@ export const rolesList = (role) => {
                 name: "Mahsulot qadoqlari",
                 icon: <FiPackage size={25}/>
             },
-            {
-                path: "/sidebar/permission",
-                name: "Ruxsat-taqiq",
-                icon: <TbLockAccess size={25}/>
-            },
+            // {
+            //     path: "/sidebar/permission",
+            //     name: "Ruxsat-taqiq",
+            //     icon: <TbLockAccess size={25}/>
+            // },
             {
                 path: "/sidebar/default-kids-number",
                 name: "O'rtacha bolalar soni",

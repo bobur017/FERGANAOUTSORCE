@@ -62,7 +62,6 @@ function InputOutputFromAdmin({data}) {
             <Row>
                 <Col xs={12} sm={12} md={12} lg={12} xl={12} className={'figma-card-first mt-3 justify-content-around'}>
                     <Form onSubmit={getData}>
-
                         <Row className="mb-3 align-items-center">
                             <Form.Group as={Col}>
                                 <Form.Label>Boshlanish sana</Form.Label>
@@ -70,7 +69,6 @@ function InputOutputFromAdmin({data}) {
                                               required
                                               value={TimestampToInputDate(params.start)}/>
                             </Form.Group>
-
                             <Form.Group as={Col} controlId="formGridState">
                                 <Form.Label>Tugash sana</Form.Label>
                                 <Form.Control name={'end'} type={'date'} onChange={onChangeDate}
@@ -78,7 +76,6 @@ function InputOutputFromAdmin({data}) {
                                               value={TimestampToInputDate(params.end)}
                                               min={TimestampToInputDate(params.start)}/>
                             </Form.Group>
-
                             <Form.Group as={Col} controlId="formGridZip">
                                 <button className={'createButtons mt-4'} type={'submit'}>Tayyor</button>
                             </Form.Group>

@@ -19,6 +19,8 @@ import {RiDeleteBin2Fill} from "react-icons/ri";
 import {BsPencilSquare} from "react-icons/bs";
 import {AiOutlineFilePdf} from "react-icons/ai";
 import {Document, Page} from "react-pdf";
+import {getRoleStorage} from "../more/Functions";
+import {RolesName} from "../../Default";
 
 function MultiMenu() {
     const defaultData = {
@@ -270,7 +272,7 @@ function MultiMenu() {
 
     return (
         <div className={'allMain'}>
-            <NavbarHeader name={"Taomnomalar bo'limi"} buttonName={"Taomnoma qo'shish"}
+            <NavbarHeader name={"Taomnomalar bo'limi"} buttonName={getRoleStorage() === RolesName.texnolog ? "Taomnoma qo'shish": undefined}
                           handleShow={() => handleShow(1)}/>
             <div className={'figma-card mt-3'}>
                 <div>

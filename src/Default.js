@@ -27,9 +27,21 @@ export const pushLogin2 = (url) => {
 }
 
 export const baseUrl2 = () => {
-    // return "https://feednet.uz/out/api";
-    return "http://95.130.227.104:7788/out/api"
-    // return "http://localhost:8888/out/api";
+    return "https://feednet.uz/out/api";
+    // return "http://192.168.0.103:7788/out/api"
+    // return "http://95.130.227.104:7788/out/api"
+    // return "http://localhost:7788/out/api";
+}
+export const RolesName = {
+    admin:"ROLE_ADMIN",
+    texnolog:"ROLE_TEXNOLOG",
+    super_admin:"ROLE_SUPER_ADMIN",
+    buxgalter:"ROLE_BO`LIM_BUXGALTER",
+    warehouser:"ROLE_OMBORCHI",
+    hamshira:"ROLE_HAMSHIRA",
+    director:"ROLE_RAXBAR",
+    support_buxgalter:"ROLE_BOSHQARMA_BUXGALTER",
+    cadr:"ROLE_XODIMLAR_BO`LIMI",
 }
 
 function Default(props) {
@@ -48,5 +60,6 @@ function Default(props) {
         <div></div>
     );
 }
+
 
 export default Default;

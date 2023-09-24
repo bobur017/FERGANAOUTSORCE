@@ -261,7 +261,7 @@ function MealList() {
     return (
         <div className={'allMain'}>
             <NavbarHeader name={"Taomlar "} handleShow={() => onClickDepartment(null, 0)}
-                          buttonName={getRoleStorage() === "ROLE_ADMIN" ? "Taom qo'shish" : ""}/>
+                          buttonName={getRoleStorage() === "ROLE_TEXNOLOG" ? "Taom qo'shish" : ""}/>
             <br/>
             <div className={'figma-card'}>
 
@@ -271,9 +271,9 @@ function MealList() {
                         <tr>
                             <th>#</th>
                             <th>Nomi</th>
-                            {getRoleStorage() === "ROLE_ADMIN" ? <th>O'zgartirish</th> : null}
+                            {getRoleStorage() === "ROLE_TEXNOLOG" ? <th>O'zgartirish</th> : null}
                             <th>Ko'rish</th>
-                            {getRoleStorage() === "ROLE_ADMIN" ? <th>O'chirish</th> : null}
+                            {getRoleStorage() === "ROLE_TEXNOLOG" ? <th>O'chirish</th> : null}
                         </tr>
                         </thead>
                         <tbody>
@@ -282,7 +282,7 @@ function MealList() {
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{item.name}</td>
-                                    {getRoleStorage() === "ROLE_ADMIN" ? <td>
+                                    {getRoleStorage() === "ROLE_TEXNOLOG" ? <td>
                                             <Button variant='outline-info' size='sm'
                                                     onClick={() => onClickDepartment(item, 1)}>
                                                 O'zgartirish
@@ -295,7 +295,7 @@ function MealList() {
                                             Ko'rish
                                         </Button>
                                     </td>
-                                    {getRoleStorage() === "ROLE_ADMIN" ?
+                                    {getRoleStorage() === "ROLE_TEXNOLOG" ?
                                         <td>
                                             <Button variant='outline-danger' size='sm'
                                                     onClick={() => onClickDepartment(item, 2)}>
