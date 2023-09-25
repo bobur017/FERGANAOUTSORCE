@@ -26,6 +26,7 @@ export const pushLogin2 = (url) => {
     window.location.reload();
 }
 
+
 export const baseUrl2 = () => {
     return "https://feednet.uz/out/api";
     // return "http://192.168.43.241:7788/out/api"
