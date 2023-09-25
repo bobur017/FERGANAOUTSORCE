@@ -10,7 +10,7 @@ import {
     editMultiMenu,
     getFileMultiMenu,
     getMultiMenu,
-    getMultiMenuProduct, getMultiMenuProductFile
+    getMultiMenuProduct, getMultiMenuProductFile, selectMultiMenu
 } from "./MultiMenuReducer";
 import {useNavigate} from "react-router-dom";
 import ReactApexChart from "react-apexcharts";
@@ -21,6 +21,7 @@ import {AiOutlineFilePdf} from "react-icons/ai";
 import {Document, Page} from "react-pdf";
 import {getRoleStorage} from "../more/Functions";
 import {RolesName} from "../../Default";
+import button from "bootstrap/js/src/button";
 
 function MultiMenu() {
     const defaultData = {
@@ -272,7 +273,8 @@ function MultiMenu() {
 
     return (
         <div className={'allMain'}>
-            <NavbarHeader name={"Taomnomalar bo'limi"} buttonName={getRoleStorage() === RolesName.texnolog ? "Taomnoma qo'shish": undefined}
+            <NavbarHeader name={"Taomnomalar bo'limi"}
+                          buttonName={getRoleStorage() === RolesName.texnolog ? "Taomnoma qo'shish" : undefined}
                           handleShow={() => handleShow(1)}/>
             <div className={'figma-card mt-3'}>
                 <div>
@@ -288,6 +290,14 @@ function MultiMenu() {
                                             onClick={() => handleShow2(4, item)}>Mahsulotlarini
                                         ko'rish
                                     </button>
+                                    {getRoleStorage() === RolesName.texnolog ?
+                                        !item?.select ? <button className={"buttonInfo m-1"}
+                                                               onClick={() => dispatch(selectMultiMenu(item?.id))}>
+                                            Tanlash
+                                        </button> : <button className={"buttonSuccess m-1"}>
+                                            Tanlangan
+                                        </button>
+                                        : null}
                                 </div>
                                 {item.edit ? <div className={"d-flex justify-content-end w-25"}>
                                     <div style={{cursor: 'pointer'}} className={"mx-3"}

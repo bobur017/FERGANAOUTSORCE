@@ -189,7 +189,7 @@ function Sidebars() {
                     <Route path="/multiMenu" element={<MultiMenu/>}/>
                     <Route path="/multi-menu-one/:id" element={<MultiMenuOne/>}/>
                     <Route path="/relation-view" element={<MenuView/>}/>
-                    <Route path="/relation-menu" element={<RelationMenu/>}/>
+                    {/*<Route path="/relation-menu" element={<RelationMenu/>}/>*/}
                     <Route path="/supplier" element={<Supplier/>}/>
                     <Route path="/price" element={<Price/>}/>
                     <Route path="/contract" element={<Contract/>}/>

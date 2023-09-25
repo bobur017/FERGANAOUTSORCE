@@ -171,6 +171,15 @@ export const relationMultiMenu = (data, id) => apiCall({
     success: slice.actions.resultMenuRelationsReducer.type,
     error: slice.actions.errorReducer.type
 })
+export const selectMultiMenu = (id) => apiCall({
+    url: "/menu/selectMenu/" + id,
+    method: "POST",
+    headers: {
+        Authorization: getToken(),
+    },
+    success: slice.actions.resultMenuRelationsReducer.type,
+    error: slice.actions.errorReducer.type
+})
 export const addMultiMenuMeal = (data) => apiCall({
     url: "/multiMenu/addMeal/" + data.id,
     method: "POST",
