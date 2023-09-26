@@ -3,7 +3,7 @@ import Sidebar from "../components/Sidebar";
 import {Link, Route, Routes} from "react-router-dom";
 import About from "./About";
 import Product from "../product/Product";
-import {Container, Nav, Navbar, Row} from "react-bootstrap";
+import {Container, Nav, Navbar} from "react-bootstrap";
 import userLogo from "../image/img.png"
 import RegionDepartment from "../departments/RegionDepartment";
 import Age from "../age/Age";
@@ -19,7 +19,6 @@ import '../allStyle2.scss';
 import Users from "../users/Users";
 import MenuView from "../relationMultiMenu/MenuView";
 import UsersDepartment from "../users/UsersDepartment";
-import RelationMenu from "../relationMultiMenu/RelationMenu";
 import Supplier from "../supplier/Supplier";
 import Price from "../price/Price";
 import Contract from "../contract/Contract";
@@ -60,6 +59,7 @@ function Sidebars() {
     const isBigScreen = useMediaQuery({query: '(max-width: 576px)'});
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
+
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;

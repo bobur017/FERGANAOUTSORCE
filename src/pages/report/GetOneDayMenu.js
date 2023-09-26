@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import {getMenuOne} from "../multimenu/MultiMenuReducer";
-import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {getRoleStorage, tableRowCustomTd3} from "../more/Functions";
 
 function GetOneDayMenu() {
@@ -32,7 +32,28 @@ function GetOneDayMenu() {
     return (
         <div>
             <div className={'figma-card'}>
-                <button className={"buttonPdf"} onClick={() => history(backFromRole(getRoleStorage()))}>ORTGA</button>
+                <div className={"d-flex justify-content-between"}>
+                    <div>
+                        <button className={"buttonPdf"} onClick={() => history(backFromRole(getRoleStorage()))}>ORTGA
+                        </button>
+                    </div>
+                    <div className={"d-flex"}>
+                        <div className={"mx-2 d-flex"}>
+                            <Form.Label>Almashtirish kuni</Form.Label>
+                            <div>
+
+                            <Form.Control name={"dayMenyu"} type={"number"} size={'sm'} className={"mx-2"}/>
+                            </div>
+                        </div>
+                        <div>
+
+                            <button className={"buttonExcel mx-2"}
+                                    onClick={() => history(backFromRole(getRoleStorage()))}>
+                                TAYYOR
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <Col xs={12} sm={12} md={12}
                      className={'text-center mt-3'}>
                     <Card className={'m-0'}>

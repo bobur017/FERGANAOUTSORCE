@@ -142,6 +142,16 @@ export const addMultiMenu = (data) => apiCall({
     success: slice.actions.resultReducer.type,
     error: slice.actions.errorReducer.type
 })
+export const replaceMenuDay = (params) => apiCall({
+    url: "/menu/replace",
+    method: "POST",
+    headers: {
+        Authorization: getToken(),
+    },
+    params,
+    success: slice.actions.resultReducer.type,
+    error: slice.actions.errorReducer.type
+})
 
 export const getFileMultiMenu = (data) => apiCall({
     url: "/multiMenu/getFile/" + data.id,

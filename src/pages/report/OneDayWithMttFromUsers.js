@@ -6,13 +6,16 @@ import {useNavigate} from "react-router-dom";
 import {Col, Container, Form, Row} from "react-bootstrap";
 import {toast} from "react-toastify";
 import NavbarHeader from "../more/NavbarHeader";
-import {getFileMultiMenuAll} from "../multimenu/MultiMenuReducer";
+import {getFileMultiMenuAll, getMultiMenuOne, replaceMenuDay} from "../multimenu/MultiMenuReducer";
+import {timeout} from "workbox-core/_private";
 
 function OneDayWithMttFromUsers({id}) {
     const [fileType, setFileType] = useState();
     const dispatch = useDispatch();
     const history = useNavigate();
+    const [replaceParams, setReplaceParams] = useState()
     const menuOneDay = useSelector(state => state.report.menuOneDay);
+    const multiMenu = useSelector(state => state.multiMenu.multiMenu);
     const stateSelector = useSelector(state => state.report.oneDay)
     const menuOneDayReport = useSelector(state => state.report.menuOneDayReport)
     const firstUpdate = useRef(false);
@@ -27,16 +30,27 @@ function OneDayWithMttFromUsers({id}) {
     }, [menuOneDayReport]);
 
     useEffect(() => {
+        if (firstUpdate.current) {
+            console.log(multiMenu, "multiMenu")
+        }
+    }, [multiMenu]);
+
+
+    useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
             dispatch(oneDayFromAll());
         } else {
+            if (stateSelector?.menu?.multiMenuId) {
+                dispatch(getMultiMenuOne(stateSelector?.menu?.multiMenuId))
+            }
             console.log(stateSelector, "stateSelector");
         }
     }, [stateSelector]);
 
     const getByDate = (e) => {
         dispatch(oneDayFromAll({date: new Date(e.target.value).getTime()}));
+        setReplaceParams({...replaceParams, time: new Date(e.target.value).getTime()});
     }
     const getFiles = (type) => {
         setFileType(type);
@@ -49,6 +63,18 @@ function OneDayWithMttFromUsers({id}) {
         } else {
             toast.error("Bu kunga menyu biriktirilmagan!");
         }
+    }
+    const onSelectMenu = (e) => {
+        setReplaceParams({...replaceParams, menuId: e.target.value});
+    }
+    const successReplaceMenu = () => {
+        let time = new Date().getTime();
+        if (replaceParams?.time) {
+            time = replaceParams?.time;
+        } else {
+            setReplaceParams({...replaceParams,time})
+        }
+        dispatch(replaceMenuDay({...replaceParams,time}))
     }
     return (
         <div>
@@ -79,6 +105,7 @@ function OneDayWithMttFromUsers({id}) {
                         </Col>
                     </Row>
                 </Container>
+
                 {stateSelector?.kindergartenName !== null ?
                     <div className={'figma-card mt-3'}>
                         <div>
@@ -115,6 +142,33 @@ function OneDayWithMttFromUsers({id}) {
                     <div className={"figma-card text-center fs-3 mt-3"} style={{color: '#e58107'}}>Bu kunga bolalar soni
                         kiritilmagan</div>}
             </div>
+            <br/>
+            <Container fluid={true}>
+                <Row className={'figma-card-first justify-content-between'}>
+                    <Col xs={8} sm={8} md={8}>
+                        <Form.Label>Tanlangan kun taomnomasini o'zgartirish uchun tanlang <br/>
+                            <span> {multiMenu?.name}dan</span></Form.Label>
+                        <Form.Select defaultValue={replaceParams?.menuId || ""} onChange={(e) => onSelectMenu(e)}
+                                     name={"menuId"}>
+                            <option value="">Taomnomalar</option>
+                            {
+                                multiMenu?.menuList?.map((item, index) =>
+                                    <option value={item.id}>{item.name}</option>
+                                )
+                            }
+                        </Form.Select>
+                    </Col>
+                    <Col className={'d-flex align-items-center'}>
+                        {stateSelector?.kindergartenName !== null ?
+                            <>
+                                <button className={'buttonExcel mx-1 mt-4'}
+                                        onClick={() => successReplaceMenu()}>ALMASHTIRISH
+                                </button>
+                            </>
+                            : null}
+                    </Col>
+                </Row>
+            </Container>
         </div>
     );
 }
