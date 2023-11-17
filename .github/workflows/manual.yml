@@ -4,10 +4,10 @@ on:
     branches:
       - main
 env:
-  DOCKER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
-  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-  SERVER_HOST: ${{ secrets.SERVER_NAME }}
-  SERVER_USERNAME: root
+#  DOCKER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+#  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#  SERVER_HOST: ${{ secrets.SERVER_NAME }}
+#  SERVER_USERNAME: root
 
 jobs:
   build_push_deploy:
@@ -16,12 +16,12 @@ jobs:
       - name: Deploy FRONT to server 2
         uses: appleboy/ssh-action@master
         with:
-          host: 95.130.227.104
+          host: 95.130.227.48
           username: root
-          password: bI3pE6eV3gbS
+          password: UlaArbd7grzxqRU9
           port: 22
           script: |
-            cd yoshkitobxon/front-fergana/FERGANAOUTSORCE/
+            cd feednet/FERGANAOUTSORCE/
             git pull
             cd ..
             docker-compose build frontend
