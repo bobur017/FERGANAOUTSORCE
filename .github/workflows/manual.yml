@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-env:
+#env:
 #  DOCKER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
 #  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 #  SERVER_HOST: ${{ secrets.SERVER_NAME }}
