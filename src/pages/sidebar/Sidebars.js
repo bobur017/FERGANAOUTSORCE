@@ -93,7 +93,7 @@ function Sidebars() {
                             <span style={{fontSize: isBigScreen3 ? 25 : !isBigScreen2 ? 25 : 20}}
                                   >
                             Farg`ona viloyat
-                            maktabgacha
+                            maktab va maktabgacha
                             ta`lim boshqarmasi
                                 <span style={{color: 'red', marginLeft: 4, fontSize: 15}}> Dastur test rejimida!</span>
                             </span>
@@ -146,7 +146,7 @@ function Sidebars() {
                                 </svg>
                                 <span style={{fontSize: 12}} className={'fw-bolder mx-2'}>
                             Farg`ona viloyat
-                            maktabgacha
+                            maktab va maktabgacha
                             ta`lim boshqarmasi
                                     <br/>
                                     <span
