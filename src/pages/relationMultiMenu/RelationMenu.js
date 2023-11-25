@@ -804,7 +804,7 @@ function RelationMenu() {
                                                     <GoCheck color={item.attached ? '#8CC152' : '#E9573F'}/> : null}
                                             </div>
                                         </div>
-                                        <div className={'mx-2'}>{item.number}{item.name}</div>
+                                        <div className={'mx-2'}>{item.name}</div>
                                         <div style={{
                                             position: 'absolute',
                                             bottom: 1,

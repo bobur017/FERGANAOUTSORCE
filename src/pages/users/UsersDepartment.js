@@ -113,7 +113,7 @@ function UsersDepartment() {
                                                  className={main.leftLine}><RiHome5Line
                                                 size={30}/>
                                             </div>
-                                            <div className={'mx-1'}>{item.number}{item.name}</div>
+                                            <div className={'mx-1'}>{item.name}</div>
                                         </div>
                                     )
                                 }

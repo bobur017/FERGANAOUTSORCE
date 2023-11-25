@@ -88,7 +88,7 @@ function GetKinderByDepartment({getDepartmentId,getKinderId}) {
                                          style={{borderColor: item.id !== kindergarten?.id ? '#48B1AB' : 'white'}}>
                                     </div>
                                 </div>
-                                <div className={'mx-2'}>{item.number}{item.name}</div>
+                                <div className={'mx-2'}>{item.name}</div>
                             </div>
                         )
                     }
