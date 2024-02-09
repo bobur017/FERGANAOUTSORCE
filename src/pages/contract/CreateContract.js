@@ -322,7 +322,7 @@ function CreateContract() {
                                         <tr key={index}>
                                             <td style={{width: 10}}>{index + 1}</td>
                                             <td style={{width: 100}} className={"d-flex justify-content-between"}>
-                                                <span>{kinder?.number}{kinder?.kindergartenName}</span><MdDeleteForever
+                                                <span>{kinder?.kindergartenName}</span><MdDeleteForever
                                                 size={20} color={'red'}
                                                 onClick={() => removeKinder(kinder?.kindergartenId)}
                                                 style={{cursor: 'pointer'}}/></td>
