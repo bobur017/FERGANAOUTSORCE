@@ -57,7 +57,7 @@ export const rolesList = (role) => {
             //     icon: <TbLockAccess size={25}/>
             // },
         ];
-    } else if (role === "ROLE_SUPER_ADMIN") {
+    }else  if (role === "ROLE_SUPER_ADMIN") {
         return [
             {
                 path: "/sidebar/super-admin",
@@ -70,7 +70,7 @@ export const rolesList = (role) => {
                 icon: <FaNetworkWired size={25}/>
             },
         ];
-    } else  if(role === "ROLE_BO`LIM_BUXGALTER"){
+    }else  if(role === "ROLE_BO`LIM_BUXGALTER"){
         return [
             {
                 path: "/sidebar/info",
@@ -128,7 +128,7 @@ export const rolesList = (role) => {
             //     icon: <MdOutlineAccountTree size={25}/>
             // },
         ];
-    }else if(role === "ROLE_OMBORCHI"){
+    }else  if(role === "ROLE_OMBORCHI"){
         return [
             {
                 path: "/sidebar/info",
@@ -152,7 +152,7 @@ export const rolesList = (role) => {
             },
 
         ];
-    }else    if(role === "ROLE_HAMSHIRA"){
+    }else  if(role === "ROLE_HAMSHIRA"){
         return [
             {
                 path: "/sidebar/info",

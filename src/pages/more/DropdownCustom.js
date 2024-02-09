@@ -74,7 +74,7 @@ function More({list, name, setData}) {
                     {
                         list?.map((item, index) =>
                             <Dropdown.Item key={index}
-                                           onClick={() => getItem(item)}>{numAndName(item?.number, item?.name)}</Dropdown.Item>
+                                           onClick={() => getItem(item)}>{ item?.name}</Dropdown.Item>
                         )
                     }
                 </Dropdown.Menu>

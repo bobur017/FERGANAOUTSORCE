@@ -358,7 +358,7 @@ function CreateContract() {
                             </table>
                         </div>
                         <div>
-                            <DropdownCustom name={"Masulot +"} list={products}
+                            <DropdownCustom name={"Maрsulot +"} list={products}
                                             setData={addProductInKinder}/>
                         </div>
                     </div>
