@@ -28,6 +28,14 @@ function ChildrenNumber() {
 
     useEffect(() => {
         if (!firstUpdate.current) {
+
+        } else {
+          console.log('ages',ages);
+        }
+    }, [ages]);
+
+    useEffect(() => {
+        if (!firstUpdate.current) {
             firstUpdate.current = true;
             dispatch(getKidsNumberOne(params));
             dispatch(getAge());

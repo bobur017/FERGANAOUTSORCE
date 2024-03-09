@@ -3,9 +3,9 @@ import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
 export const baseUrl3 = () => {
-    return "https://feednet.uz";
+    // return "https://feednet.uz";
     // return "http://95.130.227.48:7788"
-    // return "http://192.168.1.106:7788"
+    return "http://192.168.91.204:7788"
     // return "http://localhost:7788"
 }
 export const baseUrl2 = () => {

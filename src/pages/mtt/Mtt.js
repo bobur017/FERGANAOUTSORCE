@@ -166,7 +166,7 @@ function Mtt() {
                             mtts?.list?.map((item, index) =>
                                 <tr key={index}>
                                     <td>{index + 1}</td>
-                                    <td>{item.number + "  " + item.name}</td>
+                                    <td>{item.name}</td>
                                     <td>{item.departmentName}</td>
                                     <td>{item.street}</td>
                                     <td>{item.status}</td>

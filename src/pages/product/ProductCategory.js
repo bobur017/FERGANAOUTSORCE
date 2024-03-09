@@ -28,7 +28,7 @@ function ProductCategory() {
 
     const dispatch = useDispatch();
     const firstUpdate = useRef(false);
-    const productCategory = useSelector(state => state.product)
+    const productCategory = useSelector(state => state.product);
 
     useEffect(() => {
         if (firstUpdate.current) {
