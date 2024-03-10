@@ -214,7 +214,7 @@ function MultiMenu() {
                                     <td>{totalSum(item2?.dateWeightList)}</td>
                                     <td rowSpan={item?.productWeightList?.length}>{item?.planWeight.toFixed(2)}</td>
                                     <td rowSpan={item?.productWeightList?.length}>{item?.doneWeight.toFixed(2)}</td>
-                                    <td rowSpan={item?.productWeightList?.length}>{((item?.planWeight / item?.doneWeight) * 100).toFixed(2)}</td>
+                                    <td rowSpan={item?.productWeightList?.length}>{((item?.doneWeight / item?.planWeight) * 100).toFixed(2)}</td>
                                 </tr>)
                         } else {
                             trows.push(
