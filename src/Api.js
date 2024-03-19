@@ -26,7 +26,8 @@ const api = ({ dispatch }) => (next) => (action) => {
             if (err?.response.status === 403 || err?.response.status === 502) {
                 if (err?.response?.data?.error_message?.startsWith("The Token has expired")
                     || err?.response?.data?.startsWith("<html>\r\n<head><title>502 Bad Gateway")) {
-                    renewAccessToken();
+                        window.history.pushState("object or string", "Title", "/");
+                        window.location.reload();
                 } else {
                     dispatch({
                         type: error,
