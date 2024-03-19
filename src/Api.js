@@ -1,13 +1,13 @@
 import axios from "axios";
-import {getRefreshToken} from "./pages/more/Functions";
-import {baseUrl2} from "./Default";
+import { getRefreshToken } from "./pages/more/Functions";
+import { baseUrl2 } from "./Default";
 
-const api = ({dispatch}) => (next) => (action) => {
+const api = ({ dispatch }) => (next) => (action) => {
     if (action.type !== 'api/call') {
         next(action);
         return;
     } else {
-        const {url, method, data, headers, params, success, error} = action.payload;
+        const { url, method, data, headers, params, success, error } = action.payload;
         console.log(data, url, "data");
         axios({
             baseURL: baseUrl2(),
@@ -23,22 +23,23 @@ const api = ({dispatch}) => (next) => (action) => {
             });
             console.log(res.data, "success");
         }).catch(err => {
-            if (err?.response.status === 403) {
-                if (err?.response?.data?.error_message?.startsWith("The Token has expired")||err?.response?.data?.startsWith("<html>\r\n<head><title>502 Bad Gateway")) {
+            if (err?.response.status === 403 || err?.response.status === 502) {
+                if (err?.response?.data?.error_message?.startsWith("The Token has expired")
+                    || err?.response?.data?.startsWith("<html>\r\n<head><title>502 Bad Gateway")) {
                     renewAccessToken();
-                }else{
+                } else {
                     dispatch({
                         type: error,
                         payload: err,
                     });
-            console.log(err, "error");
+                    console.log(err, "error");
                 }
-            }else {
-            dispatch({
-                type: error,
-                payload: err,
-            });
-            console.log(err, "error");
+            } else {
+                dispatch({
+                    type: error,
+                    payload: err,
+                });
+                console.log(err, "error");
             }
         });
         const renewAccessToken = () => {
@@ -49,7 +50,7 @@ const api = ({dispatch}) => (next) => (action) => {
                     Authorization: getRefreshToken()
                 }
             }).then(res => {
-                console.log(res.data?.refresh_token,"refresh");
+                console.log(res.data?.refresh_token, "refresh");
                 localStorage.setItem("Authorization", "Bearer " + res.data?.access_token);
                 localStorage.setItem("Refresh", "Bearer " + res.data?.refresh_token);
                 axios({
@@ -57,7 +58,7 @@ const api = ({dispatch}) => (next) => (action) => {
                     url,
                     method,
                     data,
-                    headers:{...headers,Authorization: "Bearer " +res.data?.access_token},
+                    headers: { ...headers, Authorization: "Bearer " + res.data?.access_token },
                     params,
                 }).then(res => {
                     dispatch({
@@ -73,11 +74,11 @@ const api = ({dispatch}) => (next) => (action) => {
                 });
             }).catch(errors => {
                 // if (errors?.response.status === 403) {
-                    if (errors?.response?.data?.refresh_error_message?.startsWith("The Token has expired")) {
-                        window.history.pushState("object or string", "Title", "/");
-                        window.location.reload();
+                if (errors?.response?.data?.refresh_error_message?.startsWith("The Token has expired")) {
+                    window.history.pushState("object or string", "Title", "/");
+                    window.location.reload();
 
-                    }
+                }
                 // }
             })
         }
