@@ -101,10 +101,13 @@ export const getMultiMenuOne = (id) => apiCall({
 })
 
 export const getMenuOne = (id) => apiCall({
-    url: "/menu/" + id,
+    url: "/menu",
     method: "GET",
     headers: {
         Authorization: getToken(),
+    },
+    params:{
+        menuId:id
     },
     success: slice.actions.menu.type,
     error: slice.actions.errorReducer.type
