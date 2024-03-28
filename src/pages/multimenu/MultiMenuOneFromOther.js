@@ -1,15 +1,15 @@
 import React from 'react';
-import {useEffect, useRef, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Button, Card, Col, Container, Form, InputGroup, Modal, Offcanvas, Row, Table} from "react-bootstrap";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Card, Col, Container, Form, InputGroup, Modal, Offcanvas, Row, Table } from "react-bootstrap";
 import NavbarHeader from "../more/NavbarHeader";
-import {getAge} from "../age/AgeReducer";
-import {addMultiMenuMeal, deleteMultiMenuOne, getMultiMenuOne} from "./MultiMenuReducer";
-import {useNavigate, useParams} from "react-router-dom";
-import {getMeal} from "../meal/MealReducer";
+import { getAge } from "../age/AgeReducer";
+import { addMultiMenuMeal, deleteMultiMenuOne, getMultiMenuOne } from "./MultiMenuReducer";
+import { useNavigate, useParams } from "react-router-dom";
+import { getMeal } from "../meal/MealReducer";
 import DropdownCustom from "../more/DropdownCustom";
-import {percentage, tableRowCustomTd3} from "../more/Functions";
-import {colorText} from "../funcs/Funcs";
+import { percentage, tableRowCustomTd3 } from "../more/Functions";
+import { colorText } from "../funcs/Funcs";
 
 function MultiMenuOne() {
     const defaultData = {
@@ -85,12 +85,12 @@ function MultiMenuOne() {
 
     const onChangeItem = (index, data) => (e) => {
         let list = [...mealState.ageStandardList];
-        list[index] = {...list[index], [e.target.name]: e.target.value, ageGroupId: data.id}
-        setMealState({...mealState, ageStandardList: list});
+        list[index] = { ...list[index], [e.target.name]: e.target.value, ageGroupId: data.id }
+        setMealState({ ...mealState, ageStandardList: list });
     }
 
     const getMealOnclicked = (data) => {
-        setMealState({...mealState, mealName: data.name, mealId: data.id})
+        setMealState({ ...mealState, mealName: data.name, mealId: data.id })
     }
     const renderAddMealToMenu = () => {
         return (
@@ -99,20 +99,20 @@ function MultiMenuOne() {
                     <Modal.Title>Taomnoma</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <DropdownCustom name={"Taomlar"} setData={getMealOnclicked} list={meals}/>
-                    <br/>
+                    <DropdownCustom name={"Taomlar"} setData={getMealOnclicked} list={meals} />
+                    <br />
                     <Form.Control type={"text"} disabled
-                                  value={"Taom nomi : " + mealState.mealName} required onChange={onChangeItem()}/>
-                    <br/>
+                        value={"Taom nomi : " + mealState.mealName} required onChange={onChangeItem()} />
+                    <br />
                     {
                         mealState.ageStandardList?.map((item, index) =>
                             <InputGroup size="sm" className="mb-3" key={index}>
                                 <InputGroup.Text id="inputGroup-sizing-sm"
-                                                 style={{width: '70%'}}>{item.name}</InputGroup.Text>
+                                    style={{ width: '70%' }}>{item.name}</InputGroup.Text>
                                 <Form.Control type={'number'} step={"0.001"} required name={"weight"} size={'sm'}
-                                              value={item.weight ? item.weight : ""}
-                                              onWheel={(e) => e.target.blur()}
-                                              placeholder={"vazni"} onChange={onChangeItem(index, item)}/>
+                                    value={item.weight ? item.weight : ""}
+                                    onWheel={(e) => e.target.blur()}
+                                    placeholder={"vazni"} onChange={onChangeItem(index, item)} />
                             </InputGroup>
                         )
                     }
@@ -134,24 +134,24 @@ function MultiMenuOne() {
         }
     }
     const back = () => {
-      history("/sidebar/multiMenu");
+        history("/sidebar/multiMenu");
     }
 
     return (
         <div className={'allMain'}>
             <NavbarHeader name={multiMenuState.name + " taomnoma"}
-                          handleShow={handleShowCanvas}/>
+                handleShow={handleShowCanvas} />
             <Container fluid>
                 <Row>
                     <Col xs={8} sm={8} md={8} lg={8} xl={8} className={'figma-card-first mt-3'}>
                         <Row>
-                            <div><button className={"buttonPdf"} onClick={()=>back()}>Ortga</button></div>
+                            <div><button className={"buttonPdf"} onClick={() => back()}>Ortga</button></div>
                             {
                                 multiMenuState?.menuList?.map((menu, index) =>
                                     <Col key={index} xs={12} sm={12} md={12} lg={6} xl={6}
-                                         className={'text-center mt-3'}>
+                                        className={'text-center mt-3'}>
                                         <Card className={'m-0'}>
-                                            <Card.Header style={{backgroundColor: '#d7d6d6'}}>{menu.name}</Card.Header>
+                                            <Card.Header style={{ backgroundColor: '#d7d6d6' }}>{menu.name}</Card.Header>
                                             <Container fluid>
                                                 <Row className={'justify-content-center text-center'}>
                                                     {
@@ -163,16 +163,16 @@ function MultiMenuOne() {
                                                                 <div className={'miniTable'}>
                                                                     <table>
                                                                         <thead>
-                                                                        <tr>
-                                                                            <th>#</th>
-                                                                            <th>Taom nomi</th>
-                                                                            <th>Yosh toifalari</th>
-                                                                            <th>Miqdori</th>
-                                                                        </tr>
+                                                                            <tr>
+                                                                                <th>#</th>
+                                                                                <th>Taom nomi</th>
+                                                                                <th>Yosh toifalari</th>
+                                                                                <th>Miqdori</th>
+                                                                            </tr>
                                                                         </thead>
                                                                         {mealTime?.mealAgeStandardList?.map((meal, index3) => {
-                                                                                return (
-                                                                                    <tbody key={index3}>
+                                                                            return (
+                                                                                <tbody key={index3}>
                                                                                     <tr>
                                                                                         <td rowSpan={meal.ageStandardList.length}>{index3 + 1}</td>
                                                                                         <td rowSpan={meal.ageStandardList.length}>{meal.mealName}</td>
@@ -188,9 +188,9 @@ function MultiMenuOne() {
                                                                                     {
                                                                                         tableRowCustomTd3(meal?.ageStandardList)
                                                                                     }
-                                                                                    </tbody>
-                                                                                )
-                                                                            }
+                                                                                </tbody>
+                                                                            )
+                                                                        }
                                                                         )}
                                                                     </table>
                                                                 </div>
@@ -209,25 +209,25 @@ function MultiMenuOne() {
                         <div className={'miniTable'}>
                             <table>
                                 <thead>
-                                <tr>
-                                    <th>№</th>
-                                    <th style={{maxWidth:100}}>Nomi</th>
-                                    <th>Yosh toifa</th>
-                                    <th>Rejada</th>
-                                    <th>Amalda</th>
-                                    <th>Foiz</th>
-                                </tr>
+                                    <tr>
+                                        <th>№</th>
+                                        <th style={{ maxWidth: 100 }}>Nomi</th>
+                                        <th>Yosh toifa</th>
+                                        <th>Rejada</th>
+                                        <th>Amalda</th>
+                                        <th>Foiz</th>
+                                    </tr>
                                 </thead>
                                 {
                                     multiMenuState?.sanpinMenuNorm?.map((item, index) => {
-                                            return (
-                                                <tbody>
+                                        return (
+                                            <tbody>
                                                 {
                                                     item?.ageGroupSanpinNormList?.map((sanpinNorm, index2) => {
                                                         if (index2 !== 0) {
                                                             return (
                                                                 <tr key={index2}>
-                                                                    <td style={{maxWidth:100}}>{sanpinNorm?.ageGroupName}</td>
+                                                                    <td style={{ maxWidth: 100 }}>{sanpinNorm?.ageGroupName}</td>
                                                                     <td className={'text-center'}>{sanpinNorm?.planWeight}</td>
                                                                     <td className={'text-center'}>{sanpinNorm?.doneWeight}</td>
                                                                     <td className={'text-center'} style={colorText(percentage(sanpinNorm?.doneWeight, sanpinNorm?.planWeight))}>{percentage(sanpinNorm?.doneWeight, sanpinNorm?.planWeight)} %</td>
@@ -236,7 +236,7 @@ function MultiMenuOne() {
                                                         } else {
                                                             return (<tr key={index}>
                                                                 <td rowSpan={item?.ageGroupSanpinNormList.length}>{index + 1}</td>
-                                                                <td rowSpan={item?.ageGroupSanpinNormList.length} style={{maxWidth:100}}>{item.sanpinCategoryName}</td>
+                                                                <td rowSpan={item?.ageGroupSanpinNormList.length} style={{ maxWidth: 100 }}>{item.sanpinCategoryName}</td>
                                                                 <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].ageGroupName}</td>
                                                                 <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].planWeight}</td>
                                                                 <td className={'text-center'}>{item?.ageGroupSanpinNormList[0].doneWeight}</td>
@@ -245,9 +245,9 @@ function MultiMenuOne() {
                                                         }
                                                     })
                                                 }
-                                                </tbody>
-                                            )
-                                        }
+                                            </tbody>
+                                        )
+                                    }
                                     )
                                 }
                             </table>
