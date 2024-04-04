@@ -74,7 +74,11 @@ function OneDayWithMttFromUsers() {
         } else {
             setReplaceParams({ ...replaceParams, time })
         }
-        dispatch(replaceMenuDay({ ...replaceParams, time }))
+        if (replaceParams?.menuId) {
+            dispatch(replaceMenuDay({ ...replaceParams, time }));
+        }else{
+            toast.error("Taomnomani tanlang");
+        }
     }
     return (
         <div>
