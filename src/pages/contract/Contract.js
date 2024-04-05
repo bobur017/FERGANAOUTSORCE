@@ -238,7 +238,7 @@ function Contract() {
                         <div className={"fs-3 w-100 text-center"} style={{color: 'red'}}>Shartnomalar tuzilmagan</div>}
                 </div>
                 <br/>
-                <FromPageSizeBottom pageSize={contracts?.getPageSize} allPageSize={contracts?.llPageSize} currentPage={contracts?.getPageNumber} changesPage={changesPage}/>
+                <FromPageSizeBottom pageSize={contracts?.getPageSize} allPageSize={contracts?.allPageSize} currentPage={contracts?.getPageNumber} changesPage={changesPage}/>
             </div>
             <Modal show={show} onHide={handleClose}>
                 {renderFunc()}
