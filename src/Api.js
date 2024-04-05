@@ -26,12 +26,13 @@ const api = ({ dispatch }) => (next) => (action) => {
             dispatch(loadingStart(false));
             console.log(res.data, "success");
         }).catch(err => {
-            if (err?.response.status === 403 || err?.response.status === 502) {
+            if (err?.response?.status === 403 || err?.response.status === 502) {
                 if (err?.response?.data?.error_message?.startsWith("The Token has expired")
                     || err?.response?.data?.startsWith("<html>\r\n<head><title>502 Bad Gateway")) {
                     // window.history.pushState("object or string", "Title", "/");
                     // window.location.reload();
                     console.log(err);
+                    dispatch(loadingStart(false));
                 } else {
                     dispatch(loadingStart(false));
                     dispatch({

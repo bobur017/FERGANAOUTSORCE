@@ -14,9 +14,11 @@ import NavbarHeader from "../more/NavbarHeader";
 import {useNavigate} from "react-router-dom";
 import {TimestampToInputDate} from "../funcs/Funcs";
 import {getRoleStorage} from "../more/Functions";
+import FromPageSizeBottom from '../fromPage/FromPageSizeBottom';
 
 
 function Contract() {
+    const [params, setParams] = useState({pageSize: 20, pageNumber: 0})
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
     const [id, setId] = useState();
@@ -69,7 +71,7 @@ function Contract() {
     useEffect(() => {
         if (!firstUpdate.current) {
             firstUpdate.current = true;
-            dispatch(getContract());
+            dispatch(getContract(params));
         }
     }, [])
 
@@ -163,6 +165,9 @@ function Contract() {
             return modalDelete();
         }
     }
+    const changesPage = (number) => {
+        dispatch(getContract({...params, pageNumber: number}));
+    }
 
     return (
         <div className={'allMain'}>
@@ -232,6 +237,8 @@ function Contract() {
                         <div className={"fs-3 w-100 text-center"} style={{color: 'red'}}>Ma'lumotlarmavjud emas</div> :
                         <div className={"fs-3 w-100 text-center"} style={{color: 'red'}}>Shartnomalar tuzilmagan</div>}
                 </div>
+                <br/>
+                <FromPageSizeBottom pageSize={contracts?.getPageSize} allPageSize={contracts?.llPageSize} currentPage={contracts?.getPageNumber} changesPage={changesPage}/>
             </div>
             <Modal show={show} onHide={handleClose}>
                 {renderFunc()}

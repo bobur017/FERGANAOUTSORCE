@@ -44,12 +44,13 @@ export const getContractOne = (id) => apiCall({
     error: slice.actions.errorReducer.type
 })
 
-export const getContract = () => apiCall({
+export const getContract = (params) => apiCall({
     url: "/contract",
     method: "GET",
     headers: {
         Authorization: getToken(),
     },
+    params,
     success: slice.actions.contracts.type,
     error: slice.actions.errorReducer.type
 })
